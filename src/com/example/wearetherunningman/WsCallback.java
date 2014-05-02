@@ -1,12 +1,9 @@
 package com.example.wearetherunningman;
 
-import java.util.Arrays;
-
 import io.socket.IOAcknowledge;
 import io.socket.IOCallback;
 import io.socket.SocketIOException;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
