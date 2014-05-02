@@ -1,15 +1,18 @@
 package com.example.wearetherunningman;
 
+import java.util.Arrays;
+
 import io.socket.IOAcknowledge;
 import io.socket.IOCallback;
 import io.socket.SocketIOException;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class WsCallback  implements IOCallback, IOAcknowledge {
     
-	OtherPlayerSave ops=new OtherPlayerSave();	
+	//OtherPlayerSave ops=new OtherPlayerSave();	
 	private WsCallbackInterface callback;
     
     public WsCallback(WsCallbackInterface callback) {
@@ -38,7 +41,7 @@ public class WsCallback  implements IOCallback, IOAcknowledge {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			ops.compare(jsondata);
+			//ops.compare(jsondata);
         }
     }
 	
