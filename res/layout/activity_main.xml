@@ -1,0 +1,98 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:orientation="vertical">
+	
+	<TextView
+        android:id="@+id/text01" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="사용자"
+        tools:context=".MainActivity" />
+    <EditText
+        android:id="@+id/edittext01" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        tools:context=".MainActivity" />
+    
+    <TextView
+        android:id="@+id/text02" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="방이름"
+        tools:context=".MainActivity" />
+    <EditText
+        android:id="@+id/edittext02" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        tools:context=".MainActivity" />
+    
+   
+   <Button
+        android:id="@+id/button01" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="사용자생성"
+        tools:context=".MainActivity" />
+   
+    <Button
+        android:id="@+id/button02" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="입장"
+        tools:context=".MainActivity" />
+   
+   
+   <TextView
+        android:id="@+id/textview01" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        
+         />
+    <TextView
+        android:id="@+id/textview02" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        
+        />
+     <TextView
+        android:id="@+id/textview03" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        
+         />
+      <TextView
+        android:id="@+id/textview04" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        
+         />
+       <TextView
+        android:id="@+id/textview05" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        
+         />
+   
+        
+       
+   
+   
+   
+   
+    
+     
+
+</LinearLayout>
