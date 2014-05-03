@@ -3,14 +3,18 @@ package com.example.wearetherunningman;
 import io.socket.SocketIO;
 
 import java.net.MalformedURLException;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.Application;
+
 
 public class WsConn extends Application {
 
 	private SocketIO socket;
     private WsCallback callback;
+    
        
 	public WsConn(WsCallbackInterface callback){
 		this.callback = new WsCallback(callback);
@@ -18,6 +22,7 @@ public class WsConn extends Application {
     public void run(String URL) {
     	try {
 			socket = new SocketIO(URL, callback);
+
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
@@ -35,6 +40,15 @@ public class WsConn extends Application {
             ex.printStackTrace();
         }
         socket.emit("message", json);
+    }
+    public void registerUser(Player p) {
+    	JSONObject json = new JSONObject();
+    	try {
+		    json.put("username", p.name);
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+        }
+        socket.emit("joinUser", json);
     }
     
     // 방 참가 메소드 

@@ -12,7 +12,7 @@ import org.json.JSONObject;
 
 public class WsCallback  implements IOCallback, IOAcknowledge {
     
-	OtherPlayerSave ops=new OtherPlayerSave();	
+	//OtherPlayerSave ops=new OtherPlayerSave();	
 	private WsCallbackInterface callback;
     
     public WsCallback(WsCallbackInterface callback) {
@@ -41,7 +41,7 @@ public class WsCallback  implements IOCallback, IOAcknowledge {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			ops.compare(jsondata);
+			//ops.compare(jsondata);
         }
     }
 	
