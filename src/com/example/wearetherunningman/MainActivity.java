@@ -35,8 +35,7 @@ public class MainActivity extends ActionBarActivity {
 		
 		Button sendbutton=(Button)findViewById(R.id.button01);	
 		Button ackbutton=(Button)findViewById(R.id.button02);
-		
-		uid = name = (EditText) findViewById(R.id.EditTextUid);
+
 		name = (EditText) findViewById(R.id.edittext01);
 		room = (EditText) findViewById(R.id.edittext02);
 		
@@ -50,16 +49,14 @@ public class MainActivity extends ActionBarActivity {
 				Toast.makeText(getApplicationContext(), "사용자 생성!",  Toast.LENGTH_SHORT).show();
 				inputName = name.getText().toString();  //입력한 값을 변수화 시킴
 				inputRoom = room.getText().toString();
-				inputUid = uid.getText().toString();
 				
-				player = new Player(inputUid,inputName,"1","0",getApplicationContext());
+				player = new Player(inputName,"1","0",getApplicationContext());
 			}
 		});
 
 		ackbutton.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v){
-				ws.registerUser(player);
-				ws.emitJoin(inputRoom, player.name);
+				ws.emitJoin(inputRoom, player);
 				sendServer();
 			}
 		});

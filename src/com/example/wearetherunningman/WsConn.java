@@ -41,22 +41,13 @@ public class WsConn extends Application {
         }
         socket.emit("message", json);
     }
-    public void registerUser(Player p) {
-    	JSONObject json = new JSONObject();
-    	try {
-		    json.put("username", p.name);
-        } catch (JSONException ex) {
-            ex.printStackTrace();
-        }
-        socket.emit("joinUser", json);
-    }
-    
     // 방 참가 메소드 
-    public void emitJoin(String roomId, String userName ){
+    public void emitJoin(String roomId, Player p ){
     	try {
             JSONObject json = new JSONObject();
             json.put("roomid", roomId);
-            json.put("username", userName);
+            json.put("team", p.team);
+            json.put("username", p.name);
             socket.emit("join", callback, json);
         } catch (Exception ex) {
             ex.printStackTrace();
