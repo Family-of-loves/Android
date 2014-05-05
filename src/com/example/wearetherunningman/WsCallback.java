@@ -11,9 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class WsCallback  implements IOCallback, IOAcknowledge {
-    
-	//OtherPlayerSave ops=new OtherPlayerSave();	
-	private WsCallbackInterface callback;
+    private WsCallbackInterface callback;
     
     public WsCallback(WsCallbackInterface callback) {
         this.callback = callback;
@@ -21,30 +19,17 @@ public class WsCallback  implements IOCallback, IOAcknowledge {
 
 	@Override
 	public void ack(Object... data) {
-      /*  try {
-		//	callback.callback(new JSONArray(Arrays.asList(data)));
+        try {
+			callback.callback(new JSONArray(Arrays.asList(data)));
 		} catch (JSONException e) {
 			e.printStackTrace();
-		}*/
-    }
-
-	@Override
-    public void on(String event, IOAcknowledge ack, Object... args) {
-		if ("message".equals(event) && args.length > 0) {			
-			Object[] recv = args;
-			String jt = recv[0].toString();
-			JSONObject jsondata = null;
-						
-			try {
-				jsondata = new JSONObject(jt);
-			} catch (JSONException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			//ops.compare(jsondata);
-        }
+		}
     }
 	
+	@Override
+    public void on(String event, IOAcknowledge ack, Object... data) {
+		callback.on(event, (JSONObject) data[0]);
+	}
     @Override
     public void onMessage(JSONObject json, IOAcknowledge ack) {
     	 try {

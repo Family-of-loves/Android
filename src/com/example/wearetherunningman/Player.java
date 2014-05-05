@@ -9,8 +9,8 @@ public class Player extends Application {
 	String id ;
 	String name ;
 	String team ;
-	String latitude ;
-	String longitude ;
+	Double latitude ;
+	Double longitude ;
 	String item;
 	boolean isAlive = true;
 	boolean isSetComplete = false;
@@ -26,4 +26,3 @@ public class Player extends Application {
 		gc = new GPSListener(context, this);
 	}
 }
-
