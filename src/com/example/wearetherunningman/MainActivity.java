@@ -1,23 +1,20 @@
 package com.example.wearetherunningman;
 
-import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import android.annotation.SuppressLint;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,9 +27,13 @@ import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements WsCallbackInterface {
 	Player player;
-	DBManager db;
-	//Participant participants;
-	ArrayList<Participant> participants = new ArrayList<Participant>();
+	GoogleMap gmap;
+
+	LatLng loc = new LatLng(35.8516, 128.543); // 위치 좌표 설정
+	
+	CameraPosition cp = new CameraPosition.Builder().target((loc)).zoom(16).build();
+	MarkerOptions marker = new MarkerOptions().position(loc); // 구글맵에 기본마커 표시
+	 
 	WsConn ws = new WsConn(this);
 
 	/*
@@ -50,7 +51,8 @@ public class MainActivity extends FragmentActivity implements WsCallbackInterfac
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		gmap = ((SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.gMap)).getMap();
+		
 		// 임시 저장관련
 		Button sendbutton=(Button)findViewById(R.id.button01);	
 		Button ackbutton=(Button)findViewById(R.id.button02);
@@ -59,9 +61,8 @@ public class MainActivity extends FragmentActivity implements WsCallbackInterfac
 		room = (EditText) findViewById(R.id.edittext02);
 		
 		// 웹 소켓 사용!
-		db = new DBManager(this);
-		ws.run("http://dev.hagi4u.net:3000");
 		
+		ws.run("http://dev.hagi4u.net:3000");
 		
 		// 임시 버튼 사용으로 인한 이벤트 리스너
 		sendbutton.setOnClickListener(new Button.OnClickListener(){
@@ -72,13 +73,17 @@ public class MainActivity extends FragmentActivity implements WsCallbackInterfac
 				inputName = name.getText().toString();  //입력한 값을 변수화 시킴
 				inputRoom = room.getText().toString();
 				
-				player = new Player(inputName,"1","0",getApplicationContext());
+				//player = new Player(inputName,"1","0",getApplicationContext());
+				// IS_SANDBOX;
+				player = new Player("정명학","1","0",getApplicationContext(),gmap);
+				
 			}
 		});
 
 		ackbutton.setOnClickListener(new Button.OnClickListener(){
 			public void onClick(View v){
-				ws.emitJoin(inputRoom, player);
+				// IS_DEBUG;
+				ws.emitJoin("test", player);
 				emitServer();
 			}
 		});
@@ -91,7 +96,7 @@ public class MainActivity extends FragmentActivity implements WsCallbackInterfac
 				while (true) {
 					try {
 						Location location = null;
-						player.gc.onLocationChanged(location);
+						player.onMyLocationChange(location);
 						ws.emitMessage(player);
 						Thread.sleep(10000);                       
                     } catch (InterruptedException e) {
@@ -109,8 +114,23 @@ public class MainActivity extends FragmentActivity implements WsCallbackInterfac
 	public void on(String event, JSONObject obj) {
 		Log.i("systemEvent", event);
 		if(event.equals("join")){
+			/* 
+			 * 사용자 객체 생성
+			 * 1. 객체 생성 (DB에 저장?안저장?)
+			 * 2. gmap 에 마커 찍기
+			 * 3. 팀 구분 후 show/visible 설정
+			 */
 		} else if (event.equals("message")){
-			//db.selectAll();
+			/*
+			 * 사용자 정보 업데이
+			 * 1. 객체 or DB 검색
+			 * 2. gmap 마커 삭제 후 다시 찍기
+			 * 3. 팀 구분
+			 * 3-1. 상대팀인 경우 거리 계산(10m)
+			 * 3-2. 거리에 해당하면 마커 표시
+			 * 3-3. 같은 팀인경우 바로 마커 표시
+			 * 
+			 */
 		} else if (event.equals("leaved")){
 		} else {
 			// 에러처리
