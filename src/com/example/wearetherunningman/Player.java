@@ -12,20 +12,20 @@ import android.provider.Settings.Secure;
 import android.support.v4.app.FragmentActivity;
 
 public class Player extends FragmentActivity implements OnMyLocationChangeListener {
-	String id ;
+	String uid ;
 	String name ;
 	String team ;
 	String item ;
-
+	
 	double latitude ;
 	double longitude ;
 	
 	boolean isAlive = true;
 	boolean isSetComplete = false;
-
-    private int zoomLevel = 15;
-    private GoogleMap gmap;
-    private LatLng loc;
+	
+	private int zoomLevel = 15;
+	private GoogleMap gmap;
+	private LatLng loc;
 
     //private Marker marker;
     //private MarkerOptions markerOpt;
@@ -36,7 +36,7 @@ public class Player extends FragmentActivity implements OnMyLocationChangeListen
 		this.gmap.setMyLocationEnabled(true);
 		this.gmap.setOnMyLocationChangeListener(this);
 		
-		this.id = Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+		this.uid = Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 		this.name = name;
 		this.team = team;
 		this.item = item;

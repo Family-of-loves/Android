@@ -10,6 +10,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 public class WsCallback  implements IOCallback, IOAcknowledge {
     private WsCallbackInterface callback;
     

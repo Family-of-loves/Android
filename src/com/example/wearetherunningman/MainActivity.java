@@ -28,12 +28,7 @@ import android.widget.Toast;
 public class MainActivity extends FragmentActivity implements WsCallbackInterface {
 	Player player;
 	GoogleMap gmap;
-
-	LatLng loc = new LatLng(35.8516, 128.543); // 위치 좌표 설정
-	
-	CameraPosition cp = new CameraPosition.Builder().target((loc)).zoom(16).build();
-	MarkerOptions marker = new MarkerOptions().position(loc); // 구글맵에 기본마커 표시
-	 
+	DBManagerHandler dbHandler;
 	WsConn ws = new WsConn(this);
 
 	/*
@@ -45,23 +40,21 @@ public class MainActivity extends FragmentActivity implements WsCallbackInterfac
 	String inputName; // 입력받은 값을 변수화
 	String inputRoom;
 	String inputUid;
-	// 임시 사용변수 끝
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		dbHandler = new DBManagerHandler(getApplicationContext());
 		gmap = ((SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.gMap)).getMap();
 		
 		// 임시 저장관련
 		Button sendbutton=(Button)findViewById(R.id.button01);	
 		Button ackbutton=(Button)findViewById(R.id.button02);
-
 		name = (EditText) findViewById(R.id.edittext01);
 		room = (EditText) findViewById(R.id.edittext02);
 		
 		// 웹 소켓 사용!
-		
 		ws.run("http://dev.hagi4u.net:3000");
 		
 		// 임시 버튼 사용으로 인한 이벤트 리스너
@@ -75,7 +68,7 @@ public class MainActivity extends FragmentActivity implements WsCallbackInterfac
 				
 				//player = new Player(inputName,"1","0",getApplicationContext());
 				// IS_SANDBOX;
-				player = new Player("정명학","1","0",getApplicationContext(),gmap);
+				player = new Player("정명학_mac","1","0",getApplicationContext(),gmap);
 				
 			}
 		});
@@ -113,13 +106,16 @@ public class MainActivity extends FragmentActivity implements WsCallbackInterfac
 	@Override
 	public void on(String event, JSONObject obj) {
 		Log.i("systemEvent", event);
-		if(event.equals("join")){
+		System.out.println("Recv MSG : " + obj);
+		if(event.equals("joined")){
 			/* 
 			 * 사용자 객체 생성
 			 * 1. 객체 생성 (DB에 저장?안저장?)
 			 * 2. gmap 에 마커 찍기
 			 * 3. 팀 구분 후 show/visible 설정
 			 */
+			dbHandler.insert(obj);
+			Toast.makeText(getApplicationContext(), "정보를 저장함", 1).show();
 		} else if (event.equals("message")){
 			/*
 			 * 사용자 정보 업데이

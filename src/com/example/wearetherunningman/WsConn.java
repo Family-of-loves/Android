@@ -31,11 +31,12 @@ public class WsConn extends Application {
     public void emitMessage(Player p) {
     	JSONObject json = new JSONObject();
     	try {
-    		json.put("uid", p.id);
+    		json.put("uid", p.uid);
 		    json.put("username", p.name);
 		    json.put("team",p.team);
             json.put("latitude", p.latitude);
             json.put("longitude", p.longitude);
+            json.put("item", p.item);
         } catch (JSONException ex) {
             ex.printStackTrace();
         }
@@ -46,8 +47,13 @@ public class WsConn extends Application {
     	try {
             JSONObject json = new JSONObject();
             json.put("roomid", roomId);
-            json.put("team", p.team);
-            json.put("username", p.name);
+            json.put("uid", p.uid);
+		    json.put("username", p.name);
+		    json.put("team",p.team);
+            json.put("latitude", p.latitude);
+            json.put("longitude", p.longitude);
+            json.put("item", p.item);
+            
             socket.emit("join", callback, json);
         } catch (Exception ex) {
             ex.printStackTrace();
