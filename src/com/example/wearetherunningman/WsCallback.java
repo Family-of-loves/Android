@@ -29,8 +29,8 @@ public class WsCallback  implements IOCallback, IOAcknowledge {
     }
 	
 	@Override
-    public void on(String event, IOAcknowledge ack, Object... data) {
-		callback.on(event, (JSONObject) data[0]);
+    public void on(String event, IOAcknowledge ack, Object... obj) {
+		callback.on(event, (JSONObject) obj[0]);
 	}
     @Override
     public void onMessage(JSONObject json, IOAcknowledge ack) {

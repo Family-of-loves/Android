@@ -14,8 +14,7 @@ public class WsConn extends Application {
 
 	private SocketIO socket;
     private WsCallback callback;
-    
-       
+           
 	public WsConn(WsCallbackInterface callback){
 		this.callback = new WsCallback(callback);
 	}
@@ -32,7 +31,7 @@ public class WsConn extends Application {
     	JSONObject json = new JSONObject();
     	try {
     		json.put("uid", p.uid);
-		    json.put("username", p.name);
+		    json.put("name", p.name);
 		    json.put("team",p.team);
             json.put("latitude", p.latitude);
             json.put("longitude", p.longitude);
@@ -48,7 +47,7 @@ public class WsConn extends Application {
             JSONObject json = new JSONObject();
             json.put("roomid", roomId);
             json.put("uid", p.uid);
-		    json.put("username", p.name);
+		    json.put("name", p.name);
 		    json.put("team",p.team);
             json.put("latitude", p.latitude);
             json.put("longitude", p.longitude);
