@@ -14,8 +14,7 @@ public class WsConn extends Application {
 
 	private SocketIO socket;
     private WsCallback callback;
-    
-       
+           
 	public WsConn(WsCallbackInterface callback){
 		this.callback = new WsCallback(callback);
 	}

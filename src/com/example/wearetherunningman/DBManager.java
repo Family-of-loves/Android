@@ -22,15 +22,20 @@ public class DBManager extends SQLiteOpenHelper {
                 + "," + "longitude TEXT "
                 + "," + "item TEXT"
                 + ");";
-    }   
+    }  
  
     //테이블을 생성
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(quary);              
-         
+        db.execSQL(quary);
+        System.out.println("테이블 생성");
     }
     //업그레이드 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    	String sql_droptable = "DROP TABLE IF EXISTS " + TB_NAME;  
+        db.execSQL(sql_droptable);
+        System.out.println("테이블 삭제");
+    }
+
 }

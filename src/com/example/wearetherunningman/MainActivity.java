@@ -46,6 +46,7 @@ public class MainActivity extends FragmentActivity implements WsCallbackInterfac
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		dbHandler = new DBManagerHandler(getApplicationContext());
+		
 		gmap = ((SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.gMap)).getMap();
 		
 		// 임시 저장관련
@@ -68,7 +69,7 @@ public class MainActivity extends FragmentActivity implements WsCallbackInterfac
 				
 				//player = new Player(inputName,"1","0",getApplicationContext());
 				// IS_SANDBOX;
-				player = new Player("정명학_mac","1","0",getApplicationContext(),gmap);
+				player = new Player("정명학_win","1","0",getApplicationContext(),gmap);
 				
 			}
 		});
@@ -105,8 +106,6 @@ public class MainActivity extends FragmentActivity implements WsCallbackInterfac
 	 */
 	@Override
 	public void on(String event, JSONObject obj) {
-		Log.i("systemEvent", event);
-		System.out.println("Recv MSG : " + obj);
 		if(event.equals("joined")){
 			/* 
 			 * 사용자 객체 생성
@@ -114,8 +113,7 @@ public class MainActivity extends FragmentActivity implements WsCallbackInterfac
 			 * 2. gmap 에 마커 찍기
 			 * 3. 팀 구분 후 show/visible 설정
 			 */
-			dbHandler.insert(obj);
-			Toast.makeText(getApplicationContext(), "정보를 저장함", 1).show();
+			//dbHandler.insert(obj);
 		} else if (event.equals("message")){
 			/*
 			 * 사용자 정보 업데이
@@ -127,6 +125,7 @@ public class MainActivity extends FragmentActivity implements WsCallbackInterfac
 			 * 3-3. 같은 팀인경우 바로 마커 표시
 			 * 
 			 */
+			//dbHandler.read();
 		} else if (event.equals("leaved")){
 		} else {
 			// 에러처리
