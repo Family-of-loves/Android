@@ -35,9 +35,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:layout_weight="0.15"
+            android:layout_weight="0.07"
             android:text="사용자생성"
             tools:context=".MainActivity" />
+
         <Button
             android:id="@+id/button02"
             android:layout_width="wrap_content"
@@ -46,27 +47,41 @@
             android:text="입장"
             tools:context=".MainActivity" />
 
+        <Button
+            android:id="@+id/read_db"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="read" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/btn_leave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="logout" />
 
     </LinearLayout>
 
     <fragment
         android:id="@+id/gMap"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_height="match_parent"
         class="com.google.android.gms.maps.SupportMapFragment" />
 
     <TextView
-        android:id="@+id/textview01"
+        android:id="@+id/textview02"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp" />
 
     <TextView
-        android:id="@+id/textview02"
+        android:id="@+id/textview01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp" />

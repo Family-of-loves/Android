@@ -12,6 +12,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.database.Cursor;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -25,10 +26,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * @author  JeongMyoungHak
+ */
 public class MainActivity extends FragmentActivity implements WsCallbackInterface {
+	/**
+	 * @uml.property  name="player"
+	 * @uml.associationEnd  
+	 */
 	Player player;
 	GoogleMap gmap;
+	/**
+	 * @uml.property  name="dbHandler"
+	 * @uml.associationEnd  
+	 */
 	DBManagerHandler dbHandler;
+	/**
+	 * @uml.property  name="ws"
+	 * @uml.associationEnd  
+	 */
 	WsConn ws = new WsConn(this);
 
 	/*
@@ -52,6 +68,10 @@ public class MainActivity extends FragmentActivity implements WsCallbackInterfac
 		// 임시 저장관련
 		Button sendbutton=(Button)findViewById(R.id.button01);	
 		Button ackbutton=(Button)findViewById(R.id.button02);
+	
+		Button read_db=(Button)findViewById(R.id.read_db);
+		
+		
 		name = (EditText) findViewById(R.id.edittext01);
 		room = (EditText) findViewById(R.id.edittext02);
 		
@@ -67,10 +87,10 @@ public class MainActivity extends FragmentActivity implements WsCallbackInterfac
 				inputName = name.getText().toString();  //입력한 값을 변수화 시킴
 				inputRoom = room.getText().toString();
 				
-				//player = new Player(inputName,"1","0",getApplicationContext());
+				player = new Player(inputName,"1","0",getApplicationContext(), gmap);
 				// IS_SANDBOX;
-				player = new Player("정명학_win","1","0",getApplicationContext(),gmap);
-				
+				//player = new Player("정명학_mac","1","0",getApplicationContext(),gmap);
+
 			}
 		});
 
@@ -80,6 +100,16 @@ public class MainActivity extends FragmentActivity implements WsCallbackInterfac
 				ws.emitJoin("test", player);
 				emitServer();
 			}
+		});
+		read_db.setOnClickListener(new Button.OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				dbHandler.read();
+			
+			}
+			
 		});
 		
 	}
@@ -106,15 +136,7 @@ public class MainActivity extends FragmentActivity implements WsCallbackInterfac
 	 */
 	@Override
 	public void on(String event, JSONObject obj) {
-		if(event.equals("joined")){
-			/* 
-			 * 사용자 객체 생성
-			 * 1. 객체 생성 (DB에 저장?안저장?)
-			 * 2. gmap 에 마커 찍기
-			 * 3. 팀 구분 후 show/visible 설정
-			 */
-			//dbHandler.insert(obj);
-		} else if (event.equals("message")){
+		if (event.equals("message")){
 			/*
 			 * 사용자 정보 업데이
 			 * 1. 객체 or DB 검색
@@ -125,8 +147,32 @@ public class MainActivity extends FragmentActivity implements WsCallbackInterfac
 			 * 3-3. 같은 팀인경우 바로 마커 표시
 			 * 
 			 */
-			//dbHandler.read();
+			try {
+				String[] participant = dbHandler.search(obj.getString("uid"));
+				
+				if(participant == null){
+					// DB에 사용자 정보를 삽입
+					System.out.println("값이 존재하지 않습니다.");
+					dbHandler.insert(obj);
+				} else {
+					// DB에 정보를 빼와서 좌표값 수정 (participant[2] = latitude / participant[3] = longitude
+					Log.i("SQLite", "uid ="+ participant[0] + 
+									" / 이름 =" +participant[1]+ 
+									" / 위도 ="+participant[2] + 
+									" / 경도 =" + participant[3] + 
+									"가 검색 되었습니다.");	
+				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else if (event.equals("leaved")){
+			try {
+				dbHandler.delete(obj.getString("uid"));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
 			// 에러처리
 		}

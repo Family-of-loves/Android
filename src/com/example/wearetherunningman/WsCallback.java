@@ -12,7 +12,14 @@ import org.json.JSONObject;
 
 import android.util.Log;
 
+/**
+ * @author  JeongMyoungHak
+ */
 public class WsCallback  implements IOCallback, IOAcknowledge {
+    /**
+	 * @uml.property  name="callback"
+	 * @uml.associationEnd  
+	 */
     private WsCallbackInterface callback;
     
     public WsCallback(WsCallbackInterface callback) {

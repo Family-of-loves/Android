@@ -10,9 +10,16 @@ import org.json.JSONObject;
 import android.app.Application;
 
 
+/**
+ * @author  JeongMyoungHak
+ */
 public class WsConn extends Application {
 
 	private SocketIO socket;
+    /**
+	 * @uml.property  name="callback"
+	 * @uml.associationEnd  
+	 */
     private WsCallback callback;
            
 	public WsConn(WsCallbackInterface callback){

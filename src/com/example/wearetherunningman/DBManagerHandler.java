@@ -9,7 +9,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
  
+/**
+ * @author  JeongMyoungHak
+ */
 public class DBManagerHandler {
+    /**
+	 * @uml.property  name="mDBManager"
+	 * @uml.associationEnd  
+	 */
     private DBManager mDBManager;
     private SQLiteDatabase db;
     private String tableName = "participant";
@@ -43,7 +50,6 @@ public class DBManagerHandler {
 	}
 	public void update(JSONObject obj){
 		db = mDBManager.getWritableDatabase();
-		
 		ContentValues val = new ContentValues();
 		try {
 			val.put("latitude", obj.getString("latitude"));
@@ -56,46 +62,45 @@ public class DBManagerHandler {
 		}
 	}
 	
-	public void search(String uid){
-		String sql = "select * from " +tableName+ " where id = "+uid+";";
-		db = mDBManager.getWritableDatabase();
-		Cursor result = db.rawQuery(sql, null);
-		
-		if(result.moveToFirst()){
-            String rUid = result.getString(1);
-            String rName = result.getString(2);
-            String rLatitude = result.getString(4);
-            String rLongitude = result.getString(5);
-            Log.i("SQLite", "uid ="+ rUid + "rName =" +rName+ " latitude ="+rLatitude + "longitude =" + rLongitude + "Search");
-        }
-        result.close();
-		//db.delete(tableName, "name=?", new String[]{uid});
-		
-	}
-	
 	public void delete(String uid){
 		db = mDBManager.getWritableDatabase();
-		
-		db.delete(tableName, "name=?", new String[]{uid});
+		db.delete(tableName, "uid=?", new String[]{uid});
 		Log.i("SQLite : ", uid + "가 정상적으로 삭제 되었습니다.");
 	}
 	
 	//가저오기 
 	public void read(){
+		db = mDBManager.getReadableDatabase();
 		String sql = "select * from " + tableName + ";";
 		Cursor result = db.rawQuery(sql, null);
-		 
+
 		result.moveToFirst();
-		 
-		while(!result.isAfterLast()){
-			String rUid = result.getString(1);
-            String rName = result.getString(2);
-            String rLatitude = result.getString(4);
-            String rLongitude = result.getString(5);
-            Log.i("SQLite", "uid ="+ rUid + "rName =" +rName+ " latitude ="+rLatitude + "longitude =" + rLongitude + " Total readed");
-		    result.moveToNext();
+		if(result.isAfterLast()){
+			System.out.println("정보가 없습니다.");
+		} else {
+			while(!result.isAfterLast()){
+				String rUid = result.getString(1);
+	            String rName = result.getString(2);
+	            String rLatitude = result.getString(4);
+	            String rLongitude = result.getString(5);
+	            Log.i("SQLite", "uid ="+ rUid + "rName =" +rName+ " latitude ="+rLatitude + "longitude =" + rLongitude + " Total readed");
+			    result.moveToNext();
+			}
 		}
 		result.close();
+	}
+
+	public String[] search(String uid){
+		db = mDBManager.getWritableDatabase();
+		String sql = "select * from " +tableName+ " where uid = \""+uid+"\";";
+		Cursor result = db.rawQuery(sql, null);
+		
+		if(result.moveToFirst()){
+			String[] result_arr = {result.getString(1), result.getString(2), result.getString(4), result.getString(5)};
+			return result_arr;
+        }
+        result.close();
+		return null;
 	}
 	
 }
