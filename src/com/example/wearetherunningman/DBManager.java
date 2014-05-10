@@ -5,8 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
  
 public class DBManager extends SQLiteOpenHelper {
-    private final static String TB_NAME = "participant";
-    public static final String DB_NAME = "participant.db";
+    private final static String TB_NAME = "participant1";
+    public static final String DB_NAME = "participant1.db";
     public static final int DB_VERSION = 1;
     String quary ;
      

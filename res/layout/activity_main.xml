@@ -3,70 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity" >
-
-    <EditText
-        android:id="@+id/edittext01"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:ems="10"
-        android:hint="사용자 ID"
-        tools:context=".MainActivity" >
-
-        <requestFocus />
-    </EditText>
-
-    <EditText
-        android:id="@+id/edittext02"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:ems="10"
-        android:hint="방 ID"
-        tools:context=".MainActivity" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <Button
-            android:id="@+id/button01"
+    tools:context=".GameActivity" >
+    
+    
+      <TextView
+            android:id="@+id/nameview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="0.07"
-            android:text="사용자생성"
-            tools:context=".MainActivity" />
-
-        <Button
-            android:id="@+id/button02"
+             />
+    
+     <TextView
+            android:id="@+id/t_roomview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="입장"
-            tools:context=".MainActivity" />
-
-        <Button
-            android:id="@+id/read_db"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="read" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <Button
-            android:id="@+id/btn_leave"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="logout" />
-
-    </LinearLayout>
+             />
 
     <fragment
         android:id="@+id/gMap"
@@ -74,34 +24,5 @@
         android:layout_height="match_parent"
         class="com.google.android.gms.maps.SupportMapFragment" />
 
-    <TextView
-        android:id="@+id/textview02"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp" />
-
-    <TextView
-        android:id="@+id/textview01"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp" />
-
-    <TextView
-        android:id="@+id/textview03"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp" />
-
-    <TextView
-        android:id="@+id/textview04"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp" />
-
-    <TextView
-        android:id="@+id/textview05"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp" />
 
 </LinearLayout>

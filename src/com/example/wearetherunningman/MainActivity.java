@@ -5,200 +5,80 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-import android.annotation.SuppressLint;
-import android.app.Fragment;
-import android.database.Cursor;
-import android.location.Location;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.DialogFragment;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
+import android.os.Build;
 
-/**
- * @author  JeongMyoungHak
- */
-public class MainActivity extends FragmentActivity implements WsCallbackInterface {
-	/**
-	 * @uml.property  name="player"
-	 * @uml.associationEnd  
-	 */
-	Player player;
-	GoogleMap gmap;
-	/**
-	 * @uml.property  name="dbHandler"
-	 * @uml.associationEnd  
-	 */
-	DBManagerHandler dbHandler;
-	/**
-	 * @uml.property  name="ws"
-	 * @uml.associationEnd  
-	 */
-	WsConn ws = new WsConn(this);
-
-	/*
-	 * 임시 사용변수(View와 함칠때는 다르게 사용함)
-	 */
-	EditText name;	//이름을 입력받음
-	EditText room ; // 방이름 입력 받음
+public class MainActivity extends ActionBarActivity  implements WsCallbackInterface{
+	
+	static String inputRoom ;
+	static EditText room ;
+	
+	static EditText name;	//이름을 입력받음
+	static String inputName;
+	
+	static String team;
+	static String item;
+	
+	
 	EditText uid;
-	String inputName; // 입력받은 값을 변수화
-	String inputRoom;
 	String inputUid;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		dbHandler = new DBManagerHandler(getApplicationContext());
-		
-		gmap = ((SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.gMap)).getMap();
-		
-		// 임시 저장관련
-		Button sendbutton=(Button)findViewById(R.id.button01);	
-		Button ackbutton=(Button)findViewById(R.id.button02);
-	
-		Button read_db=(Button)findViewById(R.id.read_db);
+		setContentView(R.layout.ui_activity_main);
 		
 		
-		name = (EditText) findViewById(R.id.edittext01);
-		room = (EditText) findViewById(R.id.edittext02);
-		
-		// 웹 소켓 사용!
-		ws.run("http://dev.hagi4u.net:3000");
-		
-		// 임시 버튼 사용으로 인한 이벤트 리스너
-		sendbutton.setOnClickListener(new Button.OnClickListener(){
-			@Override
-			public void onClick(View v) {  // 버튼 클릭시
-				// TODO Auto-generated method stub
-				Toast.makeText(getApplicationContext(), "사용자 생성!",  Toast.LENGTH_SHORT).show();
-				inputName = name.getText().toString();  //입력한 값을 변수화 시킴
-				inputRoom = room.getText().toString();
+		//name = (EditText) findViewById(R.id.name);
 				
-				player = new Player(inputName,"1","0",getApplicationContext(), gmap);
-				// IS_SANDBOX;
-				//player = new Player("정명학_mac","1","0",getApplicationContext(),gmap);
-
-			}
-		});
-
-		ackbutton.setOnClickListener(new Button.OnClickListener(){
-			public void onClick(View v){
-				// IS_DEBUG;
-				ws.emitJoin("test", player);
-				emitServer();
-			}
-		});
-		read_db.setOnClickListener(new Button.OnClickListener(){
-
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				dbHandler.read();
-			
-			}
-			
-		});
 		
-	}
-	
-	public void emitServer(){
-		new Thread(new Runnable() {           
-			public void run() {
-				while (true) {
-					try {
-						Location location = null;
-						player.onMyLocationChange(location);
-						ws.emitMessage(player);
-						Thread.sleep(10000);                       
-                    } catch (InterruptedException e) {
-                    	e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-	}
-	
-	/*
-	 * 웹 소켓서버 메소드 
-	 */
-	@Override
-	public void on(String event, JSONObject obj) {
-		if (event.equals("message")){
-			/*
-			 * 사용자 정보 업데이
-			 * 1. 객체 or DB 검색
-			 * 2. gmap 마커 삭제 후 다시 찍기
-			 * 3. 팀 구분
-			 * 3-1. 상대팀인 경우 거리 계산(10m)
-			 * 3-2. 거리에 해당하면 마커 표시
-			 * 3-3. 같은 팀인경우 바로 마커 표시
-			 * 
-			 */
-			try {
-				String[] participant = dbHandler.search(obj.getString("uid"));
-				
-				if(participant == null){
-					// DB에 사용자 정보를 삽입
-					System.out.println("값이 존재하지 않습니다.");
-					dbHandler.insert(obj);
-				} else {
-					// DB에 정보를 빼와서 좌표값 수정 (participant[2] = latitude / participant[3] = longitude
-					Log.i("SQLite", "uid ="+ participant[0] + 
-									" / 이름 =" +participant[1]+ 
-									" / 위도 ="+participant[2] + 
-									" / 경도 =" + participant[3] + 
-									"가 검색 되었습니다.");	
-				}
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else if (event.equals("leaved")){
-			try {
-				dbHandler.delete(obj.getString("uid"));
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else {
-			// 에러처리
+		
+		if (savedInstanceState == null) {
+			getSupportFragmentManager().beginTransaction()
+					.add(R.id.container, new PlaceholderFragment()).commit();
+			
+			
 		}
+		//Intent mIntent = new Intent(this, GameActivity.class);
+		//startActivity(mIntent);   //If usert push "ok"button, turn the page to GameActivity
+	      // return; 	
+		//
+        
+		
 	}
-	@Override
-	public void callback(JSONArray data) throws JSONException {}
-	@Override
-	public void onMessage(String message) {}
-	@Override
-	public void onMessage(JSONObject json) {}
-	@Override
-	public void onConnect() {}
-	@Override
-	public void onDisconnect() {}
-	@Override
-	public void onConnectFailure() {}
-	
-	
-	/*================ 하단은 건들면안됨 ====================*/
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
@@ -210,19 +90,207 @@ public class MainActivity extends FragmentActivity implements WsCallbackInterfac
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
-	@SuppressLint("NewApi")
-	public static class PlaceholderFragment extends Fragment {
-		public PlaceholderFragment() {}
+	public static class PlaceholderFragment extends Fragment implements
+			View.OnClickListener {
+
+		public PlaceholderFragment() {
+		}
+
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main, container,false);
+				Bundle savedInstanceState) {
+
+			View rootView = inflater.inflate(R.layout.ui_fragment_main, container,false);
+			room = (EditText) rootView.findViewById(R.id.put_num);; // 방이름 입력 받음
 			
+			Button b_enter = (Button) rootView.findViewById(R.id.enter);
+			
+			
+			b_enter.setOnClickListener(this);
+			 //	
 			return rootView;
 		}
+
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			//
+			UserInfoDialog mUserInfoDialog;
+			switch (v.getId()) {
+			case R.id.enter:
+				inputRoom = room.getText().toString();
+				//inputName = name.getText().toString();	
+				mUserInfoDialog = new UserInfoDialog();
+				mUserInfoDialog.show(getFragmentManager(), "USER");
+				break;
+			}// 사용자 인증번호 허락시 방참가???
+		}
+
 	}
 
+	public static class UserInfoDialog extends DialogFragment {
+
+			
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+					
+			AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+			LayoutInflater mLayoutInflater = getActivity().getLayoutInflater();
+			
+			//name = (EditText) findViewById(R.id.name); // 방이름 입력 받음				
+			//mBuilder.setView(mLayoutInflater.inflate(R.layout.dialog, null,	false));
+			
+			mBuilder.setTitle("User Information");
+			View dialogView = mLayoutInflater.inflate(R.layout.dialog, null);
+			mBuilder.setView(dialogView);
+			
+			name = (EditText)dialogView.findViewById(R.id.name); // 방이름 입력 받음
+			RadioGroup teamgroup = (RadioGroup)dialogView.findViewById(R.id.radioGrup1);
+			RadioGroup itemgroup = (RadioGroup)dialogView.findViewById(R.id.radioGrup2);	
+			
+			
+			teamgroup.setOnCheckedChangeListener (new RadioGroup.OnCheckedChangeListener() 
+	        {							        
+	        	public void onCheckedChanged(RadioGroup group, int checkedId) {
+					// TODO Auto-generated method stub
+
+					switch (checkedId){
+					case R.id.b_red:
+						team = "1";
+						
+						break;
+					
+					case R.id.b_blue:
+						team = "0";
+						break;
+						
+					default:
+						team = "선택안함";
+						break;
+					}
+				}										
+	        
+	        });
+						
+			itemgroup.setOnCheckedChangeListener (new RadioGroup.OnCheckedChangeListener() 
+	        {							        
+	        	public void onCheckedChanged(RadioGroup group, int checkedId) {
+					// TODO Auto-generated method stub
+
+					switch (checkedId){
+					case R.id.b_scissor:
+						item= "가위";
+						break;
+					
+					case R.id.b_rock:
+						item=  "바위";
+						break;
+						
+					case R.id.b_paper:
+						item= "보";
+						break;
+					default:
+						item= "선택안함";
+						break;	
+					}
+				}
+	        							        
+	        });	
+						
+			
+			mBuilder.setCancelable(false)
+					.setPositiveButton("OK",
+							new DialogInterface.OnClickListener() {
+								
+								public void onClick(DialogInterface dialog,int whichButton) {
+									inputName = name.getText().toString();							
+																		
+									Intent myIntent = new Intent(((Dialog) dialog).getContext(), GameActivity.class);
+																
+																		
+									myIntent.putExtra("param1", inputRoom);
+									myIntent.putExtra("param2", inputName);
+									myIntent.putExtra("param3", team);
+									myIntent.putExtra("param4", item);
+																	
+									
+									startActivity(myIntent);   //If usert push "ok"button, turn the page to GameActivity
+								     return; 	
+			
+								}
+							})
+					.setNegativeButton("Cancel",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									dialog.cancel();
+								}
+							});
+			
+			
+			
+			
+			
+			return mBuilder.create();
+			
+		}
+
+		public void onStop() {
+			super.onStop();
+		}
+		
+		
+		
+		
+		
+	} // 다이얼로그 클래스
+	
+		
+
+	@Override
+	public void callback(JSONArray data) throws JSONException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void on(String event, JSONObject data) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onMessage(String message) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onMessage(JSONObject json) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onConnect() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onDisconnect() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onConnectFailure() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }
