@@ -30,6 +30,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+       <activity
+            android:name="com.example.wearetherunningman.GameActivity"
+            android:label="@string/title_activity_game" >
+        </activity>
+        
         <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyCqGesbn_EQMErGZydjyBevK_s3R3f8MSE"/>
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
     </application>

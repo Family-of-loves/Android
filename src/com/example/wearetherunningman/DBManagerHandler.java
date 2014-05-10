@@ -19,7 +19,7 @@ public class DBManagerHandler {
 	 */
     private DBManager mDBManager;
     private SQLiteDatabase db;
-    private String tableName = "participant";
+    private String tableName = "participant1";
      
     public DBManagerHandler (Context context){
         this.mDBManager = new DBManager(context);
