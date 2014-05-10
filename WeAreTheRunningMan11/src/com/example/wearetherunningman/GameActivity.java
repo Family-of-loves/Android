@@ -108,20 +108,23 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 			 * 3-3. 같은 팀인경우 바로 마커 표시
 			 * 
 			 */
+			dbHandler.read();
 			try {
 				String[] participant = dbHandler.search(obj.getString("uid"));
 				
 				if(participant == null){
 					// DB에 사용자 정보를 삽입
-					System.out.println("값이 존재하지 않습니다.");
+					Log.i("처음","들어옴");
 					dbHandler.insert(obj);
 				} else {
 					// DB에 정보를 빼와서 좌표값 수정 (participant[2] = latitude / participant[3] = longitude
+					dbHandler.update(obj);
+					/*
 					Log.i("SQLite", "uid ="+ participant[0] + 
 									" / 이름 =" +participant[1]+ 
 									" / 위도 ="+participant[2] + 
 									" / 경도 =" + participant[3] + 
-									"가 검색 되었습니다.");	
+									"가 검색 되었습니다.");  */	
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block

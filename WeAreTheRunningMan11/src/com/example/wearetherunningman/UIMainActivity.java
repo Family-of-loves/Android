@@ -160,12 +160,12 @@ public class UIMainActivity extends ActionBarActivity  implements WsCallbackInte
 
 					switch (checkedId){
 					case R.id.b_red:
-						team = "red";
+						team = "1";
 						
 						break;
 					
 					case R.id.b_blue:
-						team = "blue";
+						team = "0";
 						break;
 						
 					default:
