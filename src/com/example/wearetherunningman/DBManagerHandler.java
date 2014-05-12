@@ -19,7 +19,7 @@ public class DBManagerHandler {
 	 */
     private DBManager mDBManager;
     private SQLiteDatabase db;
-    private String tableName = "participant1";
+    private String tableName = "participant2";
      
     public DBManagerHandler (Context context){
         this.mDBManager = new DBManager(context);
@@ -83,7 +83,7 @@ public class DBManagerHandler {
 	            String rName = result.getString(2);
 	            String rLatitude = result.getString(4);
 	            String rLongitude = result.getString(5);
-	            Log.i("SQLite", "uid ="+ rUid + "rName =" +rName+ " latitude ="+rLatitude + "longitude =" + rLongitude + " Total readed");
+	            //Log.i("SQLite", "uid ="+ rUid + "rName =" +rName+ " latitude ="+rLatitude + "longitude =" + rLongitude + " Total readed");
 			    result.moveToNext();
 			}
 		}
