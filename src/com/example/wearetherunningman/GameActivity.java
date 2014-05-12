@@ -68,10 +68,9 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		
-		
-		
+		//setContentView(R.layout.activity_game);
+		setContentView(R.layout.fragment_game);
+				
 		dbHandler = new DBManagerHandler(getApplicationContext());
 		
 		gmap = ((SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.gMap)).getMap();
@@ -227,7 +226,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.activity_main, container,false);
+			View rootView = inflater.inflate(R.layout.fragment_game, container,false);
 			     
 			return rootView;
 		}
