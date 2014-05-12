@@ -50,8 +50,7 @@ public class MainActivity extends ActionBarActivity  implements WsCallbackInterf
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.ui_activity_main);
-		
+		setContentView(R.layout.activity_main);
 		
 		//name = (EditText) findViewById(R.id.name);
 				
@@ -104,7 +103,7 @@ public class MainActivity extends ActionBarActivity  implements WsCallbackInterf
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 
-			View rootView = inflater.inflate(R.layout.ui_fragment_main, container,false);
+			View rootView = inflater.inflate(R.layout.fragment_main, container,false);
 			room = (EditText) rootView.findViewById(R.id.put_num);; // 방이름 입력 받음
 			
 			Button b_enter = (Button) rootView.findViewById(R.id.enter);
