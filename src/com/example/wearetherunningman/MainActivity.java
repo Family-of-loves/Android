@@ -50,7 +50,7 @@ public class MainActivity extends ActionBarActivity  implements WsCallbackInterf
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.ui_activity_main);
 		
 		//name = (EditText) findViewById(R.id.name);
 				
