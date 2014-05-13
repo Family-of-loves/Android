@@ -1,5 +1,7 @@
 package com.example.wearetherunningman;
 
+import java.util.ArrayList;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,6 +49,24 @@ public class DBManagerHandler {
 			e.printStackTrace();
 		}		
 	}
+	public ArrayList<String[]> read(){
+		db = mDBManager.getReadableDatabase();
+		String sql = "select * from " + TB_NAME + ";";
+		Cursor cursor = db.rawQuery(sql, null);
+		ArrayList<String[]> result = new ArrayList<String[]>();
+
+		cursor.moveToFirst();
+		if(cursor.isAfterLast()){
+			System.out.println("정보가 없습니다.");
+		} else {
+			while(!cursor.isAfterLast()){
+				result.add(new String[]{cursor.getString(1),cursor.getString(2),cursor.getString(4),cursor.getString(5)});
+	            cursor.moveToNext();
+			}
+		}
+		cursor.close();
+		return result;
+	}
 	public void update(JSONObject obj){
 		db = mDBManager.getWritableDatabase();
 		ContentValues val = new ContentValues();
@@ -61,82 +81,11 @@ public class DBManagerHandler {
 			e.printStackTrace();
 		}
 	}
-	
 	public void delete(String uid){
 		db = mDBManager.getWritableDatabase();
 		db.delete(TB_NAME, "uid=?", new String[]{uid});
 		Log.i("SQLite : ", uid + "가 정상적으로 삭제 되었습니다.");
 	}
-	
-	//가저오기 
-	/*public void read(){
-		db = mDBManager.getReadableDatabase();
-		String sql = "select * from " + TB_NAME + ";";
-		Cursor result = db.rawQuery(sql, null);
-
-		result.moveToFirst();
-		if(result.isAfterLast()){
-			System.out.println("정보가 없습니다.");
-		} else {
-			while(!result.isAfterLast()){
-				String rUid = result.getString(1);
-	            String rName = result.getString(2);
-	            String rLatitude = result.getString(4);
-	            String rLongitude = result.getString(5);
-	            Log.i("SQLite", "uid ="+ rUid + "rName =" +rName+ " latitude ="+rLatitude + "longitude =" + rLongitude + " Total readed");
-			    result.moveToNext();
-			}
-		}
-		result.close();
-	}*/
-	/*
-	public String[][] read(){
-		db = mDBManager.getReadableDatabase();
-		String sql = "select * from " + TB_NAME + ";";
-		Cursor result = db.rawQuery(sql, null);
-
-		result.moveToFirst();
-		if(result.isAfterLast()){
-			System.out.println("정보가 없습니다.");
-		} else {
-			while(!result.isAfterLast()){
-				String rUid = result.getString(1);
-	            String rName = result.getString(2);
-	            String rLatitude = result.getString(4);
-	            String rLongitude = result.getString(5);
-	            Log.i("SQLite", "uid ="+ rUid + "rName =" +rName+ " latitude ="+rLatitude + "longitude =" + rLongitude + " Total readed");
-	            String [][] rtnData = new String[][]{{rUid, rName, rLatitude, rLongitude}};
-	            result.moveToNext();
-	            return rtnData;
-			}
-		}
-		result.close();
-		return null;
-	}*/
-	public String[][] read(){
-		db = mDBManager.getReadableDatabase();
-		String sql = "select * from " + TB_NAME + ";";
-		Cursor result = db.rawQuery(sql, null);
-
-		result.moveToFirst();
-		if(result.isAfterLast()){
-			System.out.println("정보가 없습니다.");
-		} else {
-			while(!result.isAfterLast()){
-				String rUid = result.getString(1);
-	            String rName = result.getString(2);
-	            String rLatitude = result.getString(4);
-	            String rLongitude = result.getString(5);
-	            Log.i("SQLite", "uid ="+ rUid + "rName =" +rName+ " latitude ="+rLatitude + "longitude =" + rLongitude + " Total readed");
-	            String [][] rtnData = new String[][]{{rUid, rName, rLatitude, rLongitude}};
-	            result.moveToNext();
-	            return rtnData;
-			}
-		}
-		result.close();
-		return null;
-	}
-
 	public String[] search(String uid){
 		db = mDBManager.getWritableDatabase();
 		String sql = "select * from " +TB_NAME+ " where uid = \""+uid+"\";";
@@ -148,15 +97,5 @@ public class DBManagerHandler {
         }
         result.close();
 		return null;
-	}
-	
-	public int getRow(){
-		Cursor mCount= db.rawQuery("select count(*) from "+TB_NAME+";", null);
-		
-		mCount.moveToFirst();
-		int count= mCount.getInt(0);
-		mCount.close();
-		
-		return count;
 	}
 }

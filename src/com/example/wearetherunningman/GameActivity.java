@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 
@@ -23,9 +24,9 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	/*
 	 * Creator Objects 
 	 */
-	GoogleMap gmap;
 	Player player;
 	Participant participant;
+	GoogleMap gmap;
 	WsConn ws = new WsConn(this);
 	
 	/*
@@ -53,7 +54,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	    
 	    player = new Player(name ,team,item ,getApplicationContext(), gmap);
 	    participant = new Participant(getApplicationContext(), gmap);
-		
+	    		
 	    ws.emitJoin(room, player);
 		emitServer();
 	}

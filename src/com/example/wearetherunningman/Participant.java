@@ -1,5 +1,7 @@
 package com.example.wearetherunningman;
 
+import java.util.ArrayList;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,17 +21,13 @@ public class Participant {
 	}
 	
 	public void regParticipant(JSONObject obj){
-		dbHandler.read();
-		System.out.println("Debug : 참가자 DB 읽음");
 		try {
 			String[] participant = dbHandler.search(obj.getString("uid"));
 			
 			if(participant == null) {
 				dbHandler.insert(obj);
-				System.out.println("Debug : 참가자 DB 삽입");
 			}else {
 				dbHandler.update(obj);
-				System.out.println("Debug : 참가자 DB 수정");
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -45,16 +43,12 @@ public class Participant {
 		}
 	}
 	public void regMarker(){
-		int rowCnt = dbHandler.getRow();
+		ArrayList<String[]> resultAll = dbHandler.read();
 		
-		String[][] allParticipant = dbHandler.read();
-		
-		
-		/*for(int i=0; i < rowCnt ; i++){
-			for(int j=0; j < 4 ; j++)
-			System.out.println("Debug : " + allParticipant[i][j] + "\n");
-		}*/
-		
+		for(int i=0; i < resultAll.size(); i++){
+			String[] row = resultAll.get(i);
+			for(int j=0; j < row.length; j++)
+			System.out.println("Elements "+ i +": "+ row[j]);
+		}
 	}
-	
 }

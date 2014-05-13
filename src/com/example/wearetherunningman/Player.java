@@ -24,6 +24,7 @@ public class Player extends FragmentActivity implements OnMyLocationChangeListen
 	boolean isSetComplete = false;
 	
 	private int zoomLevel = 15;
+	private boolean zoomFlag = false;
 	private GoogleMap gmap;
 	private LatLng loc;
 	
@@ -36,8 +37,8 @@ public class Player extends FragmentActivity implements OnMyLocationChangeListen
 		this.name = name;
 		this.team = team;
 		this.item = item;
-		
-		System.out.println("사용자 생성");
+
+    	System.out.println("사용자 생성");
 	}
 	@Override
 	public void onMyLocationChange(Location location) {
@@ -46,9 +47,12 @@ public class Player extends FragmentActivity implements OnMyLocationChangeListen
         	this.longitude = location.getLongitude();
         	
         	loc = new LatLng(this.latitude, this.longitude);
-        	
         	gmap.moveCamera(CameraUpdateFactory.newLatLng(loc));
-        	gmap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));
+        	
+        	if(!zoomFlag){
+        		gmap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));
+        		zoomFlag = true;
+        	}
         }
 	}
 }
