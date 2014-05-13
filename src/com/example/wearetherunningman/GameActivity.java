@@ -9,31 +9,19 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.maps.model.LatLng;
 
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.os.Build;
 
 public class GameActivity extends ActionBarActivity implements WsCallbackInterface {
 	LatLng loc1;
@@ -82,19 +70,9 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 
 	    
 	    Toast.makeText(getApplicationContext(),room+" "+name+" "+ team +" "+ item,  Toast.LENGTH_SHORT).show();
-	    lat=36.1111111;
-		lon=128.1111111;
-		loc1 = new LatLng(lat,lon); // 위치 좌표 설정	
-		markerOpt1=new MarkerOptions();
-		//markerOpt1.position(loc1);
-		//markerOpt1.title("초기값");
-		//markerOpt1.snippet("클릭하세요");
-	    
-		player = new Player(name ,team,item ,getApplicationContext(), gmap);
+	    player = new Player(name ,team,item ,getApplicationContext(), gmap);
 		
-		Toast.makeText(getApplicationContext(), "사용자 생성!",  Toast.LENGTH_SHORT).show();
-		ws.emitJoin(room, player);
-		
+	    ws.emitJoin(room, player);
 		emitServer();
 		
 	}
@@ -129,37 +107,47 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 			try {
 				String[] participant = dbHandler.search(obj.getString("uid"));
 				
+				
 				if(participant == null){
 					// DB에 사용자 정보를 삽입
-					Log.i("처음","들어옴");
+					//Log.i("처음","들어옴");
 					dbHandler.insert(obj);
 				} else {
-					// DB에 정보를 빼와서 좌표값 수정 (participant[2] = latitude / participant[3] = longitude
 					dbHandler.update(obj);
-					Log.i("아까","들어옴");
+					int rowCnt = dbHandler.getRow();
+					//Log.i("아까","들어옴");
+					String[][] allParticipant = dbHandler.read();
+					
+					for(int i=0; i<rowCnt; i++){
+						for(int j=0; j<4;j++)
+						Log.i("SQLite", "들어옴" + allParticipant[i][j] + "\n");
+					}
+					
+					
 					/*
 					Log.i("SQLite", "uid ="+ participant[0] + 
 									" / 이름 =" +participant[1]+ 
 									" / 위도 ="+participant[2] + 
 									" / 경도 =" + participant[3] + 
 									"가 검색 되었습니다.");  */	
+					/*
 					try{
-			        	 lat= Double.parseDouble(participant[2]);
-			        	 lon=Double.parseDouble(participant[3]);
-			        	 
-			        	 loc1 = new LatLng(lat, lon); // 위치 좌표 설정	
-			        	
-			        	 markerOpt1.position(loc1);
-			        	 markerOpt1.title("바뀐놈");
-			        	 markerOpt1.snippet("클릭하세요");
-			        	 Log.i("요까지","들어온다");	
-			        	 
-			           	}
-			        	catch (NumberFormatException e) {
-			        	    Log.e("TAG", "Couldn't parse latitude and/or longitude");
-			        	}
+		        		lat= Double.parseDouble(participant[2]);
+		        		lon=Double.parseDouble(participant[3]);
+		        	 
+		        		loc1 = new LatLng(lat, lon); // 위치 좌표 설정	
+		        	
+		        		markerOpt1.position(loc1);
+		        		markerOpt1.title("바뀐놈");
+		        		markerOpt1.snippet("클릭하세요");
+		        		Log.i("요까지","들어온다");	
+		        	 
+		           	}
+		        	catch (NumberFormatException e) {
+		        	    Log.e("TAG", "Couldn't parse latitude and/or longitude");
+		        	}
 		        	 //marker=gmap.addMarker(markerOpt);
-					
+					*/
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block

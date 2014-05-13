@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
  
 /**
@@ -57,6 +58,7 @@ public class DBManagerHandler {
 		try {
 			val.put("latitude", obj.getString("latitude"));
 			val.put("longitude", obj.getString("longitude"));
+			val.put("name", obj.getString("name"));
 			
 			db.update(TB_NAME, val, "uid=?", new String[]{obj.getString("uid")});
 		} catch (JSONException e) {
@@ -72,7 +74,7 @@ public class DBManagerHandler {
 	}
 	
 	//가저오기 
-	public void read(){
+	/*public void read(){
 		db = mDBManager.getReadableDatabase();
 		String sql = "select * from " + TB_NAME + ";";
 		Cursor result = db.rawQuery(sql, null);
@@ -86,11 +88,35 @@ public class DBManagerHandler {
 	            String rName = result.getString(2);
 	            String rLatitude = result.getString(4);
 	            String rLongitude = result.getString(5);
-	            //Log.i("SQLite", "uid ="+ rUid + "rName =" +rName+ " latitude ="+rLatitude + "longitude =" + rLongitude + " Total readed");
+	            Log.i("SQLite", "uid ="+ rUid + "rName =" +rName+ " latitude ="+rLatitude + "longitude =" + rLongitude + " Total readed");
 			    result.moveToNext();
 			}
 		}
 		result.close();
+	}*/
+	public String[][] read(){
+		db = mDBManager.getReadableDatabase();
+		String sql = "select * from " + TB_NAME + ";";
+		Cursor result = db.rawQuery(sql, null);
+		int i = 0;
+
+		result.moveToFirst();
+		if(result.isAfterLast()){
+			System.out.println("정보가 없습니다.");
+		} else {
+			while(!result.isAfterLast()){
+				String rUid = result.getString(1);
+	            String rName = result.getString(2);
+	            String rLatitude = result.getString(4);
+	            String rLongitude = result.getString(5);
+	            Log.i("SQLite", "uid ="+ rUid + "rName =" +rName+ " latitude ="+rLatitude + "longitude =" + rLongitude + " Total readed");
+	            String [][] rtnData = new String[][]{{rUid, rName, rLatitude, rLongitude}};
+	            result.moveToNext();
+	            return rtnData;
+			}
+		}
+		result.close();
+		return null;
 	}
 
 	public String[] search(String uid){
@@ -106,4 +132,13 @@ public class DBManagerHandler {
 		return null;
 	}
 	
+	public int getRow(){
+		Cursor mCount= db.rawQuery("select count(*) from "+TB_NAME+";", null);
+		
+		mCount.moveToFirst();
+		int count= mCount.getInt(0);
+		mCount.close();
+		
+		return count;
+	}
 }

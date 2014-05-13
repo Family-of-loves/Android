@@ -4,14 +4,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.content.Context;
 import android.location.Location;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
 public class Player extends FragmentActivity implements OnMyLocationChangeListener {
 	String uid ;
@@ -43,6 +42,8 @@ public class Player extends FragmentActivity implements OnMyLocationChangeListen
 		this.name = name;
 		this.team = team;
 		this.item = item;
+		
+		System.out.println("사용자 생성");
 	}
 	@Override
 	public void onMyLocationChange(Location location) {
@@ -50,26 +51,10 @@ public class Player extends FragmentActivity implements OnMyLocationChangeListen
         	this.latitude = location.getLatitude();
         	this.longitude = location.getLongitude();
         	
-        	loc = new LatLng(this.latitude, this.longitude); // ���移� 醫���� ��ㅼ��
+        	loc = new LatLng(this.latitude, this.longitude);
         	
         	gmap.moveCamera(CameraUpdateFactory.newLatLng(loc));
         	gmap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));
-        	/*MarkerOptions optSecond = new MarkerOptions();
-        	optSecond.position(loc);
-    		// ������ ��� 寃쎈��
-    		optSecond.title("��댁��移�");
-    	 // ���紐� 誘몃━蹂닿린
-    		optSecond.snippet("��대┃������");
-    	//gmap.addMarker(optSecond).showInfoWindow();
-    	
-    		Marker m=gmap.addMarker(optSecond);		
-    		//Marker marker1 = gmap.addMarker(markerOpt1);
-        	*/
         }
 	}
-	
-	
-
-	
-	
 }

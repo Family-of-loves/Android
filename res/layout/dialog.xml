@@ -88,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
-
+<!-- 
                 <ImageButton
                     android:id="@+id/b_scissor"
                     android:layout_width="wrap_content"
@@ -112,8 +112,27 @@
                     android:layout_marginLeft="17dp"
                     android:background="@android:color/transparent"
                     android:src="@drawable/btn_paper" />
-
-            </RadioGroup>
+ -->			
+				<RadioButton
+	                android:id="@+id/b_rock"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="가위" />
+				<RadioButton
+	                android:id="@+id/b_paper"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="바위" />
+				<RadioButton
+	                android:id="@+id/b_scissor"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="보" />
+				
+	            </RadioGroup>
+				
+	
+	            
         </LinearLayout>
 
     </LinearLayout>
