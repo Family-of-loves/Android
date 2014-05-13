@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
-
+<!-- 
                 <ImageButton
                     android:id="@+id/b_red"
                     android:layout_width="wrap_content"
@@ -57,6 +57,18 @@
                     android:layout_marginLeft="15dp"
                     android:background="@android:color/transparent"
                     android:src="@drawable/dialog_bluebtn" />
+ -->
+ 			<RadioButton
+                android:id="@+id/b_red"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Red team" />
+
+            <RadioButton
+                android:id="@+id/b_blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Blue team" />
             </RadioGroup>
         </LinearLayout>
 

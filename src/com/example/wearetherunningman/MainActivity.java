@@ -33,7 +33,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.os.Build;
 
-public class MainActivity extends ActionBarActivity  implements WsCallbackInterface{
+public class MainActivity extends ActionBarActivity {
 	
 	static String inputRoom ;
 	static EditText room ;
@@ -51,30 +51,21 @@ public class MainActivity extends ActionBarActivity  implements WsCallbackInterf
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.activity_main);
 		setContentView(R.layout.activity_main);
 		
-		//name = (EditText) findViewById(R.id.name);
-				
-		
-		
+		//name = (EditText) findViewById(R.id.name);		
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
-			
-			
 		}
 		//Intent mIntent = new Intent(this, GameActivity.class);
 		//startActivity(mIntent);   //If usert push "ok"button, turn the page to GameActivity
 	      // return; 	
-		//
-        
-		
+		//		
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
@@ -95,22 +86,17 @@ public class MainActivity extends ActionBarActivity  implements WsCallbackInterf
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
-	public static class PlaceholderFragment extends Fragment implements
-			View.OnClickListener {
-
-		public PlaceholderFragment() {
-		}
+	public static class PlaceholderFragment extends Fragment implements View.OnClickListener {
+		public PlaceholderFragment() {}
 
 		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-
+		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_main, container,false);
 			room = (EditText) rootView.findViewById(R.id.put_num);; // 방이름 입력 받음
 			
 			ImageButton b_enter = (ImageButton) rootView.findViewById(R.id.enter);
 			b_enter.setOnClickListener(this);
-			 //	
+			
 			return rootView;
 		}
 
@@ -130,10 +116,7 @@ public class MainActivity extends ActionBarActivity  implements WsCallbackInterf
 		}
 
 	}
-
 	public static class UserInfoDialog extends DialogFragment {
-
-			
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 					
@@ -158,18 +141,18 @@ public class MainActivity extends ActionBarActivity  implements WsCallbackInterf
 					// TODO Auto-generated method stub
 
 					switch (checkedId){
-					case R.id.b_red:
-						team = "1";
+						case R.id.b_red:
+							team = "1";
+							//Toast.makeText(getActivity(), "빨갱이", Toast.LENGTH_LONG).show();
+							break;
 						
-						break;
-					
-					case R.id.b_blue:
-						team = "0";
-						break;
-						
-					default:
-						team = "선택안함";
-						break;
+						case R.id.b_blue:
+							team = "0";
+							break;
+							
+						default:
+							team = null;
+							break;
 					}
 				}										
 	        
@@ -182,44 +165,37 @@ public class MainActivity extends ActionBarActivity  implements WsCallbackInterf
 
 					switch (checkedId){
 					case R.id.b_scissor:
-						item= "가위";
+						item = "0";
 						break;
 					
 					case R.id.b_rock:
-						item=  "바위";
+						item =  "1";
 						break;
 						
 					case R.id.b_paper:
-						item= "보";
+						item = "2";
 						break;
 					default:
-						item= "선택안함";
+						item = null;
 						break;	
 					}
 				}
-	        							        
 	        });	
-						
-			
 			mBuilder.setCancelable(false)
 					.setPositiveButton("OK",
 							new DialogInterface.OnClickListener() {
 								
 								public void onClick(DialogInterface dialog,int whichButton) {
 									inputName = name.getText().toString();							
-																		
 									Intent myIntent = new Intent(((Dialog) dialog).getContext(), GameActivity.class);
-																
-																		
+									
 									myIntent.putExtra("param1", inputRoom);
 									myIntent.putExtra("param2", inputName);
 									myIntent.putExtra("param3", team);
 									myIntent.putExtra("param4", item);
-																	
-									
+									System.out.println(team + " / " + item);
 									startActivity(myIntent);   //If usert push "ok"button, turn the page to GameActivity
-								     return; 	
-			
+								    return;
 								}
 							})
 					.setNegativeButton("Cancel",
@@ -229,67 +205,10 @@ public class MainActivity extends ActionBarActivity  implements WsCallbackInterf
 									dialog.cancel();
 								}
 							});
-			
-			
-			
-			
-			
 			return mBuilder.create();
-			
 		}
-
 		public void onStop() {
 			super.onStop();
 		}
-		
-		
-		
-		
-		
 	} // 다이얼로그 클래스
-	
-		
-
-	@Override
-	public void callback(JSONArray data) throws JSONException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void on(String event, JSONObject data) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onMessage(String message) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onMessage(JSONObject json) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onConnect() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onDisconnect() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onConnectFailure() {
-		// TODO Auto-generated method stub
-		
-	}
-	
 }

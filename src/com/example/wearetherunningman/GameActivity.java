@@ -36,8 +36,6 @@ import android.widget.Toast;
 import android.os.Build;
 
 public class GameActivity extends ActionBarActivity implements WsCallbackInterface {
-
-	
 	LatLng loc1;
 	public double lat;
 	public double lon;
@@ -57,26 +55,23 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	 * @uml.associationEnd  
 	 */
 	WsConn ws = new WsConn(this);
-	 Marker marker1;
-     MarkerOptions markerOpt1;
-     String room;
-     String name ;
-     String team;
-     String item;
+	Marker marker1;
+    MarkerOptions markerOpt1;
+    String room;
+    String name ;
+    String team;
+    String item;
      
      //Marker_Make m;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.activity_game);
 		setContentView(R.layout.fragment_game);
-				
+
 		dbHandler = new DBManagerHandler(getApplicationContext());
-		
 		gmap = ((SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.gMap)).getMap();
-		
 		//m=new Marker_Make();
-		
+
 		ws.run("http://dev.hagi4u.net:3000");
 		
 		Intent intent = getIntent(); // 값을 받아온다.
@@ -84,6 +79,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	    name = intent.getExtras().getString("param2"); 
 	    team = intent.getExtras().getString("param3"); 
 	    item = intent.getExtras().getString("param4");
+
 	    
 	    Toast.makeText(getApplicationContext(),room+" "+name+" "+ team +" "+ item,  Toast.LENGTH_SHORT).show();
 	    lat=36.1111111;
@@ -94,14 +90,10 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 		//markerOpt1.title("초기값");
 		//markerOpt1.snippet("클릭하세요");
 	    
-	    
 		player = new Player(name ,team,item ,getApplicationContext(), gmap);
+		
 		Toast.makeText(getApplicationContext(), "사용자 생성!",  Toast.LENGTH_SHORT).show();
-		
 		ws.emitJoin(room, player);
-		
-		
-		
 		
 		emitServer();
 		
@@ -113,15 +105,10 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 				while (true) {
 					try {
 						//Location location = null;
-						
 						ws.emitMessage(player);
 						//player.onMyLocationChange(location,markerOpt1);
-						
 						//Marker marker1 = gmap.addMarker(markerOpt1);
-						 
 						//markerOpt=new MarkerOptions().position(loc);
-							        	
-						
 						
 						Thread.sleep(10000);
 						///m.marker(markerOpt1,loc1,gmap);
@@ -156,9 +143,6 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 									" / 위도 ="+participant[2] + 
 									" / 경도 =" + participant[3] + 
 									"가 검색 되었습니다.");  */	
-					
-					
-					
 					try{
 			        	 lat= Double.parseDouble(participant[2]);
 			        	 lon=Double.parseDouble(participant[3]);
@@ -174,10 +158,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 			        	catch (NumberFormatException e) {
 			        	    Log.e("TAG", "Couldn't parse latitude and/or longitude");
 			        	}
-						
-					 
-		        	
-		        	 //marker=gmap.addMarker(markerOpt);
+					//marker=gmap.addMarker(markerOpt);
 					
 				}
 			} catch (JSONException e) {
@@ -199,7 +180,6 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.game, menu);
 		return true;

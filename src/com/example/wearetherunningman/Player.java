@@ -29,13 +29,12 @@ public class Player extends FragmentActivity implements OnMyLocationChangeListen
 	private GoogleMap gmap;
 	private LatLng loc;
 	
-    private Marker marker;
-   
+	/*
+    private Marker marker;   
     private MarkerOptions markerOpt;
-    
+    */
     
 	public Player(String name, String team, String item, Context context,GoogleMap gmap){
-		// 다이어로그 에서 입력 한 데이터에 대해 초기화
 		this.gmap = gmap;
 		this.gmap.setMyLocationEnabled(true);
 		this.gmap.setOnMyLocationChangeListener(this);
@@ -51,21 +50,21 @@ public class Player extends FragmentActivity implements OnMyLocationChangeListen
         	this.latitude = location.getLatitude();
         	this.longitude = location.getLongitude();
         	
-        	loc = new LatLng(this.latitude, this.longitude); // 위치 좌표 설정
+        	loc = new LatLng(this.latitude, this.longitude); // ���移� 醫���� ��ㅼ��
         	
         	gmap.moveCamera(CameraUpdateFactory.newLatLng(loc));
-        	//gmap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));
-        	MarkerOptions optSecond = new MarkerOptions();
+        	gmap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));
+        	/*MarkerOptions optSecond = new MarkerOptions();
         	optSecond.position(loc);
-    		// 위도 • 경도
-    		optSecond.title("내위치");
-    	 // 제목 미리보기
-    		optSecond.snippet("클릭하삼");
+    		// ������ ��� 寃쎈��
+    		optSecond.title("��댁��移�");
+    	 // ���紐� 誘몃━蹂닿린
+    		optSecond.snippet("��대┃������");
     	//gmap.addMarker(optSecond).showInfoWindow();
     	
     		Marker m=gmap.addMarker(optSecond);		
     		//Marker marker1 = gmap.addMarker(markerOpt1);
-        	
+        	*/
         }
 	}
 	
