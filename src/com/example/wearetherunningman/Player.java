@@ -4,6 +4,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.content.Context;
 import android.location.Location;
@@ -26,37 +28,49 @@ public class Player extends FragmentActivity implements OnMyLocationChangeListen
 	private int zoomLevel = 15;
 	private GoogleMap gmap;
 	private LatLng loc;
-
-    //private Marker marker;
-    //private MarkerOptions markerOpt;
+	
+    private Marker marker;
+   
+    private MarkerOptions markerOpt;
+    
     
 	public Player(String name, String team, String item, Context context,GoogleMap gmap){
-		// ´ÙÀÌ¾î·Î±× ¿¡¼­ ÀÔ·Â ÇÑ µ¥ÀÌÅÍ¿¡ ´ëÇØ ÃÊ±âÈ­
+		// ë‹¤ì´ì–´ë¡œê·¸ ì—ì„œ ì…ë ¥ í•œ ë°ì´í„°ì— ëŒ€í•´ ì´ˆê¸°í™”
 		this.gmap = gmap;
 		this.gmap.setMyLocationEnabled(true);
 		this.gmap.setOnMyLocationChangeListener(this);
-		
+				
 		this.uid = Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
 		this.name = name;
 		this.team = team;
 		this.item = item;
 	}
-	
 	@Override
 	public void onMyLocationChange(Location location) {
 		if (location != null) {
         	this.latitude = location.getLatitude();
         	this.longitude = location.getLongitude();
         	
-        	loc = new LatLng(this.latitude, this.longitude); // À§Ä¡ ÁÂÇ¥ ¼³Á¤
+        	loc = new LatLng(this.latitude, this.longitude); // ìœ„ì¹˜ ì¢Œí‘œ ì„¤ì •
         	
         	gmap.moveCamera(CameraUpdateFactory.newLatLng(loc));
-        	gmap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));
-        	/*if(marker!=null){
-    			marker.remove();
-    		};*/
-        	//markerOpt=new MarkerOptions().position(loc).title("Á¤¸í").snippet("Å¬¸¯ÇÏ¼¼¿ä");
-        	//marker = gmap.addMarker(markerOpt);
+        	//gmap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));
+        	MarkerOptions optSecond = new MarkerOptions();
+        	optSecond.position(loc);
+    		// ìœ„ë„ â€¢ ê²½ë„
+    		optSecond.title("ë‚´ìœ„ì¹˜");
+    	 // ì œëª© ë¯¸ë¦¬ë³´ê¸°
+    		optSecond.snippet("í´ë¦­í•˜ì‚¼");
+    	//gmap.addMarker(optSecond).showInfoWindow();
+    	
+    		Marker m=gmap.addMarker(optSecond);		
+    		//Marker marker1 = gmap.addMarker(markerOpt1);
+        	
         }
 	}
+	
+	
+
+	
+	
 }
