@@ -5,8 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
  
 public class DBManager extends SQLiteOpenHelper {
-    private final static String TB_NAME = "participant2";
-    public static final String DB_NAME = "participant2.db";
+    private final static String TB_NAME = "participant";
+    public static final String DB_NAME = "participant.db";
     public static final int DB_VERSION = 1;
     String quary ;
      
@@ -28,14 +28,12 @@ public class DBManager extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(quary);
-        System.out.println("테이블 생성");
     }
     //업그레이드 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     	String sql_droptable = "DROP TABLE IF EXISTS " + TB_NAME;  
         db.execSQL(sql_droptable);
-        System.out.println("테이블 삭제");
     }
 
 }
