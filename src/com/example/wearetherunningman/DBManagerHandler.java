@@ -19,11 +19,14 @@ public class DBManagerHandler {
 	 */
     private DBManager mDBManager;
     private SQLiteDatabase db;
-    private String tableName = "participant2";
+    private String TB_NAME = "participant";
      
     public DBManagerHandler (Context context){
         this.mDBManager = new DBManager(context);
-        
+        db = mDBManager.getWritableDatabase();
+        String sql = "delete from " + TB_NAME + ";";
+        db.execSQL(sql);
+        System.out.println("초기화 완료!");
     }
 	//닫기
 	public void close() {
@@ -42,7 +45,7 @@ public class DBManagerHandler {
 			val.put("longitude", obj.getString("longitude"));
 			val.put("item", obj.getString("item"));
 			
-			db.insert(tableName, null, val);
+			db.insert(TB_NAME, null, val);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -55,7 +58,7 @@ public class DBManagerHandler {
 			val.put("latitude", obj.getString("latitude"));
 			val.put("longitude", obj.getString("longitude"));
 			
-			db.update(tableName, val, "uid=?", new String[]{obj.getString("uid")});
+			db.update(TB_NAME, val, "uid=?", new String[]{obj.getString("uid")});
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -64,14 +67,14 @@ public class DBManagerHandler {
 	
 	public void delete(String uid){
 		db = mDBManager.getWritableDatabase();
-		db.delete(tableName, "uid=?", new String[]{uid});
+		db.delete(TB_NAME, "uid=?", new String[]{uid});
 		Log.i("SQLite : ", uid + "가 정상적으로 삭제 되었습니다.");
 	}
 	
 	//가저오기 
 	public void read(){
 		db = mDBManager.getReadableDatabase();
-		String sql = "select * from " + tableName + ";";
+		String sql = "select * from " + TB_NAME + ";";
 		Cursor result = db.rawQuery(sql, null);
 
 		result.moveToFirst();
@@ -92,7 +95,7 @@ public class DBManagerHandler {
 
 	public String[] search(String uid){
 		db = mDBManager.getWritableDatabase();
-		String sql = "select * from " +tableName+ " where uid = \""+uid+"\";";
+		String sql = "select * from " +TB_NAME+ " where uid = \""+uid+"\";";
 		Cursor result = db.rawQuery(sql, null);
 		
 		if(result.moveToFirst()){

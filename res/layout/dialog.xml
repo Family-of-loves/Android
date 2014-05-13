@@ -17,8 +17,9 @@
 
         <EditText
             android:id="@+id/name"
-            android:layout_width="210dp"
+            android:layout_width="290dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
             android:hint="이름을 입력하세요"
             android:inputType="textPersonName" >
 
@@ -33,18 +34,31 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            
-             >
-			
-            <RadioGroup 
-            	android:id="@+id/radioGrup1"
+            android:layout_height="wrap_content" >
+
+            <RadioGroup
+                android:id="@+id/radioGrup1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                
-            
-            <RadioButton
+                android:orientation="horizontal" >
+<!-- 
+                <ImageButton
+                    android:id="@+id/b_red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/dialog_redbtn" />
+
+                <ImageButton
+                    android:id="@+id/b_blue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/dialog_bluebtn" />
+ -->
+ 			<RadioButton
                 android:id="@+id/b_red"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -55,7 +69,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Blue team" />
-		
             </RadioGroup>
         </LinearLayout>
 
@@ -64,36 +77,43 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="무기선택" />
-        
-        <LinearLayout
-            android:layout_width="210dp"
-            android:layout_height="wrap_content" >
-			
-            <RadioGroup 
-            	android:id="@+id/radioGrup2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-            
-            <RadioButton
-                android:id="@+id/b_scissor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="가위" />
 
-            <RadioButton
-                android:id="@+id/b_rock"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" >
+
+            <RadioGroup
+                android:id="@+id/radioGrup2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="바위" />
-            
-            <RadioButton
-                android:id="@+id/b_paper"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="보" />
+                android:orientation="horizontal" >
+
+                <ImageButton
+                    android:id="@+id/b_scissor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/btn_scissor" />
+
+                <ImageButton
+                    android:id="@+id/b_rock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/btn_rock" />
+
+                <ImageButton
+                    android:id="@+id/b_paper"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/btn_paper" />
+
             </RadioGroup>
-            
         </LinearLayout>
 
     </LinearLayout>
