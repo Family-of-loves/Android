@@ -17,8 +17,6 @@ public class WsConn extends Application {
 
 	private SocketIO socket;
     /**
-	 * @uml.property  name="callback"
-	 * @uml.associationEnd  
 	 */
     private WsCallback callback;
            

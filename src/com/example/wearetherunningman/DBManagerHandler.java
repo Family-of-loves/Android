@@ -7,17 +7,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
  
 /**
  * @author  JeongMyoungHak
  */
 public class DBManagerHandler {
-    /**
-	 * @uml.property  name="mDBManager"
-	 * @uml.associationEnd  
-	 */
     private DBManager mDBManager;
     private SQLiteDatabase db;
     private String TB_NAME = "participant";
@@ -94,11 +89,34 @@ public class DBManagerHandler {
 		}
 		result.close();
 	}*/
+	/*
 	public String[][] read(){
 		db = mDBManager.getReadableDatabase();
 		String sql = "select * from " + TB_NAME + ";";
 		Cursor result = db.rawQuery(sql, null);
-		int i = 0;
+
+		result.moveToFirst();
+		if(result.isAfterLast()){
+			System.out.println("정보가 없습니다.");
+		} else {
+			while(!result.isAfterLast()){
+				String rUid = result.getString(1);
+	            String rName = result.getString(2);
+	            String rLatitude = result.getString(4);
+	            String rLongitude = result.getString(5);
+	            Log.i("SQLite", "uid ="+ rUid + "rName =" +rName+ " latitude ="+rLatitude + "longitude =" + rLongitude + " Total readed");
+	            String [][] rtnData = new String[][]{{rUid, rName, rLatitude, rLongitude}};
+	            result.moveToNext();
+	            return rtnData;
+			}
+		}
+		result.close();
+		return null;
+	}*/
+	public String[][] read(){
+		db = mDBManager.getReadableDatabase();
+		String sql = "select * from " + TB_NAME + ";";
+		Cursor result = db.rawQuery(sql, null);
 
 		result.moveToFirst();
 		if(result.isAfterLast()){

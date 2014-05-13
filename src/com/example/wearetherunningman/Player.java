@@ -10,7 +10,6 @@ import android.location.Location;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.support.v4.app.FragmentActivity;
-import android.widget.Toast;
 
 public class Player extends FragmentActivity implements OnMyLocationChangeListener {
 	String uid ;
@@ -28,11 +27,6 @@ public class Player extends FragmentActivity implements OnMyLocationChangeListen
 	private GoogleMap gmap;
 	private LatLng loc;
 	
-	/*
-    private Marker marker;   
-    private MarkerOptions markerOpt;
-    */
-    
 	public Player(String name, String team, String item, Context context,GoogleMap gmap){
 		this.gmap = gmap;
 		this.gmap.setMyLocationEnabled(true);
