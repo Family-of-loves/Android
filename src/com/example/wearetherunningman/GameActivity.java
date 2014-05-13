@@ -119,12 +119,12 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 				} else {
 					// DB에 정보를 빼와서 좌표값 수정 (participant[2] = latitude / participant[3] = longitude
 					dbHandler.update(obj);
-					/*
+					
 					Log.i("SQLite", "uid ="+ participant[0] + 
 									" / 이름 =" +participant[1]+ 
 									" / 위도 ="+participant[2] + 
 									" / 경도 =" + participant[3] + 
-									"가 검색 되었습니다.");  */	
+									"가 검색 되었습니다.");  	
 				}
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="v0.2" size="2645,1946" id="com.example.wearetherunningman" metadata="uml2-1.0" initialized="true" scrolledY="108" tag="10" key="32303037303533312D313020576541726554686552756E6E696E674D616E">
+  <children xsi:type="editmodel:ClassEditModel" name="DBManager" location="30,576" size="108,157" id="com.example.wearetherunningman/DBManager" runTimeClassModel="dB_NAME,onCreate(Landroid.database.sqlite.SQLiteDatabase;),dB_VERSION,quary,DBManager(Landroid.content.Context;),onUpgrade(Landroid.database.sqlite.SQLiteDatabase;II)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="85,54">
+      <children xsi:type="editmodel:AttributeEditModel" name="dB_NAME" id="com.example.wearetherunningman/DBManager#dB_NAME"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="dB_VERSION" id="com.example.wearetherunningman/DBManager#dB_VERSION"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="quary" id="com.example.wearetherunningman/DBManager#quary"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="71,54">
+      <children xsi:type="editmodel:MethodEditModel" name="DBManager" id="com.example.wearetherunningman/DBManager#DBManager(Landroid.content.Context;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onCreate" id="com.example.wearetherunningman/DBManager#onCreate(Landroid.database.sqlite.SQLiteDatabase;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onUpgrade" id="com.example.wearetherunningman/DBManager#onUpgrade(Landroid.database.sqlite.SQLiteDatabase;II)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:AssociationEditModel" autoLocated="true" id="com.example.wearetherunningman/DBManager@mDBManager+com.example.wearetherunningman/DBManagerHandler@" source="//@children.0" target="//@children.2" targetEnd="//@children.0/@sourceConnections.0/@children.2" label="//@children.0/@sourceConnections.0/@children.0" sourceEnd="//@children.0/@sourceConnections.0/@children.1" connectionRouterKind="Manhattan">
+      <children xsi:type="editmodel:WireLabelEditModel" size="0,10" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" name="mDBManager" location="108,78" id="com.example.wearetherunningman/DBManager@mDBManager+com.example.wearetherunningman/DBManagerHandler@|com.example.wearetherunningman/DBManager#mDBManager" attachSource="true" multiplicityLabel="//@children.0/@sourceConnections.0/@children.1/@children.1" roleLabel="//@children.0/@sourceConnections.0/@children.1/@children.0" navigable="true">
+        <children xsi:type="editmodel:LabelEditModel" name=" - mDBManager" location="145,637" size="62,10" anchorKind="FirstPart"/>
+        <children xsi:type="editmodel:LabelEditModel" name="0..1" location="145,661" size="16,10" anchorKind="FirstPart"/>
+      </children>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,78" id="com.example.wearetherunningman/DBManager@mDBManager+com.example.wearetherunningman/DBManagerHandler@|com.example.wearetherunningman/DBManagerHandler#"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.7/@sourceConnections.2" name="WsConn" location="928,658" size="101,121" id="com.example.wearetherunningman/WsConn" runTimeClassModel="emitMessage(Lcom.example.wearetherunningman.Player;),emitJoin(Ljava.lang.String;Lcom.example.wearetherunningman.Player;),run(Ljava.lang.String;),WsConn(Lcom.example.wearetherunningman.WsCallbackInterface;)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="78,72">
+      <children xsi:type="editmodel:MethodEditModel" name="WsConn" id="com.example.wearetherunningman/WsConn#WsConn(Lcom.example.wearetherunningman.WsCallbackInterface;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="emitJoin" id="com.example.wearetherunningman/WsConn#emitJoin(Ljava.lang.String;Lcom.example.wearetherunningman.Player;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="emitMessage" id="com.example.wearetherunningman/WsConn#emitMessage(Lcom.example.wearetherunningman.Player;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="run" id="com.example.wearetherunningman/WsConn#run(Ljava.lang.String;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:AssociationEditModel" autoLocated="true" id="com.example.wearetherunningman/WsCallback@callback+com.example.wearetherunningman/WsConn@" source="//@children.1" target="//@children.4" targetEnd="//@children.1/@sourceConnections.0/@children.2" label="//@children.1/@sourceConnections.0/@children.0" sourceEnd="//@children.1/@sourceConnections.0/@children.1" connectionRouterKind="Manhattan">
+      <children xsi:type="editmodel:WireLabelEditModel" size="0,10" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="10,0" id="com.example.wearetherunningman/WsCallback@callback+com.example.wearetherunningman/WsConn@|com.example.wearetherunningman/WsConn#" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" name="callback" location="103,183" id="com.example.wearetherunningman/WsCallback@callback+com.example.wearetherunningman/WsConn@|com.example.wearetherunningman/WsCallback#callback" multiplicityLabel="//@children.1/@sourceConnections.0/@children.2/@children.1" roleLabel="//@children.1/@sourceConnections.0/@children.2/@children.0" navigable="true">
+        <children xsi:type="editmodel:LabelEditModel" name=" - callback" location="905,550" size="42,10" anchorKind="LastPart"/>
+        <children xsi:type="editmodel:LabelEditModel" name="0..1" location="905,574" size="16,10" anchorKind="LastPart"/>
+      </children>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.0/@sourceConnections.0" name="DBManagerHandler" location="225,576" size="142,175" id="com.example.wearetherunningman/DBManagerHandler" runTimeClassModel="insert(Lorg.json.JSONObject;),search(Ljava.lang.String;),close(),delete(Ljava.lang.String;),DBManagerHandler(Landroid.content.Context;),read(),update(Lorg.json.JSONObject;)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="102,126">
+      <children xsi:type="editmodel:MethodEditModel" name="DBManagerHandler" id="com.example.wearetherunningman/DBManagerHandler#DBManagerHandler(Landroid.content.Context;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="close" id="com.example.wearetherunningman/DBManagerHandler#close()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="delete" id="com.example.wearetherunningman/DBManagerHandler#delete(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="insert" id="com.example.wearetherunningman/DBManagerHandler#insert(Lorg.json.JSONObject;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="read" id="com.example.wearetherunningman/DBManagerHandler#read()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="search" id="com.example.wearetherunningman/DBManagerHandler#search(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="update" id="com.example.wearetherunningman/DBManagerHandler#update(Lorg.json.JSONObject;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:AssociationEditModel" autoLocated="true" id="com.example.wearetherunningman/DBManagerHandler@dbHandler+com.example.wearetherunningman/GameActivity@" source="//@children.2" target="//@children.7" targetEnd="//@children.2/@sourceConnections.0/@children.2" label="//@children.2/@sourceConnections.0/@children.0" sourceEnd="//@children.2/@sourceConnections.0/@children.1" connectionRouterKind="Manhattan">
+      <children xsi:type="editmodel:WireLabelEditModel" size="0,10" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" name="dbHandler" location="132,175" id="com.example.wearetherunningman/DBManagerHandler@dbHandler+com.example.wearetherunningman/GameActivity@|com.example.wearetherunningman/DBManagerHandler#dbHandler" attachSource="true" multiplicityLabel="//@children.2/@sourceConnections.0/@children.1/@children.1" roleLabel="//@children.2/@sourceConnections.0/@children.1/@children.0" navigable="true">
+        <children xsi:type="editmodel:LabelEditModel" name=" ~ dbHandler" location="299,758" size="51,10" anchorKind="FirstPart"/>
+        <children xsi:type="editmodel:LabelEditModel" name="0..1" location="364,758" size="16,10" anchorKind="FirstPart"/>
+      </children>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,10" id="com.example.wearetherunningman/DBManagerHandler@dbHandler+com.example.wearetherunningman/GameActivity@|com.example.wearetherunningman/GameActivity#"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.7/@sourceConnections.1" name="Player" location="928,1328" size="134,229" id="com.example.wearetherunningman/Player" runTimeClassModel="Player(Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;Landroid.content.Context;Lcom.google.android.gms.maps.GoogleMap;),uid,isSetComplete,name,item,onMyLocationChange(Landroid.location.Location;),longitude,team,latitude,isAlive">
+    <children xsi:type="editmodel:CompartmentEditModel" size="111,144">
+      <children xsi:type="editmodel:AttributeEditModel" name="isAlive" id="com.example.wearetherunningman/Player#isAlive"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="isSetComplete" id="com.example.wearetherunningman/Player#isSetComplete"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="item" id="com.example.wearetherunningman/Player#item"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="latitude" id="com.example.wearetherunningman/Player#latitude"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="longitude" id="com.example.wearetherunningman/Player#longitude"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="name" id="com.example.wearetherunningman/Player#name"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="team" id="com.example.wearetherunningman/Player#team"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="uid" id="com.example.wearetherunningman/Player#uid"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="110,36">
+      <children xsi:type="editmodel:MethodEditModel" name="Player" id="com.example.wearetherunningman/Player#Player(Ljava.lang.String;Ljava.lang.String;Ljava.lang.String;Landroid.content.Context;Lcom.google.android.gms.maps.GoogleMap;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onMyLocationChange" id="com.example.wearetherunningman/Player#onMyLocationChange(Landroid.location.Location;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.1/@sourceConnections.0" name="WsCallback" location="795,384" size="103,193" id="com.example.wearetherunningman/WsCallback" runTimeClassModel="onConnect(),on(Ljava.lang.String;Lio.socket.IOAcknowledge;[Ljava.lang.Object;),onDisconnect(),onMessage(Lorg.json.JSONObject;Lio.socket.IOAcknowledge;),onError(Lio.socket.SocketIOException;),WsCallback(Lcom.example.wearetherunningman.WsCallbackInterface;),ack([Ljava.lang.Object;),onMessage(Ljava.lang.String;Lio.socket.IOAcknowledge;)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="80,144">
+      <children xsi:type="editmodel:MethodEditModel" name="WsCallback" id="com.example.wearetherunningman/WsCallback#WsCallback(Lcom.example.wearetherunningman.WsCallbackInterface;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="ack" id="com.example.wearetherunningman/WsCallback#ack([Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="on" id="com.example.wearetherunningman/WsCallback#on(Ljava.lang.String;Lio.socket.IOAcknowledge;[Ljava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onConnect" id="com.example.wearetherunningman/WsCallback#onConnect()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onDisconnect" id="com.example.wearetherunningman/WsCallback#onDisconnect()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onError" id="com.example.wearetherunningman/WsCallback#onError(Lio.socket.SocketIOException;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onMessage" id="com.example.wearetherunningman/WsCallback#onMessage(Lorg.json.JSONObject;Lio.socket.IOAcknowledge;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onMessage" id="com.example.wearetherunningman/WsCallback#onMessage(Ljava.lang.String;Lio.socket.IOAcknowledge;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <sourceConnections xsi:type="editmodel:AssociationEditModel" autoLocated="true" id="com.example.wearetherunningman/WsCallbackInterface@callback+com.example.wearetherunningman/WsCallback@" source="//@children.4" target="//@children.6" targetEnd="//@children.4/@sourceConnections.0/@children.2" label="//@children.4/@sourceConnections.0/@children.0" sourceEnd="//@children.4/@sourceConnections.0/@children.1" connectionRouterKind="Manhattan">
+      <children xsi:type="editmodel:WireLabelEditModel" size="0,10" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="0,183" id="com.example.wearetherunningman/WsCallbackInterface@callback+com.example.wearetherunningman/WsCallback@|com.example.wearetherunningman/WsCallback#" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" name="callback" location="136,0" id="com.example.wearetherunningman/WsCallbackInterface@callback+com.example.wearetherunningman/WsCallback@|com.example.wearetherunningman/WsCallbackInterface#callback" multiplicityLabel="//@children.4/@sourceConnections.0/@children.2/@children.1" roleLabel="//@children.4/@sourceConnections.0/@children.2/@children.0" navigable="true">
+        <children xsi:type="editmodel:LabelEditModel" name=" - callback" location="717,598" size="42,10" anchorKind="LastPart"/>
+        <children xsi:type="editmodel:LabelEditModel" name="0..1" location="773,598" size="16,10" anchorKind="LastPart"/>
+      </children>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="MainActivity" location="686,985" size="174,557" id="com.example.wearetherunningman/MainActivity" runTimeClassModel="uid,onCreateOptionsMenu(Landroid.view.Menu;),inputUid,on(Ljava.lang.String;Lorg.json.JSONObject;),onDisconnect(),onOptionsItemSelected(Landroid.view.MenuItem;),callback(Lorg.json.JSONArray;),onMessage(Ljava.lang.String;),team,inputName,onConnect(),com.example.wearetherunningman.MainActivity.UserInfoDialog,onConnectFailure(),com.example.wearetherunningman.MainActivity.PlaceholderFragment,item,name,inputRoom,onMessage(Lorg.json.JSONObject;),room">
+    <children xsi:type="editmodel:CompartmentEditModel" size="90,144">
+      <children xsi:type="editmodel:AttributeEditModel" name="inputName" id="com.example.wearetherunningman/MainActivity#inputName"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="inputRoom" id="com.example.wearetherunningman/MainActivity#inputRoom"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="inputUid" id="com.example.wearetherunningman/MainActivity#inputUid"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="item" id="com.example.wearetherunningman/MainActivity#item"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="name" id="com.example.wearetherunningman/MainActivity#name"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="room" id="com.example.wearetherunningman/MainActivity#room"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="team" id="com.example.wearetherunningman/MainActivity#team"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="uid" id="com.example.wearetherunningman/MainActivity#uid"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="117,162">
+      <children xsi:type="editmodel:MethodEditModel" name="callback" id="com.example.wearetherunningman/MainActivity#callback(Lorg.json.JSONArray;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="on" id="com.example.wearetherunningman/MainActivity#on(Ljava.lang.String;Lorg.json.JSONObject;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onConnect" id="com.example.wearetherunningman/MainActivity#onConnect()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onConnectFailure" id="com.example.wearetherunningman/MainActivity#onConnectFailure()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onCreateOptionsMenu" id="com.example.wearetherunningman/MainActivity#onCreateOptionsMenu(Landroid.view.Menu;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onDisconnect" id="com.example.wearetherunningman/MainActivity#onDisconnect()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onMessage" id="com.example.wearetherunningman/MainActivity#onMessage(Lorg.json.JSONObject;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onMessage" id="com.example.wearetherunningman/MainActivity#onMessage(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onOptionsItemSelected" id="com.example.wearetherunningman/MainActivity#onOptionsItemSelected(Landroid.view.MenuItem;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="151,192">
+      <children xsi:type="editmodel:ClassEditModel" name="PlaceholderFragment" size="151,103" id="com.example.wearetherunningman/MainActivity$PlaceholderFragment" runTimeClassModel="onCreateView(Landroid.view.LayoutInflater;Landroid.view.ViewGroup;Landroid.os.Bundle;),PlaceholderFragment(),onClick(Landroid.view.View;)">
+        <children xsi:type="editmodel:CompartmentEditModel"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="109,54">
+          <children xsi:type="editmodel:MethodEditModel" name="PlaceholderFragment" id="com.example.wearetherunningman/MainActivity$PlaceholderFragment#PlaceholderFragment()"/>
+          <children xsi:type="editmodel:MethodEditModel" name="onClick" id="com.example.wearetherunningman/MainActivity$PlaceholderFragment#onClick(Landroid.view.View;)"/>
+          <children xsi:type="editmodel:MethodEditModel" name="onCreateView" id="com.example.wearetherunningman/MainActivity$PlaceholderFragment#onCreateView(Landroid.view.LayoutInflater;Landroid.view.ViewGroup;Landroid.os.Bundle;)"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+      </children>
+      <children xsi:type="editmodel:ClassEditModel" name="UserInfoDialog" size="120,85" id="com.example.wearetherunningman/MainActivity$UserInfoDialog" runTimeClassModel="onStop(),onCreateDialog(Landroid.os.Bundle;)">
+        <children xsi:type="editmodel:CompartmentEditModel"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="87,36">
+          <children xsi:type="editmodel:MethodEditModel" name="onCreateDialog" id="com.example.wearetherunningman/MainActivity$UserInfoDialog#onCreateDialog(Landroid.os.Bundle;)"/>
+          <children xsi:type="editmodel:MethodEditModel" name="onStop" id="com.example.wearetherunningman/MainActivity$UserInfoDialog#onStop()"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+      </children>
+    </children>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="com.example.wearetherunningman/WsCallbackInterface&lt;-com.example.wearetherunningman/MainActivity" source="//@children.5" target="//@children.7/@sourceConnections.0" targetEnd="//@children.5/@sourceConnections.0/@children.1" sourceEnd="//@children.5/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="87,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.7/@sourceConnections.0 //@children.4/@sourceConnections.0" name="WsCallbackInterface" location="630,615" size="146,185" id="com.example.wearetherunningman/WsCallbackInterface" runTimeClassModel="onConnect(),onDisconnect(),on(Ljava.lang.String;Lorg.json.JSONObject;),onConnectFailure(),callback(Lorg.json.JSONArray;),onMessage(Ljava.lang.String;),onMessage(Lorg.json.JSONObject;)">
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="95,126">
+      <children xsi:type="editmodel:MethodEditModel" name="callback" id="com.example.wearetherunningman/WsCallbackInterface#callback(Lorg.json.JSONArray;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="on" id="com.example.wearetherunningman/WsCallbackInterface#on(Ljava.lang.String;Lorg.json.JSONObject;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onConnect" id="com.example.wearetherunningman/WsCallbackInterface#onConnect()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onConnectFailure" id="com.example.wearetherunningman/WsCallbackInterface#onConnectFailure()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onDisconnect" id="com.example.wearetherunningman/WsCallbackInterface#onDisconnect()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onMessage" id="com.example.wearetherunningman/WsCallbackInterface#onMessage(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onMessage" id="com.example.wearetherunningman/WsCallbackInterface#onMessage(Lorg.json.JSONObject;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.2/@sourceConnections.0" name="GameActivity" location="482,985" size="174,344" id="com.example.wearetherunningman/GameActivity" runTimeClassModel="onConnect(),onCreateOptionsMenu(Landroid.view.Menu;),gmap,onDisconnect(),on(Ljava.lang.String;Lorg.json.JSONObject;),emitServer(),onConnectFailure(),onOptionsItemSelected(Landroid.view.MenuItem;),com.example.wearetherunningman.GameActivity.PlaceholderFragment,callback(Lorg.json.JSONArray;),onMessage(Ljava.lang.String;),onMessage(Lorg.json.JSONObject;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="90,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="gmap" id="com.example.wearetherunningman/GameActivity#gmap"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="117,180">
+      <children xsi:type="editmodel:MethodEditModel" name="callback" id="com.example.wearetherunningman/GameActivity#callback(Lorg.json.JSONArray;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="emitServer" id="com.example.wearetherunningman/GameActivity#emitServer()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="on" id="com.example.wearetherunningman/GameActivity#on(Ljava.lang.String;Lorg.json.JSONObject;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onConnect" id="com.example.wearetherunningman/GameActivity#onConnect()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onConnectFailure" id="com.example.wearetherunningman/GameActivity#onConnectFailure()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onCreateOptionsMenu" id="com.example.wearetherunningman/GameActivity#onCreateOptionsMenu(Landroid.view.Menu;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onDisconnect" id="com.example.wearetherunningman/GameActivity#onDisconnect()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onMessage" id="com.example.wearetherunningman/GameActivity#onMessage(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onMessage" id="com.example.wearetherunningman/GameActivity#onMessage(Lorg.json.JSONObject;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="onOptionsItemSelected" id="com.example.wearetherunningman/GameActivity#onOptionsItemSelected(Landroid.view.MenuItem;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="151,87">
+      <children xsi:type="editmodel:ClassEditModel" name="PlaceholderFragment" size="151,85" id="com.example.wearetherunningman/GameActivity$PlaceholderFragment" runTimeClassModel="onCreateView(Landroid.view.LayoutInflater;Landroid.view.ViewGroup;Landroid.os.Bundle;),PlaceholderFragment()">
+        <children xsi:type="editmodel:CompartmentEditModel"/>
+        <children xsi:type="editmodel:CompartmentEditModel" size="109,36">
+          <children xsi:type="editmodel:MethodEditModel" name="PlaceholderFragment" id="com.example.wearetherunningman/GameActivity$PlaceholderFragment#PlaceholderFragment()"/>
+          <children xsi:type="editmodel:MethodEditModel" name="onCreateView" id="com.example.wearetherunningman/GameActivity$PlaceholderFragment#onCreateView(Landroid.view.LayoutInflater;Landroid.view.ViewGroup;Landroid.os.Bundle;)"/>
+        </children>
+        <children xsi:type="editmodel:CompartmentEditModel"/>
+        <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+      </children>
+    </children>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.5/@sourceConnections.0" autoLocated="true" id="com.example.wearetherunningman/WsCallbackInterface&lt;-com.example.wearetherunningman/GameActivity" source="//@children.7" target="//@children.6" targetEnd="//@children.7/@sourceConnections.0/@children.1" sourceEnd="//@children.7/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="87,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="73,185" anchorKind="FixedAtEdge"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:AssociationEditModel" autoLocated="true" id="com.example.wearetherunningman/Player@player+com.example.wearetherunningman/GameActivity@" source="//@children.7" target="//@children.3" targetEnd="//@children.7/@sourceConnections.1/@children.2" label="//@children.7/@sourceConnections.1/@children.0" sourceEnd="//@children.7/@sourceConnections.1/@children.1" connectionRouterKind="Manhattan">
+      <children xsi:type="editmodel:WireLabelEditModel" size="0,10" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="174,334" id="com.example.wearetherunningman/Player@player+com.example.wearetherunningman/GameActivity@|com.example.wearetherunningman/GameActivity#" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" name="player" location="10,0" id="com.example.wearetherunningman/Player@player+com.example.wearetherunningman/GameActivity@|com.example.wearetherunningman/Player#player" multiplicityLabel="//@children.7/@sourceConnections.1/@children.2/@children.1" roleLabel="//@children.7/@sourceConnections.1/@children.2/@children.0" navigable="true">
+        <children xsi:type="editmodel:LabelEditModel" name=" ~ player" location="945,1311" size="34,10" anchorKind="LastPart"/>
+        <children xsi:type="editmodel:LabelEditModel" name="0..1" location="915,1311" size="16,10" anchorKind="LastPart"/>
+      </children>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:AssociationEditModel" id="com.example.wearetherunningman/WsConn@ws+com.example.wearetherunningman/GameActivity@" source="//@children.7" target="//@children.1" targetEnd="//@children.7/@sourceConnections.2/@children.2" label="//@children.7/@sourceConnections.2/@children.0" sourceEnd="//@children.7/@sourceConnections.2/@children.1" connectionRouterKind="Manhattan">
+      <children xsi:type="editmodel:WireLabelEditModel" size="0,10" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="78,-1" id="com.example.wearetherunningman/WsConn@ws+com.example.wearetherunningman/GameActivity@|com.example.wearetherunningman/GameActivity#" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" name="ws" location="10,121" id="com.example.wearetherunningman/WsConn@ws+com.example.wearetherunningman/GameActivity@|com.example.wearetherunningman/WsConn#ws" multiplicityLabel="//@children.7/@sourceConnections.2/@children.2/@children.1" roleLabel="//@children.7/@sourceConnections.2/@children.2/@children.0" navigable="true">
+        <children xsi:type="editmodel:LabelEditModel" name=" ~ ws" location="945,786" size="21,10" anchorKind="LastPart"/>
+        <children xsi:type="editmodel:LabelEditModel" name="1" location="925,786" size="6,10" anchorKind="LastPart"/>
+      </children>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" level="-1" showScope="InPackage" properties="wireOptions=3;Product=eUML2"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>
