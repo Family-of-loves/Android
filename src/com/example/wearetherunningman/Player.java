@@ -4,7 +4,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.content.Context;
 import android.location.Location;
@@ -76,9 +75,6 @@ public class Player extends FragmentActivity implements OnMyLocationChangeListen
 		this.name = name;
 		this.team = team;
 		this.item = item;
-
-		System.out.println("Debug : "+ this.gmap);
-    	System.out.println("사용자 생성");
 	}
 	@Override
 	public void onMyLocationChange(Location location) {
@@ -87,7 +83,7 @@ public class Player extends FragmentActivity implements OnMyLocationChangeListen
         	this.longitude = location.getLongitude();
         	
         	loc = new LatLng(this.latitude, this.longitude);
-        	//gmap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+        	gmap.moveCamera(CameraUpdateFactory.newLatLng(loc));
         	
         	if(!zoomFlag){
         		gmap.animateCamera(CameraUpdateFactory.zoomTo(zoomLevel));

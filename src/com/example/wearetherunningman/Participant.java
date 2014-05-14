@@ -67,44 +67,31 @@ public class Participant extends FragmentActivity {
 		new asyncTaskMarker().execute();
 	}
 	
-	public class asyncTaskMarker extends AsyncTask<String[], String, String> {
-
+	public class asyncTaskMarker extends AsyncTask<String, ArrayList<String[]>, String> {
+		@SuppressWarnings("unchecked")
 		@Override
-		protected void onPreExecute() {
-			System.out.println("onPreExecute");
-			super.onPreExecute();
-        }
-		@Override
-		protected String doInBackground(String[]... params) {
-			System.out.println("doInBackground");
-			ArrayList<String[]> resultAll = dbHandler.read();
-			System.out.println("Marker : " + m);
-			if(resultAll!=null){
-				for(int i=0; i < resultAll.size(); i++)
-					publishProgress(resultAll.get(i));
-			}
-			
+		protected String doInBackground(String... params) {
+			ArrayList<String[]> fetchArrayRows = dbHandler.read();
+			publishProgress(fetchArrayRows);
 			return null;
 		}
 		@Override
-		protected void onProgressUpdate(String[] result){
+		protected void onProgressUpdate(ArrayList<String[]>... fetchArrayRows){
 			// TODO Auto-generated method stub
-			if(result != null){
-				Double lat = Double.parseDouble(result[2]);
-				Double lng = Double.parseDouble(result[3]);
-				LatLng loc = new LatLng(lat, lng);
-				m = gmap.addMarker(new MarkerOptions().position(loc).title(result[1]).snippet(result[0]));
-				System.out.println("insert Marker : " + m);
-				//System.out.println(result[0] + " / " + result[1] + " / " + result[2] + " / "+ result[3]);
-			} else {
-				onCancelled();
+			ArrayList<String[]> fetchRows = fetchArrayRows[0];
+			gmap.clear();
+			if(fetchRows!=null){
+				for(int i=0; i < fetchRows.size(); i++){
+					String[] rows = fetchRows.get(i);
+					if(rows != null){
+						LatLng loc = new LatLng(Double.parseDouble(rows[2]), Double.parseDouble(rows[3]));
+						gmap.addMarker(new MarkerOptions().position(loc).title(rows[1]).snippet(rows[0]));
+					} else {
+						onCancelled();
+					}
+				}
 			}
 		}
-		@Override
-        protected void onPostExecute(String result) {
-            System.out.println("AsyncTask Complete!");           
-			super.onPostExecute(result);
-        }
         @Override
         protected void onCancelled() {
         	System.out.println("AsyncTask Cancelled!");

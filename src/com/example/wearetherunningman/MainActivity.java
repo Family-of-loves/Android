@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 	static EditText room ;
@@ -132,35 +131,28 @@ public class MainActivity extends ActionBarActivity {
 					switch (checkedId){
 						case R.id.b_red:
 							team = "1";
-							//Toast.makeText(getActivity(), "ª°∞ª¿Ã", Toast.LENGTH_LONG).show();
 							break;
-						
 						case R.id.b_blue:
 							team = "0";
 							break;
-							
 						default:
 							team = null;
 							break;
 					}
 				}										
-	        
 	        });
 						
 			itemgroup.setOnCheckedChangeListener (new RadioGroup.OnCheckedChangeListener() 
 	        {							        
 	        	public void onCheckedChanged(RadioGroup group, int checkedId) {
 					// TODO Auto-generated method stub
-
 					switch (checkedId){
 					case R.id.b_scissor:
 						item = "0";
 						break;
-					
 					case R.id.b_rock:
 						item =  "1";
 						break;
-						
 					case R.id.b_paper:
 						item = "2";
 						break;

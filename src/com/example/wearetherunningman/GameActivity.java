@@ -4,7 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 
@@ -92,8 +91,20 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 			public void run() {
 				while (true) {
 					try {
-						Thread.sleep(10000);
+						System.out.println("###?");
 						participant.regMarker();
+						Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                    	e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+		new Thread(new Runnable() {           
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep(5000);
 						ws.emitMessage(player);
                     } catch (InterruptedException e) {
                     	e.printStackTrace();
@@ -112,7 +123,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 		if (event.equals("message")){
 			participant.regParticipant(obj);
 		} else if (event.equals("leaved")){
-			//participant.unRegParticipant(obj);
+			participant.unRegParticipant(obj);
 		} else {
 			// 에러처리
 		}
