@@ -91,7 +91,6 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 			public void run() {
 				while (true) {
 					try {
-						System.out.println("###?");
 						participant.regMarker();
 						Thread.sleep(2000);
                     } catch (InterruptedException e) {

@@ -64,19 +64,19 @@ public class DBManagerHandler {
 		db = mDBManager.getReadableDatabase();
 		String sql = "select * from " + TB_NAME + ";";
 		Cursor cursor = db.rawQuery(sql, null);
-		ArrayList<String[]> result = new ArrayList<String[]>();
+		ArrayList<String[]> fetchArrayRows = new ArrayList<String[]>();
 
 		cursor.moveToFirst();
 		if(cursor.isAfterLast()){
 			System.out.println("정보가 없습니다.");
 		} else {
 			while(!cursor.isAfterLast()){
-				result.add(new String[]{cursor.getString(1),cursor.getString(2),cursor.getString(4),cursor.getString(5)});
+				fetchArrayRows.add(new String[]{cursor.getString(1),cursor.getString(2),cursor.getString(4),cursor.getString(5)});
 	            cursor.moveToNext();
 			}
 		}
 		cursor.close();
-		return result;
+		return fetchArrayRows;
 	}
 	public void update(JSONObject obj){
 		db = mDBManager.getWritableDatabase();
@@ -103,8 +103,8 @@ public class DBManagerHandler {
 		Cursor result = db.rawQuery(sql, null);
 		
 		if(result.moveToFirst()){
-			String[] result_arr = {result.getString(1), result.getString(2), result.getString(4), result.getString(5)};
-			return result_arr;
+			String[] fetchRows = {result.getString(1), result.getString(2), result.getString(4), result.getString(5)};
+			return fetchRows;
         }
         result.close();
 		return null;
