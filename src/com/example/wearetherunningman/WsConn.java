@@ -15,8 +15,14 @@ import android.app.Application;
  */
 public class WsConn extends Application {
 
+	/**
+	 * @uml.property  name="socket"
+	 * @uml.associationEnd  
+	 */
 	private SocketIO socket;
     /**
+	 * @uml.property  name="callback"
+	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
     private WsCallback callback;
            

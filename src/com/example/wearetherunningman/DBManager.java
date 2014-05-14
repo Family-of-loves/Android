@@ -9,6 +9,9 @@ public class DBManager extends SQLiteOpenHelper {
     public static final String DB_NAME = "participant.db";
     public static final int DB_VERSION = 1;
     
+    /**
+	 * @uml.property  name="quary"
+	 */
     String quary ;
      
     //constructor

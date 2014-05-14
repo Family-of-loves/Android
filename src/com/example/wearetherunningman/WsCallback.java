@@ -15,6 +15,8 @@ import org.json.JSONObject;
  */
 public class WsCallback  implements IOCallback, IOAcknowledge {
     /**
+	 * @uml.property  name="callback"
+	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
     private WsCallbackInterface callback;
     

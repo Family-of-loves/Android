@@ -24,17 +24,45 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	/*
 	 * Creator Objects 
 	 */
+	/**
+	 * @uml.property  name="player"
+	 * @uml.associationEnd  
+	 */
 	Player player;
+	/**
+	 * @uml.property  name="participant"
+	 * @uml.associationEnd  
+	 */
 	Participant participant;
+	/**
+	 * @uml.property  name="gmap"
+	 * @uml.associationEnd  
+	 */
 	GoogleMap gmap;
+	/**
+	 * @uml.property  name="ws"
+	 * @uml.associationEnd  multiplicity="(1 1)"
+	 */
 	WsConn ws = new WsConn(this);
 	
 	/*
 	 * Using variables
 	 */
+    /**
+	 * @uml.property  name="room"
+	 */
     String room;
+    /**
+	 * @uml.property  name="name"
+	 */
     String name;
+    /**
+	 * @uml.property  name="team"
+	 */
     String team;
+    /**
+	 * @uml.property  name="item"
+	 */
     String item;
 
 	@Override
@@ -64,15 +92,16 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 			public void run() {
 				while (true) {
 					try {
+						Thread.sleep(10000);
 						participant.regMarker();
 						ws.emitMessage(player);
-						Thread.sleep(10000);
                     } catch (InterruptedException e) {
                     	e.printStackTrace();
                     }
                 }
             }
         }).start();
+		
 	}
 
 	/*
@@ -119,7 +148,6 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
