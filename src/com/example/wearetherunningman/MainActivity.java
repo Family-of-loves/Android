@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 	static EditText room ;
@@ -107,7 +108,10 @@ public class MainActivity extends ActionBarActivity {
 	public static class UserInfoDialog extends DialogFragment {
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
-					
+			inputName=null;
+			team=null;
+			item=null;
+			
 			AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
 			LayoutInflater mLayoutInflater = getActivity().getLayoutInflater();
 			
@@ -168,6 +172,18 @@ public class MainActivity extends ActionBarActivity {
 								
 								public void onClick(DialogInterface dialog,int whichButton) {
 									inputName = name.getText().toString();							
+									
+									if(inputName.equals("")){	
+										Toast.makeText(getActivity().getBaseContext(),"이름을 입력하세요",  Toast.LENGTH_SHORT).show();
+										
+									}
+									else if(team==null){
+										Toast.makeText(getActivity().getBaseContext(),"팀을 선택하세요",  Toast.LENGTH_SHORT).show();
+									}
+									else if(item==null){
+										Toast.makeText(getActivity().getBaseContext(),"아이템을 선택하세요",  Toast.LENGTH_SHORT).show();
+									}
+									else{
 									Intent myIntent = new Intent(((Dialog) dialog).getContext(), GameActivity.class);
 									
 									myIntent.putExtra("param1", inputRoom);
@@ -177,6 +193,7 @@ public class MainActivity extends ActionBarActivity {
 									System.out.println(team + " / " + item);
 									startActivity(myIntent);   //If usert push "ok"button, turn the page to GameActivity
 								    return;
+									}
 								}
 							})
 					.setNegativeButton("Cancel",

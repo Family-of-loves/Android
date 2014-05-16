@@ -5,16 +5,30 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.example.wearetherunningman.MainActivity.UserInfoDialog;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.support.v4.app.DialogFragment;
 import android.content.Context;
+import android.content.Intent;
+import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.widget.Toast;
 
-public class Participant extends FragmentActivity {
+public class Participant extends FragmentActivity implements OnMyLocationChangeListener{
 	/**
 	 * @uml.property  name="context"
 	 * @uml.associationEnd  multiplicity="(1 1)"
@@ -31,11 +45,20 @@ public class Participant extends FragmentActivity {
 	 */
 	public GoogleMap gmap;
 	public static Marker m;
+	public String team;
 	
-	public Participant(Context c,GoogleMap gmap){
+	double latitude ;
+	double longitude ;
+	
+	public Handler mHandler;
+	
+	public Participant( String team,Context c,GoogleMap gmap,Handler handler){
 		// 생성
 		this.context = c;
 		this.gmap = gmap;
+		this.team = team;
+		this.mHandler = handler;
+		
 		dbHandler = new DBManagerHandler(this.context);
 		
 		System.out.println("Debug Participant Map : "+ this.gmap);
@@ -67,7 +90,8 @@ public class Participant extends FragmentActivity {
 		new asyncTaskMarker().execute();
 	}
 	
-	public class asyncTaskMarker extends AsyncTask<String, ArrayList<String[]>, String> {
+	public class asyncTaskMarker extends AsyncTask<String, ArrayList<String[]>, String> implements OnMarkerClickListener {
+		
 		@SuppressWarnings("unchecked")
 		@Override
 		protected String doInBackground(String... params) {
@@ -83,9 +107,62 @@ public class Participant extends FragmentActivity {
 			if(fetchRows!=null){
 				for(int i=0; i < fetchRows.size(); i++){
 					String[] rows = fetchRows.get(i);
+					//Log.i("team",team);
+					//Log.i("team",rows[2]);
+					
 					if(rows != null){
-						LatLng loc = new LatLng(Double.parseDouble(rows[2]), Double.parseDouble(rows[3]));
-						gmap.addMarker(new MarkerOptions().position(loc).title(rows[1]).snippet(rows[0]));
+						if(team.equals(rows[2])){	// 나와 같은팀이면
+							
+							if(team.equals("1")){	// 레드팀일 경우
+								
+								
+								LatLng loc = new LatLng(Double.parseDouble(rows[3]), Double.parseDouble(rows[4]));
+								gmap.addMarker(new MarkerOptions().position(loc).title(rows[1]).snippet(rows[0]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory. HUE_RED )));
+														
+							}
+							else{	// 블루팀일경우
+								
+								LatLng loc = new LatLng(Double.parseDouble(rows[3]), Double.parseDouble(rows[4]));
+								gmap.addMarker(new MarkerOptions().position(loc).title(rows[1]).snippet(rows[0]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory. HUE_BLUE )));
+							}
+						}
+						else{ // 나와같은팀이 아닐경우
+										        	
+							float[] distance = new float[2]; // float 형태의 사이즈 2의 행렬 생성
+							float actual_distance; //실제 거리 값을 담을 변수
+							 
+							Location.distanceBetween(latitude, longitude ,  Double.parseDouble(rows[3]), Double.parseDouble(rows[4]), distance);
+							//lat1와 lon1은 첫번째 사용자, lat2와 lon2는 두번째 사용자의 GPS 값.
+							//distanceBetween은 Location클래스 내에서 정의된 static 함수이기 때문에 Location 클래스를 통해 아무데서나 부를 수 있다.
+							//이 메소드가 호출되고 나면 distance 행렬의 첫번째 요소로 두 지점의 거리가 할당된다.
+							actual_distance = distance[0]; //간단한 사용을 위해 일반 변수로 넘겨주기.
+							
+							int n=0;
+							Marker[] Marker=new Marker[5];
+							//String a=""+actual_distance;
+							//Log.i("실제거리",a);
+							if(actual_distance<1.336547E7){	// 계산된 거리 비교
+								
+								gmap.setOnMarkerClickListener(this); // 지도에 리스너등록	
+								
+								
+								if(rows[2].equals("1")){	// 같은팀이 아닌데 레드일경우
+									LatLng loc = new LatLng(Double.parseDouble(rows[3]), Double.parseDouble(rows[4]));
+									
+									 Marker[n]=gmap.addMarker(new MarkerOptions().position(loc).title(rows[1]).snippet(rows[0]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory. HUE_RED )));
+									// 클릭 리스너를 쓸려면 마커객체를 등록하여야 해서 일단 상태팀마커는 등록하엿슴. 여러개찍는건 생각해봐야할듯
+									 n++;
+								}
+								else{		// 블루일경우
+										LatLng loc = new LatLng(Double.parseDouble(rows[3]), Double.parseDouble(rows[4]));
+										Marker[n]=gmap.addMarker(new MarkerOptions().position(loc).title(rows[1]).snippet(rows[0]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory. HUE_BLUE )));
+										n++;
+								}
+							}
+							
+							//상대팀이면 반경 10미터 이내일때만 찍기
+												
+						}
 					} else {
 						onCancelled();
 					}
@@ -97,5 +174,36 @@ public class Participant extends FragmentActivity {
         	System.out.println("AsyncTask Cancelled!");
             super.onCancelled();
         }
+        @Override
+    	public boolean onMarkerClick(final Marker marker) {	// 마커클릭 메소드
+    		
+    		//if (marker.equals(Marker)) 	// 상대방 마커를 찍을경우 // 우리편 마커는 객체가 없기때문에 여기로 안들어옴
+           // {
+    			Log.i("마커","클릭됨");	// 로그로 확익가능
+    			
+    			    			
+    			mHandler.sendEmptyMessage(0);  // 핸들러 메세지를 넘김으로써 미니게임 다이얼로그가 실행됨
+    			//미니게임 다이얼로그 띄워야됨
+    			//MiniGame game = new MiniGame();
+    			//game.show(getFragmentManager(), "USER");
+    			
+    			//Toast.makeText(getApplicationContext(), "덤벼", Toast.LENGTH_LONG) .show();
+           // }
+    		    		
+    		return false;
+    	}
 	}
+
+	@Override
+	public void onMyLocationChange(Location location) {
+		if (location != null) {
+        	this.latitude = location.getLatitude();
+        	this.longitude = location.getLongitude();
+		}
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	
 }

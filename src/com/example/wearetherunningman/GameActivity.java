@@ -6,17 +6,22 @@ import org.json.JSONObject;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-
-import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.ActionBarActivity;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class GameActivity extends ActionBarActivity implements WsCallbackInterface {
 	
@@ -64,6 +69,8 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	 */
     String item;
 
+    
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -79,9 +86,14 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	    team = intent.getExtras().getString("param3"); 
 	    item = intent.getExtras().getString("param4");
 	    
+	    TextView nameview= (TextView)findViewById(R.id.textView1) ;
+	    nameview.setText(name+"님");
 	    player = new Player(name ,team,item ,getApplicationContext(), gmap);
-	    participant = new Participant(getApplicationContext(), gmap);
-	    		
+	    //participant = new Participant(getApplicationContext(), gmap);
+	    participant = new Participant(team ,getApplicationContext(), gmap,handler);
+	    
+	    
+	    
 	    ws.emitJoin(room, player);
 		emitServer();
 	}
@@ -172,4 +184,39 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 			return rootView;
 		}
 	}
+	// 미니 게임 다이얼로그를 띄우기 위한 랜들러 
+	public Handler handler = new Handler()	{
+		public void handleMessage( Message msg )		{
+			AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
+			switch ( msg.what )	{
+			case	 0	:
+				builder.setTitle("미니게임");
+				LayoutInflater mLayoutInflater = GameActivity.this.getLayoutInflater();
+				View dialogView = mLayoutInflater.inflate(R.layout.dialog, null);
+				builder.setView(dialogView);
+				builder.setCancelable(true);        // 뒤로 버튼 클릭시 취소 가능 설정
+
+				builder.setPositiveButton("예", new DialogInterface.OnClickListener() {			
+					public void onClick(DialogInterface dialog, int whichButton) {
+						System.exit(0); 
+					}
+				});
+
+				builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						dialog.cancel();
+					}
+				});
+
+				builder.show();
+				
+				break;
+						
+			}
+			
+			super.handleMessage( msg );
+		}
+	};
+	
+	
 }

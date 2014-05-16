@@ -71,7 +71,7 @@ public class DBManagerHandler {
 			System.out.println("정보가 없습니다.");
 		} else {
 			while(!cursor.isAfterLast()){
-				fetchArrayRows.add(new String[]{cursor.getString(1),cursor.getString(2),cursor.getString(4),cursor.getString(5)});
+				fetchArrayRows.add(new String[]{cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6)});
 	            cursor.moveToNext();
 			}
 		}
