@@ -183,7 +183,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 
 			return rootView;
 		}
-	}
+	}//
 	// 미니 게임 다이얼로그를 띄우기 위한 랜들러 
 	public Handler handler = new Handler()	{
 		public void handleMessage( Message msg )		{
