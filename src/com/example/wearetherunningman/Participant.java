@@ -47,15 +47,35 @@ public class Participant extends FragmentActivity implements OnMyLocationChangeL
 	 */
 	public GoogleMap gmap;
 	public static Marker m;
+	/**
+	 * @uml.property  name="team"
+	 */
 	public String team;
 	
+	/**
+	 * @uml.property  name="latitude"
+	 */
 	double latitude ;
+	/**
+	 * @uml.property  name="longitude"
+	 */
 	double longitude ;
 	
+	/**
+	 * @uml.property  name="mHandler"
+	 * @uml.associationEnd  multiplicity="(1 1)"
+	 */
 	public Handler mHandler;
 	
+	/**
+	 * @uml.property  name="handler"
+	 * @uml.associationEnd  multiplicity="(1 1)"
+	 */
 	private Handler handler = new Handler(Looper.getMainLooper());
 	
+	/**
+	 * @uml.property  name="num"
+	 */
 	int num=0; // »ó´ëÆÀ ¸¶Ä¿ ÂïÀ»¶§ °¹¼ö
 	
 	public Participant( String team,Context c,GoogleMap gmap,Handler handler){

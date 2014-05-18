@@ -191,6 +191,10 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 		}
 	}//
 	// 미니 게임 다이얼로그를 띄우기 위한 랜들러 
+	/**
+	 * @uml.property  name="handler"
+	 * @uml.associationEnd  multiplicity="(1 1)"
+	 */
 	public Handler handler = new Handler()	{
 		public void handleMessage( Message msg )		{
 			AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
