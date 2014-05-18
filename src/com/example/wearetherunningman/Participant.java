@@ -31,51 +31,16 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class Participant extends FragmentActivity implements OnMyLocationChangeListener{
-	/**
-	 * @uml.property  name="context"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
 	Context context;
-	/**
-	 * @uml.property  name="dbHandler"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
 	public DBManagerHandler dbHandler;
-	/**
-	 * @uml.property  name="gmap"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
 	public GoogleMap gmap;
 	public static Marker m;
-	/**
-	 * @uml.property  name="team"
-	 */
 	public String team;
-	
-	/**
-	 * @uml.property  name="latitude"
-	 */
 	double latitude ;
-	/**
-	 * @uml.property  name="longitude"
-	 */
 	double longitude ;
-	
-	/**
-	 * @uml.property  name="mHandler"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
 	public Handler mHandler;
-	
-	/**
-	 * @uml.property  name="handler"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
 	private Handler handler = new Handler(Looper.getMainLooper());
-	
-	/**
-	 * @uml.property  name="num"
-	 */
+
 	int num=0; // »ó´ëÆÀ ¸¶Ä¿ ÂïÀ»¶§ °¹¼ö
 	
 	public Participant( String team,Context c,GoogleMap gmap,Handler handler){

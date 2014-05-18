@@ -4,8 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 import android.util.Log;
 
-public class MiniGame {
-	
+public class MiniGame {	
 	public MiniGame() {
 		// TODO Auto-generated constructor stub
 	}

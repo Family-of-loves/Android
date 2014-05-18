@@ -33,48 +33,18 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	/*
 	 * Creator Objects 
 	 */
-	/**
-	 * @uml.property  name="player"
-	 * @uml.associationEnd  
-	 */
 	Player player;
-	/**
-	 * @uml.property  name="participant"
-	 * @uml.associationEnd  
-	 */
 	Participant participant;
-	/**
-	 * @uml.property  name="gmap"
-	 * @uml.associationEnd  
-	 */
 	GoogleMap gmap;
-	/**
-	 * @uml.property  name="ws"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
 	WsConn ws = new WsConn(this);
 	
 	/*
 	 * Using variables
 	 */
-    /**
-	 * @uml.property  name="room"
-	 */
     String room;
-    /**
-	 * @uml.property  name="name"
-	 */
     String name;
-    /**
-	 * @uml.property  name="team"
-	 */
     String team;
-    /**
-	 * @uml.property  name="item"
-	 */
     String item;
-
-    
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -192,8 +162,6 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	}//
 	// 미니 게임 다이얼로그를 띄우기 위한 랜들러 
 	/**
-	 * @uml.property  name="handler"
-	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
 	public Handler handler = new Handler()	{
 		public void handleMessage( Message msg )		{

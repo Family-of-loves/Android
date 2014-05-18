@@ -9,15 +9,7 @@ import io.socket.SocketIOException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-/**
- * @author  JeongMyoungHak
- */
 public class WsCallback  implements IOCallback, IOAcknowledge {
-    /**
-	 * @uml.property  name="callback"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
     private WsCallbackInterface callback;
     
     public WsCallback(WsCallbackInterface callback) {

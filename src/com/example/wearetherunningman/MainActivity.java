@@ -26,14 +26,7 @@ public class MainActivity extends ActionBarActivity {
 	static String team = null;
 	static String item = null;
 	
-	/**
-	 * @uml.property  name="uid"
-	 * @uml.associationEnd  readOnly="true"
-	 */
 	EditText uid;
-	/**
-	 * @uml.property  name="inputUid"
-	 */
 	String inputUid;
 	
 	
