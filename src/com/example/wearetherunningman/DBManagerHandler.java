@@ -71,7 +71,7 @@ public class DBManagerHandler {
 			System.out.println("정보가 없습니다.");
 		} else {
 			while(!cursor.isAfterLast()){
-				fetchArrayRows.add(new String[]{cursor.getString(1),cursor.getString(2),cursor.getString(4),cursor.getString(5)});
+				fetchArrayRows.add(new String[]{cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6)});
 	            cursor.moveToNext();
 			}
 		}
@@ -103,7 +103,7 @@ public class DBManagerHandler {
 		Cursor result = db.rawQuery(sql, null);
 		
 		if(result.moveToFirst()){
-			String[] fetchRows = {result.getString(1), result.getString(2), result.getString(4), result.getString(5)};
+			String[] fetchRows = {result.getString(1), result.getString(2), result.getString(4), result.getString(5), result.getString(6)};
 			return fetchRows;
         }
         result.close();
