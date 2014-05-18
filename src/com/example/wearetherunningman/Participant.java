@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -51,6 +52,9 @@ public class Participant extends FragmentActivity implements OnMyLocationChangeL
 	double longitude ;
 	
 	public Handler mHandler;
+	
+	private Handler handler = new Handler(Looper.getMainLooper());
+	
 	
 	public Participant( String team,Context c,GoogleMap gmap,Handler handler){
 		// »ý¼º
@@ -87,8 +91,15 @@ public class Participant extends FragmentActivity implements OnMyLocationChangeL
 		}
 	}
 	public void regMarker(){
-		new asyncTaskMarker().execute();
+		
+		handler.post(new Runnable() {
+		      public void run() {
+		    	  new asyncTaskMarker().execute();
+		      }
+		   });
 	}
+	
+	
 	
 	public class asyncTaskMarker extends AsyncTask<String, ArrayList<String[]>, String> implements OnMarkerClickListener {
 		

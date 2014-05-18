@@ -99,24 +99,25 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	}
 	
 	public void emitServer(){
-		new Thread(new Runnable() {           
+		/*new Thread(new Runnable() {           
 			public void run() {
 				while (true) {
 					try {
-						participant.regMarker();
+						
 						Thread.sleep(2000);
                     } catch (InterruptedException e) {
                     	e.printStackTrace();
                     }
                 }
             }
-        }).start();
+        }).start();*/
 		new Thread(new Runnable() {           
 			public void run() {
 				while (true) {
 					try {
 						Thread.sleep(5000);
 						ws.emitMessage(player);
+						participant.regMarker();
                     } catch (InterruptedException e) {
                     	e.printStackTrace();
                     }
