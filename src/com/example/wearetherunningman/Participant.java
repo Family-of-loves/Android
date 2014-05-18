@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -55,6 +56,7 @@ public class Participant extends FragmentActivity implements OnMyLocationChangeL
 	
 	private Handler handler = new Handler(Looper.getMainLooper());
 	
+	int num=0; // 상대팀 마커 찍을때 갯수
 	
 	public Participant( String team,Context c,GoogleMap gmap,Handler handler){
 		// 생성
@@ -94,6 +96,7 @@ public class Participant extends FragmentActivity implements OnMyLocationChangeL
 		
 		handler.post(new Runnable() {
 		      public void run() {
+		    	  num=0;
 		    	  new asyncTaskMarker().execute();
 		      }
 		   });
@@ -148,7 +151,7 @@ public class Participant extends FragmentActivity implements OnMyLocationChangeL
 							//이 메소드가 호출되고 나면 distance 행렬의 첫번째 요소로 두 지점의 거리가 할당된다.
 							actual_distance = distance[0]; //간단한 사용을 위해 일반 변수로 넘겨주기.
 							
-							int n=0;
+							
 							Marker[] Marker=new Marker[5];
 							//String a=""+actual_distance;
 							//Log.i("실제거리",a);
@@ -160,14 +163,14 @@ public class Participant extends FragmentActivity implements OnMyLocationChangeL
 								if(rows[2].equals("1")){	// 같은팀이 아닌데 레드일경우
 									LatLng loc = new LatLng(Double.parseDouble(rows[3]), Double.parseDouble(rows[4]));
 									
-									 Marker[n]=gmap.addMarker(new MarkerOptions().position(loc).title(rows[1]).snippet(rows[0]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory. HUE_RED )));
+									 Marker[num]=gmap.addMarker(new MarkerOptions().position(loc).title(rows[1]).snippet(rows[0]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory. HUE_RED )));
 									// 클릭 리스너를 쓸려면 마커객체를 등록하여야 해서 일단 상태팀마커는 등록하엿슴. 여러개찍는건 생각해봐야할듯
-									 n++;
+									 num++;
 								}
 								else{		// 블루일경우
 										LatLng loc = new LatLng(Double.parseDouble(rows[3]), Double.parseDouble(rows[4]));
-										Marker[n]=gmap.addMarker(new MarkerOptions().position(loc).title(rows[1]).snippet(rows[0]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory. HUE_BLUE )));
-										n++;
+										Marker[num]=gmap.addMarker(new MarkerOptions().position(loc).title(rows[1]).snippet(rows[0]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory. HUE_BLUE )));
+										num++;
 								}
 							}
 							
@@ -186,14 +189,24 @@ public class Participant extends FragmentActivity implements OnMyLocationChangeL
             super.onCancelled();
         }
         @Override
-    	public boolean onMarkerClick(final Marker marker) {	// 마커클릭 메소드
+    	public boolean onMarkerClick(Marker marker) {	// 마커클릭 메소드
     		
     		//if (marker.equals(Marker)) 	// 상대방 마커를 찍을경우 // 우리편 마커는 객체가 없기때문에 여기로 안들어옴
            // {
-    			Log.i("마커","클릭됨");	// 로그로 확익가능
+    			//Log.i("마커","클릭됨");	// 로그로 확익가능
+    			String[] match = dbHandler.search(marker.getSnippet());
     			
-    			    			
-    			mHandler.sendEmptyMessage(0);  // 핸들러 메세지를 넘김으로써 미니게임 다이얼로그가 실행됨
+    			//Log.i("마커",marker.getTitle());	// 로그로 확익가능
+    			Log.i("마커",match[1]);
+    			
+    			Bundle data = new Bundle();
+    			data.putString("data", match[4]);
+    			Message msg = Message.obtain();
+    			msg.setData(data);
+    			mHandler.sendMessage(msg); 
+    			
+    			
+    			//mHandler.sendEmptyMessage(0,match[1]);  // 핸들러 메세지를 넘김으로써 미니게임 다이얼로그가 실행됨
     			//미니게임 다이얼로그 띄워야됨
     			//MiniGame game = new MiniGame();
     			//game.show(getFragmentManager(), "USER");
