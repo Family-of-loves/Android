@@ -18,12 +18,12 @@ import android.widget.ImageButton;
 import android.widget.RadioGroup;
 
 public class MainActivity extends ActionBarActivity {
-	static EditText room ;
-	static String inputRoom ;
-	static EditText name;
-	static String inputName;
-	static String team;
-	static String item;
+	static EditText room = null ;
+	static String inputRoom = null ;
+	static EditText name = null;
+	static String inputName = null;
+	static String team = null;
+	static String item = null;
 	
 	/**
 	 * @uml.property  name="uid"

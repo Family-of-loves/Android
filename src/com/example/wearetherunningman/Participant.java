@@ -30,7 +30,7 @@ public class Participant extends FragmentActivity {
 	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
 	public GoogleMap gmap;
-	public static Marker m;
+	public static Marker m = null;
 	
 	public Participant(Context c,GoogleMap gmap){
 		// »ý¼º
