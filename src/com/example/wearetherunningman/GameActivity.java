@@ -120,7 +120,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 			public void run() {
 				while (true) {
 					try {
-						Thread.sleep(5000);
+						Thread.sleep(500);
 						ws.emitMessage(player);
 						participant.regMarker();
                     } catch (InterruptedException e) {
@@ -247,8 +247,67 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 								Log.i("상대편무기",matchitem);
 								MiniGame mg = new MiniGame();
 								String re=mg.compare(item, matchitem);
-								Toast.makeText(getApplicationContext(), re, Toast.LENGTH_LONG) .show();
+								//Toast.makeText(getApplicationContext(), re, Toast.LENGTH_LONG) .show();
 								
+								dialog.cancel();
+								AlertDialog.Builder builder2 = new AlertDialog.Builder(GameActivity.this);
+								builder2.setTitle("게임창");
+								
+								if(re.equals("이김")){
+									builder2.setMessage("당신은 이겼습니다.");
+									builder2.setCancelable(true); 
+									builder2.setPositiveButton("확인", new DialogInterface.OnClickListener() {			
+										public void onClick(DialogInterface dialog, int whichButton) {
+											dialog.cancel();
+										}
+									});
+								
+									builder2.setNegativeButton("아이템바꾸기", new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog, int whichButton) {
+											item= matchitem;
+											dialog.cancel();
+										}
+									});
+
+									builder2.show();
+								}
+								else if(re.equals("졌슴")){
+									builder2.setMessage("당신은 졌습니다.");
+									builder2.setCancelable(true); 
+									builder2.setPositiveButton("관전", new DialogInterface.OnClickListener() {			
+										public void onClick(DialogInterface dialog, int whichButton) {
+											dialog.cancel();
+										}
+									});
+								
+									builder2.setNegativeButton("나가기", new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog, int whichButton) {
+											dialog.cancel();
+										}
+									});
+
+									builder2.show();
+								}
+								else{	
+									builder2.setMessage("당신은 비겼습니다.");
+									builder2.setCancelable(true); 
+									builder2.setPositiveButton("확인", new DialogInterface.OnClickListener() {			
+										public void onClick(DialogInterface dialog, int whichButton) {
+											dialog.cancel();
+										}
+									});
+								
+									builder2.setNegativeButton("?", new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog, int whichButton) {
+											dialog.cancel();
+										}
+									});
+
+									builder2.show();
+								}
+									
+								 
+															
 							}
 						});
 						

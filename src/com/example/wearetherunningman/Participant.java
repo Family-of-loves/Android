@@ -30,7 +30,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-public class Participant extends FragmentActivity implements OnMyLocationChangeListener{
+public class Participant extends FragmentActivity  {
 	/**
 	 * @uml.property  name="context"
 	 * @uml.associationEnd  multiplicity="(1 1)"
@@ -49,8 +49,7 @@ public class Participant extends FragmentActivity implements OnMyLocationChangeL
 	public static Marker m;
 	public String team;
 	
-	double latitude ;
-	double longitude ;
+	
 	
 	public Handler mHandler;
 	
@@ -104,8 +103,9 @@ public class Participant extends FragmentActivity implements OnMyLocationChangeL
 	
 	
 	
-	public class asyncTaskMarker extends AsyncTask<String, ArrayList<String[]>, String> implements OnMarkerClickListener {
-		
+	public class asyncTaskMarker extends AsyncTask<String, ArrayList<String[]>, String> implements OnMarkerClickListener,OnMyLocationChangeListener {
+		double latitude ;
+		double longitude ;
 		@SuppressWarnings("unchecked")
 		@Override
 		protected String doInBackground(String... params) {
@@ -113,6 +113,16 @@ public class Participant extends FragmentActivity implements OnMyLocationChangeL
 			publishProgress(fetchArrayRows);
 			return null;
 		}
+		@Override
+		public void onMyLocationChange(Location location) {
+			if (location != null) {
+	        	this.latitude = location.getLatitude();
+	        	this.longitude = location.getLongitude();
+			}
+			// TODO Auto-generated method stub
+			
+		}
+		
 		@Override
 		protected void onProgressUpdate(ArrayList<String[]>... fetchArrayRows){
 			// TODO Auto-generated method stub
@@ -144,18 +154,23 @@ public class Participant extends FragmentActivity implements OnMyLocationChangeL
 										        	
 							float[] distance = new float[2]; // float 형태의 사이즈 2의 행렬 생성
 							float actual_distance; //실제 거리 값을 담을 변수
-							 
-							Location.distanceBetween(latitude, longitude ,  Double.parseDouble(rows[3]), Double.parseDouble(rows[4]), distance);
+							
+							
+														
+							
+							Location.distanceBetween(latitude/ 1E6, longitude/ 1E6 ,  Double.parseDouble(rows[3])/ 1E6, Double.parseDouble(rows[4])/ 1E6, distance);
+							
 							//lat1와 lon1은 첫번째 사용자, lat2와 lon2는 두번째 사용자의 GPS 값.
 							//distanceBetween은 Location클래스 내에서 정의된 static 함수이기 때문에 Location 클래스를 통해 아무데서나 부를 수 있다.
 							//이 메소드가 호출되고 나면 distance 행렬의 첫번째 요소로 두 지점의 거리가 할당된다.
-							actual_distance = distance[0]; //간단한 사용을 위해 일반 변수로 넘겨주기.
 							
+							actual_distance = distance[0] * 0.000621371192f; //간단한 사용을 위해 일반 변수로 넘겨주기.
+							//String d = Float.toString(actual_distance);
 							
 							Marker[] Marker=new Marker[5];
-							//String a=""+actual_distance;
-							//Log.i("실제거리",a);
-							if(actual_distance<1.336547E7){	// 계산된 거리 비교
+							String aa=""+actual_distance;
+							Log.i("실제거리",aa);
+							if(actual_distance<=0.009221703 && actual_distance>=0.009221694){	// 계산된 거리 비교
 								
 								gmap.setOnMarkerClickListener(this); // 지도에 리스너등록	
 								
@@ -218,15 +233,7 @@ public class Participant extends FragmentActivity implements OnMyLocationChangeL
     	}
 	}
 
-	@Override
-	public void onMyLocationChange(Location location) {
-		if (location != null) {
-        	this.latitude = location.getLatitude();
-        	this.longitude = location.getLongitude();
-		}
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 	
 	
