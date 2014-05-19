@@ -12,17 +12,22 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
+import android.provider.Settings;
+import android.provider.Settings.Secure;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,9 +78,10 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	 * @uml.property  name="item"
 	 */
     String item;
-
+    String uid;
     
-    
+    String youruid; // "미니게임" 이벤트를 받앗을때 게임을 건디바이스의 uid를 저장하겟다.
+    String resultyouruid;// "res미니게임" 이벤트를 받았을때 게임제안을 받은 디바이스의 uid를 저장한다.(내가 걸었고, 다른사람이 받음)
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -90,10 +96,11 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	    name = intent.getExtras().getString("param2"); 
 	    team = intent.getExtras().getString("param3"); 
 	    item = intent.getExtras().getString("param4");
+	    uid= Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 	    
 	    TextView nameview= (TextView)findViewById(R.id.textView1) ;
 	    nameview.setText(name+"님");
-	    player = new Player(name ,team,item ,getApplicationContext(), gmap);
+	    player = new Player(uid,name ,team,item ,getApplicationContext(), gmap);
 	    //participant = new Participant(getApplicationContext(), gmap);
 	    participant = new Participant(team ,getApplicationContext(), gmap,handler);
 	    
@@ -141,7 +148,36 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 			participant.regParticipant(obj);
 		} else if (event.equals("leaved")){
 			participant.unRegParticipant(obj);
-		} else {
+			
+		}else if(event.equals("minigame")){	// 누군가가 게임을 신청했을때,, 
+			String myuid = null;
+			try {
+				myuid=obj.getString("desUid");		// 누군가의 입장에서 상대방이 내가 된다.
+				youruid=obj.getString("uid");		// 그 누군가는 상대방이된다.
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if( uid.equals(myuid)){
+				ghandler.sendEmptyMessage(0);
+			}
+			
+		}else if(event.equals("resMinigame")){
+			String resultmyuid = null;
+			try {
+				resultmyuid=obj.getString("desUid");
+				resultyouruid=obj.getString("uid");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if( uid.equals(resultmyuid)){
+				ghandler.sendEmptyMessage(2);
+			}
+		}
+		else {
 			// 에러처리
 		}
 	}
@@ -191,23 +227,22 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 		}
 	}//
 	// 미니 게임 다이얼로그를 띄우기 위한 랜들러 
+	
 	public Handler handler = new Handler()	{
 		public void handleMessage( Message msg )		{
 			AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
-			//switch ( msg.what )	{
-			//case	 0	:
+			
 				builder.setTitle("미니게임");
-				//LayoutInflater mLayoutInflater = GameActivity.this.getLayoutInflater();
-				//View dialogView = mLayoutInflater.inflate(R.layout.dialog, null);
 				builder.setMessage("진행 하시겟습니까?");
-				//builder.setView(dialogView);
 				builder.setCancelable(true);        // 뒤로 버튼 클릭시 취소 가능 설정
-				final String matchitem = msg.getData().getString("data");
+				final String matchuid = msg.getData().getString("data");
+				final String[] consort= participant.search(matchuid);		// 마커로부터 받은 uid를 통해 디비에서 찾아서 배열에 대입
 				
 				builder.setPositiveButton("예", new DialogInterface.OnClickListener() {			
+					@SuppressWarnings("deprecation")
 					public void onClick(DialogInterface dialog, int whichButton) {
-						//System.exit(0);
-						dialog.cancel();
+						
+						ws.gameStart(uid, consort[0]);	// 나의 uid와 상대의uid를 서버로 전송
 						AlertDialog.Builder builder1 = new AlertDialog.Builder(GameActivity.this);
 						builder1.setTitle("게임창");
 						LayoutInflater mLayoutInflater = GameActivity.this.getLayoutInflater();
@@ -227,102 +262,29 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 						
 						ImageView iv2= (ImageView)dialogView.findViewById(R.id.imageView2);	// 내무기 이미지뷰에 표시
 						BitmapDrawable dr2 = null;
-						if(matchitem.equals("0")){
-							dr2 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_scissor);
-						}
-						else if(matchitem.equals("1")){
-							dr2 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_rock);
-						}
-						else{
-							dr2 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_paper);
-						}
+						
 						iv2.setImageDrawable(dr2);
 						
 						builder1.setView(dialogView);
 						builder1.setCancelable(true);  
 						
-						builder1.setPositiveButton("결과확인", new DialogInterface.OnClickListener() {			
-							public void onClick(DialogInterface dialog, int whichButton) {
-						
-								Log.i("상대편무기",matchitem);
-								MiniGame mg = new MiniGame();
-								String re=mg.compare(item, matchitem);
-								//Toast.makeText(getApplicationContext(), re, Toast.LENGTH_LONG) .show();
-								
-								dialog.cancel();
-								AlertDialog.Builder builder2 = new AlertDialog.Builder(GameActivity.this);
-								builder2.setTitle("게임창");
-								
-								if(re.equals("이김")){
-									builder2.setMessage("당신은 이겼습니다.");
-									builder2.setCancelable(true); 
-									builder2.setPositiveButton("확인", new DialogInterface.OnClickListener() {			
-										public void onClick(DialogInterface dialog, int whichButton) {
-											dialog.cancel();
-										}
-									});
-								
-									builder2.setNegativeButton("아이템바꾸기", new DialogInterface.OnClickListener() {
-										public void onClick(DialogInterface dialog, int whichButton) {
-											item= matchitem;
-											dialog.cancel();
-										}
-									});
-
-									builder2.show();
-								}
-								else if(re.equals("졌슴")){
-									builder2.setMessage("당신은 졌습니다.");
-									builder2.setCancelable(true); 
-									builder2.setPositiveButton("관전", new DialogInterface.OnClickListener() {			
-										public void onClick(DialogInterface dialog, int whichButton) {
-											dialog.cancel();
-										}
-									});
-								
-									builder2.setNegativeButton("나가기", new DialogInterface.OnClickListener() {
-										public void onClick(DialogInterface dialog, int whichButton) {
-											dialog.cancel();
-										}
-									});
-
-									builder2.show();
-								}
-								else{	
-									builder2.setMessage("당신은 비겼습니다.");
-									builder2.setCancelable(true); 
-									builder2.setPositiveButton("확인", new DialogInterface.OnClickListener() {			
-										public void onClick(DialogInterface dialog, int whichButton) {
-											dialog.cancel();
-										}
-									});
-								
-									builder2.setNegativeButton("?", new DialogInterface.OnClickListener() {
-										public void onClick(DialogInterface dialog, int whichButton) {
-											dialog.cancel();
-										}
-									});
-
-									builder2.show();
-								}
-									
-								 
-															
-							}
-						});
-						
-						builder1.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+						builder1.setPositiveButton("확인", new DialogInterface.OnClickListener() {			
 							public void onClick(DialogInterface dialog, int whichButton) {
 								dialog.cancel();
 							}
 						});
-
+						
+						builder1.setNegativeButton("BUTTON1", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {
+								dialog.cancel();
+							}
+						});
+						
 						builder1.show();
-						
-						
+											
 					}
-				});
-
+				});	
+						
 				builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						dialog.cancel();
@@ -338,6 +300,269 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 			super.handleMessage( msg );
 		}
 	};
+	
+	public Handler ghandler = new Handler()	{
+		public void handleMessage( Message msg )		{
+			AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
+			
+			
+			LayoutInflater mLayoutInflater = GameActivity.this.getLayoutInflater();
+			View dialogView = mLayoutInflater.inflate(R.layout.contest, null);
+			ImageView iv1= (ImageView)dialogView.findViewById(R.id.imageView1);	// 내무기 이미지뷰에 표시
+			BitmapDrawable dr1 = null;
+			ImageView iv2= (ImageView)dialogView.findViewById(R.id.imageView2);	// 내무기 이미지뷰에 표시
+			BitmapDrawable dr2 = null;
+			
+			switch ( msg.what )	{
+			case	 0	:	// 게임을 받은입장에서 뜨는 다이어얼로그
+				builder.setTitle("미니게임");
+				builder.setMessage("누군가가 게임을 신청했습니다. 진행 하시겟습니까?");
+				builder.setCancelable(true);        // 뒤로 버튼 클릭시 취소 가능 설정
+								
+				builder.setPositiveButton("예", new DialogInterface.OnClickListener() {			
+					public void onClick(DialogInterface dialog, int whichButton) {
+						ghandler.sendEmptyMessage(1);
+						dialog.cancel();
+					}
+				});	
+
+				builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						dialog.cancel();
+					}
+				});
+
+				builder.show();
+				
+				break;
+				
+			case 1:	//게임을 받은 입장에서 게임하겟다고 했을때 가위바위보 게임창 다이얼로그를 뛰움
+				final String[] opponent= participant.search(youruid);
+				builder.setTitle("게임창");
+				
+				if(item.equals("0")){
+					dr1 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_scissor);
+				}
+				else if(item.equals("1")){
+					dr1 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_rock);
+				}
+				else{
+					dr1 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_paper);
+				}
+				iv1.setImageDrawable(dr1);
+				
+				
+				if(opponent[4].equals("0")){
+					dr2 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_scissor);
+				}
+				else if(opponent[4].equals("1")){
+					dr2 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_rock);
+				}
+				else{
+					dr2 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_paper);
+				}
+				iv2.setImageDrawable(dr2);
+				
+				builder.setView(dialogView);
+				builder.setCancelable(true);  
+				
+				builder.setPositiveButton("결과확인", new DialogInterface.OnClickListener() {			
+					public void onClick(DialogInterface dialog, int whichButton) {
+					
+						MiniGame mg = new MiniGame();
+						final String re=mg.compare(item,opponent[4]);
+						//Toast.makeText(getApplicationContext(), re, Toast.LENGTH_LONG) .show();
+						
+						dialog.cancel();
+						AlertDialog.Builder builder2 = new AlertDialog.Builder(GameActivity.this);
+						builder2.setTitle("게임창");
+						
+						if(re.equals("이김")){
+							builder2.setMessage("당신은 이겼습니다.");
+							builder2.setCancelable(true); 
+							builder2.setPositiveButton("확인", new DialogInterface.OnClickListener() {			
+								public void onClick(DialogInterface dialog, int whichButton) {
+									ws.gameResult(uid,youruid,re);
+									dialog.cancel();
+								}
+							});
+						
+							builder2.setNegativeButton("아이템바꾸기", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int whichButton) {
+									item= opponent[4];
+									ws.gameResult(uid,youruid,re);
+									dialog.cancel();
+								}
+							});
+
+							builder2.show();
+						}
+						else if(re.equals("졌슴")){
+							builder2.setMessage("당신은 졌습니다.");
+							builder2.setCancelable(true); 
+							builder2.setPositiveButton("관전", new DialogInterface.OnClickListener() {			
+								public void onClick(DialogInterface dialog, int whichButton) {
+									ws.gameResult(uid,youruid,re);
+									dialog.cancel();
+								}
+							});
+						
+							builder2.setNegativeButton("나가기", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int whichButton) {
+									ws.gameResult(uid,youruid,re);
+									dialog.cancel();
+								}
+							});
+
+							builder2.show();
+						}
+						else{	
+							builder2.setMessage("당신은 비겼습니다.");
+							builder2.setCancelable(true); 
+							builder2.setPositiveButton("확인", new DialogInterface.OnClickListener() {			
+								public void onClick(DialogInterface dialog, int whichButton) {
+									Intent myIntent = new Intent(((Dialog) dialog).getContext(), GameActivity.class);
+									startActivity(myIntent); 
+									dialog.cancel();
+								}
+							});
+						
+							builder2.setNegativeButton("?", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int whichButton) {
+									dialog.cancel();
+								}
+							});
+
+							builder2.show();
+						}
+					}
+				});
+				
+				builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						dialog.cancel();
+					}
+				});
+
+				builder.show();
+				break;	
+				
+				
+			case 2:		// 게임을 신청한 디바이스에 결과가 나온 후에 띄워지는 다이얼로그 ( 게임창 화면)
+				final String[] opponent1= participant.search(resultyouruid);
+				builder.setTitle("게임창");
+				
+				if(item.equals("0")){
+					dr1 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_scissor);
+				}
+				else if(item.equals("1")){
+					dr1 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_rock);
+				}
+				else{
+					dr1 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_paper);
+				}
+				iv1.setImageDrawable(dr1);
+								
+				if(opponent1[4].equals("0")){
+					dr2 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_scissor);
+				}
+				else if(opponent1[4].equals("1")){
+					dr2 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_rock);
+				}
+				else{
+					dr2 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_paper);
+				}
+				iv2.setImageDrawable(dr2);
+				
+				builder.setView(dialogView);
+				builder.setCancelable(true);  
+				
+				builder.setPositiveButton("결과확인", new DialogInterface.OnClickListener() {			
+					public void onClick(DialogInterface dialog, int whichButton) {
+					
+						MiniGame mg = new MiniGame();
+						final String re=mg.compare(item,opponent1[4]);
+											
+						dialog.cancel();
+						AlertDialog.Builder builder2 = new AlertDialog.Builder(GameActivity.this);
+						builder2.setTitle("게임창");
+						
+						if(re.equals("이김")){
+							
+							builder2.setMessage("당신은 이겼습니다.");
+							builder2.setCancelable(true); 
+							builder2.setPositiveButton("확인", new DialogInterface.OnClickListener() {			
+								public void onClick(DialogInterface dialog, int whichButton) {
+									dialog.cancel();
+								}
+							});
+						
+							builder2.setNegativeButton("아이템바꾸기", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int whichButton) {
+									item= opponent1[4];
+									
+									dialog.cancel();
+								}
+							});
+
+							builder2.show();
+						}
+						else if(re.equals("졌슴")){
+							builder2.setMessage("당신은 졌습니다.");
+							builder2.setCancelable(true); 
+							builder2.setPositiveButton("관전", new DialogInterface.OnClickListener() {			
+								public void onClick(DialogInterface dialog, int whichButton) {
+									dialog.cancel();
+								}
+							});
+						
+							builder2.setNegativeButton("나가기", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int whichButton) {
+									dialog.cancel();
+								}
+							});
+
+							builder2.show();
+						}
+						else{	
+							builder2.setMessage("당신은 비겼습니다.");
+							builder2.setCancelable(true); 
+							builder2.setPositiveButton("확인", new DialogInterface.OnClickListener() {			
+								public void onClick(DialogInterface dialog, int whichButton) {
+									
+									dialog.cancel();
+								}
+							});
+						
+							builder2.setNegativeButton("?", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int whichButton) {
+									dialog.cancel();
+								}
+							});
+
+							builder2.show();
+						}
+					}
+				});
+				
+				builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						dialog.cancel();
+					}
+				});
+
+				builder.show();
+				break;	
+				
+				
+				
+			}
+		
+			
+			super.handleMessage( msg );
+		}
+	};
+	
 	
 	
 }

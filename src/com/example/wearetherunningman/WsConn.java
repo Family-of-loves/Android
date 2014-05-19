@@ -69,4 +69,30 @@ public class WsConn extends Application {
             ex.printStackTrace();
         }
     }
+    
+    public void gameResult(String uid, String destUid,String result ){
+    	try {
+            JSONObject json = new JSONObject();
+            json.put("uid", uid);
+            json.put("desUid", destUid);
+		    json.put("result", result);            
+            socket.emit("resMinigame", callback, json);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+     
+    //게임을 하자고 메세지를 보냄
+    public void gameStart(String uid, String destUid ){
+    	try {
+            JSONObject json = new JSONObject();
+            json.put("uid", uid);
+            json.put("desUid", destUid);
+		                
+            socket.emit("minigame", callback, json);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
 }

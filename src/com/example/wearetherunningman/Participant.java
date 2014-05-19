@@ -70,6 +70,13 @@ public class Participant extends FragmentActivity  {
 		System.out.println("참가 생성");
 	}
 	
+	public String[] search(String uid){
+		
+		String[] match = dbHandler.search(uid);
+		
+		return match;
+	}
+	
 	public void regParticipant(JSONObject obj){
 		try {
 			String[] participant = dbHandler.search(obj.getString("uid"));
@@ -170,7 +177,7 @@ public class Participant extends FragmentActivity  {
 							Marker[] Marker=new Marker[5];
 							String aa=""+actual_distance;
 							Log.i("실제거리",aa);
-							if(actual_distance<=0.009221703 && actual_distance>=0.009221694){	// 계산된 거리 비교
+							//if(actual_distance<=0.009221703 && actual_distance>=0.009221694){	// 계산된 거리 비교
 								
 								gmap.setOnMarkerClickListener(this); // 지도에 리스너등록	
 								
@@ -187,7 +194,7 @@ public class Participant extends FragmentActivity  {
 										Marker[num]=gmap.addMarker(new MarkerOptions().position(loc).title(rows[1]).snippet(rows[0]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory. HUE_BLUE )));
 										num++;
 								}
-							}
+							//}
 							
 							//상대팀이면 반경 10미터 이내일때만 찍기
 												
@@ -215,7 +222,7 @@ public class Participant extends FragmentActivity  {
     			Log.i("마커",match[1]);
     			
     			Bundle data = new Bundle();
-    			data.putString("data", match[4]);
+    			data.putString("data", match[0]);
     			Message msg = Message.obtain();
     			msg.setData(data);
     			mHandler.sendMessage(msg); 
