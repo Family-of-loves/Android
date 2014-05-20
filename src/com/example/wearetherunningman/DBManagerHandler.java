@@ -85,6 +85,7 @@ public class DBManagerHandler {
 			val.put("latitude", obj.getString("latitude"));
 			val.put("longitude", obj.getString("longitude"));
 			val.put("name", obj.getString("name"));
+			val.put("item", obj.getString("item"));	// 추가한부분
 			
 			db.update(TB_NAME, val, "uid=?", new String[]{obj.getString("uid")});
 		} catch (JSONException e) {
