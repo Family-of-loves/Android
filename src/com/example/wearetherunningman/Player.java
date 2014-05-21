@@ -77,6 +77,11 @@ public class Player extends FragmentActivity implements OnMyLocationChangeListen
 		this.team = team;
 		this.item = item;
 	}
+	
+	public LatLng myLocation(){
+		return loc;
+	}
+	
 	@Override
 	public void onMyLocationChange(Location location) {
 		if (location != null) {

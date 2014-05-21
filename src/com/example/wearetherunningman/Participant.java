@@ -52,15 +52,16 @@ public class Participant extends FragmentActivity  {
 	public Handler mHandler;
 	
 	private Handler handler = new Handler(Looper.getMainLooper());
-	
+	Player player;
 	int num=0; // 상대팀 마커 찍을때 갯수
 	
-	public Participant( String team,Context c,GoogleMap gmap,Handler handler){
+	public Participant( String team,Context c,GoogleMap gmap,Handler handler, Player player){
 		// 생성
 		this.context = c;
 		this.gmap = gmap;
 		this.team = team;
 		this.mHandler = handler;
+		this.player=player;
 		
 		dbHandler = new DBManagerHandler(this.context);
 		
@@ -115,7 +116,7 @@ public class Participant extends FragmentActivity  {
 	
 	
 	
-	public class asyncTaskMarker extends AsyncTask<String, ArrayList<String[]>, String> implements OnMarkerClickListener,OnMyLocationChangeListener {
+	public class asyncTaskMarker extends AsyncTask<String, ArrayList<String[]>, String> implements OnMarkerClickListener {
 		double latitude ;
 		double longitude ;
 		@SuppressWarnings("unchecked")
@@ -125,16 +126,7 @@ public class Participant extends FragmentActivity  {
 			publishProgress(fetchArrayRows);
 			return null;
 		}
-		@Override
-		public void onMyLocationChange(Location location) {
-			if (location != null) {
-	        	this.latitude = location.getLatitude();
-	        	this.longitude = location.getLongitude();
-			}
-			// TODO Auto-generated method stub
-			
-		}
-		
+				
 		@Override
 		protected void onProgressUpdate(ArrayList<String[]>... fetchArrayRows){
 			// TODO Auto-generated method stub
@@ -165,20 +157,20 @@ public class Participant extends FragmentActivity  {
 										        	
 							float[] distance = new float[2]; // float 형태의 사이즈 2의 행렬 생성
 							float actual_distance; //실제 거리 값을 담을 변수
-														
-							Location.distanceBetween(latitude/ 1E6, longitude/ 1E6 ,  Double.parseDouble(rows[3])/ 1E6, Double.parseDouble(rows[4])/ 1E6, distance);
+							
+							//LatLng myloc=player.
+							
+							Location.distanceBetween(player.latitude/ 1E6, player.longitude/ 1E6 ,  Double.parseDouble(rows[3])/ 1E6, Double.parseDouble(rows[4])/ 1E6, distance);
 							
 							//lat1와 lon1은 첫번째 사용자, lat2와 lon2는 두번째 사용자의 GPS 값.
 							//distanceBetween은 Location클래스 내에서 정의된 static 함수이기 때문에 Location 클래스를 통해 아무데서나 부를 수 있다.
 							//이 메소드가 호출되고 나면 distance 행렬의 첫번째 요소로 두 지점의 거리가 할당된다.
 							
 							actual_distance = distance[0] * 0.000621371192f; //간단한 사용을 위해 일반 변수로 넘겨주기.
-							
-							
-							Marker[] Marker=new Marker[5];
+														
 							String aa=""+actual_distance;
 							Log.i("실제거리",aa);
-							if(actual_distance<=0.009221703 && actual_distance>=0.009221694){	// 계산된 거리 비교
+							if(actual_distance<=50.0147793E-9 && actual_distance>=2.80482E-9){	// 계산된 거리 비교
 																
 								if(rows[2].equals("1")){	// 같은팀이 아닌데 레드일경우
 									LatLng loc = new LatLng(Double.parseDouble(rows[3]), Double.parseDouble(rows[4]));

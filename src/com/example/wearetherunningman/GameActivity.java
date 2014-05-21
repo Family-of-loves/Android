@@ -95,7 +95,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
     AlertDialog rejectdialog;// 거절시 뜨는 다이얼로그
     AlertDialog okdialog;// 승인시 뜨는 다이얼로그
     AlertDialog startdialog;// 받은사람에게 게임을 진행하겟냐고 묻는  다이얼로그
-    
+        
     TextView slidingtext;
     ArrayList<String[]> pa;
     
@@ -122,7 +122,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	    nameview.setText(team+"팀"+name+"님");
 	    player = new Player(uid,name ,team,item ,getApplicationContext(), gmap);
 	    //participant = new Participant(getApplicationContext(), gmap);
-	    participant = new Participant(team ,getApplicationContext(), gmap,handler);
+	    participant = new Participant(team ,getApplicationContext(), gmap,handler ,player);
 	    
 	    slidingtext= (TextView)findViewById(R.id.slidingtext) ;
 	    slidingtext.setText("");
