@@ -1,5 +1,8 @@
 package com.example.wearetherunningman;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,6 +27,7 @@ import android.os.Vibrator;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -92,10 +96,15 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
     AlertDialog okdialog;// 승인시 뜨는 다이얼로그
     AlertDialog startdialog;// 받은사람에게 게임을 진행하겟냐고 묻는  다이얼로그
     
+    TextView slidingtext;
+    ArrayList<String[]> pa;
+    
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_game);
+		pa=new ArrayList<String[]>(); 
+		
 		vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		
 		gmap = ((SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.gMap)).getMap();
@@ -115,7 +124,8 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	    //participant = new Participant(getApplicationContext(), gmap);
 	    participant = new Participant(team ,getApplicationContext(), gmap,handler);
 	    
-	    
+	    slidingtext= (TextView)findViewById(R.id.slidingtext) ;
+	    slidingtext.setText("");
 	    
 	    ws.emitJoin(room, player);
 		emitServer();
@@ -138,7 +148,36 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 			public void run() {
 				while (true) {
 					try {
-						Thread.sleep(500);
+						/*runOnUiThread(new Runnable() {  
+			                    @Override
+			                    public void run() {
+			                    	   // TODO Auto-generated method stub
+			                    	/*String s=null;
+			                    	slidingtext.setText(s);
+			                    			                    	
+			                    	String[] st = null;					
+									// participant.read();
+									
+									 ArrayList<String[]> pa1=new ArrayList<String[]>(); 
+															
+									 pa1=participant.read();
+									
+									 if(pa1!=null){
+										 pa.addAll(pa1);
+										 									 									 
+										 if(pa.size()!=0){
+											 
+											 for(int i=0; i<pa.size(); i++){
+												st = pa.get(i);
+											 	slidingtext.append(st[1]); 
+											 	} 
+											 }	 
+										 }
+									
+									 }		                
+			                    });
+						*/
+						Thread.sleep(3000);
 						player.item=item;
 						ws.emitMessage(player);
 						participant.regMarker();
@@ -150,7 +189,26 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
         }).start();
 		
 	}
-
+	// 뒤로가기 버튼
+	@Override
+	  public boolean onKeyDown(int keyCode, KeyEvent event) {
+	      switch(keyCode) {
+	         case KeyEvent.KEYCODE_BACK:
+	           new AlertDialog.Builder(this)
+	                          .setTitle("종료")
+	                          .setMessage("종료 하시겠어요?")
+	                          .setPositiveButton("예", new DialogInterface.OnClickListener() {
+	                           public void onClick(DialogInterface dialog, int whichButton) {
+	                        	   android.os.Process.killProcess(android.os.Process.myPid());
+	                           }
+	                         })
+	                         .setNegativeButton("아니오", null).show();
+	                         return false;
+	          default:
+	            return false;
+	      }
+	  }
+	
 	/*
 	 * WebSocket Connection.
 	 */
@@ -417,10 +475,10 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 				iv1.setImageDrawable(dr1);
 				
 				
-				if(opponent[4].equals("0")){
+				if(opponent[5].equals("0")){
 					dr2 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_scissor);
 				}
-				else if(opponent[4].equals("1")){
+				else if(opponent[5].equals("1")){
 					dr2 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_rock);
 				}
 				else{
@@ -435,7 +493,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 					public void onClick(DialogInterface dialog, int whichButton) {
 					
 						MiniGame mg = new MiniGame();
-						final String re=mg.compare(item,opponent[4]);
+						final String re=mg.compare(item,opponent[5]);
 						
 						ws.gameResult(uid,youruid,re);	// 확인과 함께 결과를 상대방에게도 보내준다.
 						dialog.cancel();
@@ -454,7 +512,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 						
 							builder2.setNegativeButton("아이템바꾸기", new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int whichButton) {
-									item= opponent[4];
+									item= opponent[5];
 									//ws.gameResult(uid,youruid,re);
 									dialog.cancel();
 								}
@@ -465,16 +523,11 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 						else if(re.equals("졌슴")){
 							builder2.setMessage("당신은 졌습니다.");
 							builder2.setCancelable(true); 
-							builder2.setPositiveButton("관전", new DialogInterface.OnClickListener() {			
-								public void onClick(DialogInterface dialog, int whichButton) {
-									//ws.gameResult(uid,youruid,re);
-									dialog.cancel();
-								}
-							});
-						
+											
 							builder2.setNegativeButton("나가기", new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int whichButton) {
-									//ws.gameResult(uid,youruid,re);
+									ws.gameOut(uid);
+									android.os.Process.killProcess(android.os.Process.myPid());
 									dialog.cancel();
 								}
 							});
@@ -516,10 +569,10 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 				}
 				iv1.setImageDrawable(dr1);
 								
-				if(opponent1[4].equals("0")){
+				if(opponent1[5].equals("0")){
 					dr2 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_scissor);
 				}
-				else if(opponent1[4].equals("1")){
+				else if(opponent1[5].equals("1")){
 					dr2 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_rock);
 				}
 				else{
@@ -534,7 +587,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 					public void onClick(DialogInterface dialog, int whichButton) {
 					
 						MiniGame mg = new MiniGame();
-						final String re=mg.compare(item,opponent1[4]);
+						final String re=mg.compare(item,opponent1[5]);
 											
 						dialog.cancel();
 						AlertDialog.Builder builder2 = new AlertDialog.Builder(GameActivity.this);
@@ -552,7 +605,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 						
 							builder2.setNegativeButton("아이템바꾸기", new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int whichButton) {
-									item= opponent1[4];
+									item= opponent1[5];
 									
 									dialog.cancel();
 								}
@@ -563,14 +616,11 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 						else if(re.equals("졌슴")){
 							builder2.setMessage("당신은 졌습니다.");
 							builder2.setCancelable(true); 
-							builder2.setPositiveButton("관전", new DialogInterface.OnClickListener() {			
-								public void onClick(DialogInterface dialog, int whichButton) {
-									dialog.cancel();
-								}
-							});
-						
+													
 							builder2.setNegativeButton("나가기", new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int whichButton) {
+									ws.gameOut(uid);
+									android.os.Process.killProcess(android.os.Process.myPid());
 									dialog.cancel();
 								}
 							});

@@ -37,16 +37,41 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFFF"
         android:textStyle="bold" />
-
-        <ImageButton
-            android:id="@+id/imageButton1"
+      		
+        <SlidingDrawer 
+        android:id="@+id/slide"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:allowSingleTap="true"
+        android:animateOnClick="true"
+        android:bottomOffset="5dp"
+        android:content="@+id/content"
+        android:handle="@+id/handle"
+        android:orientation="vertical"
+        android:topOffset="60dp"
+        >
+        <ImageView 
+            android:id="@+id/handle"
+            android:src="@drawable/btn_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="30dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/btn_menu" />
+            />
+        <LinearLayout 
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFFFF"
+            android:orientation="vertical"
+            >
+            <TextView 
+                android:id="@+id/slidingtext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="4"
+   				android:lines="4"
+                />
+            
+        </LinearLayout>
+    </SlidingDrawer>
 
 </RelativeLayout>

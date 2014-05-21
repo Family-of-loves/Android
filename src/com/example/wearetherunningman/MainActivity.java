@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,17 +42,32 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		//name = (EditText) findViewById(R.id.name);		
+					
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
-		//Intent mIntent = new Intent(this, GameActivity.class);
-		//startActivity(mIntent);   //If usert push "ok"button, turn the page to GameActivity
-	      // return; 	
-		//		
+		
 	}
+	// 뒤로가기 버튼
+		@Override
+		  public boolean onKeyDown(int keyCode, KeyEvent event) {
+		      switch(keyCode) {
+		         case KeyEvent.KEYCODE_BACK:
+		           new AlertDialog.Builder(this)
+		                          .setTitle("종료")
+		                          .setMessage("종료 하시겠어요?")
+		                          .setPositiveButton("예", new DialogInterface.OnClickListener() {
+		                           public void onClick(DialogInterface dialog, int whichButton) {
+		                        	   android.os.Process.killProcess(android.os.Process.myPid());
+		                           }
+		                         })
+		                         .setNegativeButton("아니오", null).show();
+		                         return false;
+		          default:
+		            return false;
+		      }
+		  }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

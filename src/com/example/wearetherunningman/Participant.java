@@ -70,6 +70,13 @@ public class Participant extends FragmentActivity  {
 		System.out.println("참가 생성");
 	}
 	
+	public ArrayList<String[]> read(){
+		ArrayList<String[]> pa= dbHandler.read();
+		
+		return pa;
+	}
+	
+	
 	public String[] search(String uid){
 		
 		String[] match = dbHandler.search(uid);
@@ -138,9 +145,8 @@ public class Participant extends FragmentActivity  {
 			if(fetchRows!=null){
 				for(int i=0; i < fetchRows.size(); i++){
 					String[] rows = fetchRows.get(i);
-					//Log.i("team",team);
-					//Log.i("team",rows[2]);
 					
+					gmap.setOnMarkerClickListener(this); // 지도에 리스너등록	
 					if(rows != null){
 						if(team.equals(rows[2])){	// 나와 같은팀이면
 							
@@ -161,10 +167,7 @@ public class Participant extends FragmentActivity  {
 										        	
 							float[] distance = new float[2]; // float 형태의 사이즈 2의 행렬 생성
 							float actual_distance; //실제 거리 값을 담을 변수
-							
-							
 														
-							
 							Location.distanceBetween(latitude/ 1E6, longitude/ 1E6 ,  Double.parseDouble(rows[3])/ 1E6, Double.parseDouble(rows[4])/ 1E6, distance);
 							
 							//lat1와 lon1은 첫번째 사용자, lat2와 lon2는 두번째 사용자의 GPS 값.
@@ -172,29 +175,25 @@ public class Participant extends FragmentActivity  {
 							//이 메소드가 호출되고 나면 distance 행렬의 첫번째 요소로 두 지점의 거리가 할당된다.
 							
 							actual_distance = distance[0] * 0.000621371192f; //간단한 사용을 위해 일반 변수로 넘겨주기.
-							//String d = Float.toString(actual_distance);
+							
 							
 							Marker[] Marker=new Marker[5];
 							String aa=""+actual_distance;
 							Log.i("실제거리",aa);
-							//if(actual_distance<=0.009221703 && actual_distance>=0.009221694){	// 계산된 거리 비교
-								
-								gmap.setOnMarkerClickListener(this); // 지도에 리스너등록	
-								
-								
+							if(actual_distance<=0.009221703 && actual_distance>=0.009221694){	// 계산된 거리 비교
+																
 								if(rows[2].equals("1")){	// 같은팀이 아닌데 레드일경우
 									LatLng loc = new LatLng(Double.parseDouble(rows[3]), Double.parseDouble(rows[4]));
 									
-									 Marker[num]=gmap.addMarker(new MarkerOptions().position(loc).title(rows[1]).snippet(rows[0]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory. HUE_RED )));
-									// 클릭 리스너를 쓸려면 마커객체를 등록하여야 해서 일단 상태팀마커는 등록하엿슴. 여러개찍는건 생각해봐야할듯
-									 num++;
+									gmap.addMarker(new MarkerOptions().position(loc).title(rows[1]).snippet(rows[0]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory. HUE_RED )));
+																		 
 								}
 								else{		// 블루일경우
 										LatLng loc = new LatLng(Double.parseDouble(rows[3]), Double.parseDouble(rows[4]));
-										Marker[num]=gmap.addMarker(new MarkerOptions().position(loc).title(rows[1]).snippet(rows[0]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory. HUE_BLUE )));
-										num++;
+										gmap.addMarker(new MarkerOptions().position(loc).title(rows[1]).snippet(rows[0]).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory. HUE_BLUE )));
+										
 								}
-							//}
+							}
 							
 							//상대팀이면 반경 10미터 이내일때만 찍기
 												
@@ -213,28 +212,17 @@ public class Participant extends FragmentActivity  {
         @Override
     	public boolean onMarkerClick(Marker marker) {	// 마커클릭 메소드
     		
-    		//if (marker.equals(Marker)) 	// 상대방 마커를 찍을경우 // 우리편 마커는 객체가 없기때문에 여기로 안들어옴
-           // {
-    			//Log.i("마커","클릭됨");	// 로그로 확익가능
+    		
     			String[] match = dbHandler.search(marker.getSnippet());
-    			
-    			//Log.i("마커",marker.getTitle());	// 로그로 확익가능
-    			Log.i("마커",match[1]);
-    			
-    			Bundle data = new Bundle();
-    			data.putString("data", match[0]);
-    			Message msg = Message.obtain();
-    			msg.setData(data);
-    			mHandler.sendMessage(msg); 
-    			
-    			
-    			//mHandler.sendEmptyMessage(0,match[1]);  // 핸들러 메세지를 넘김으로써 미니게임 다이얼로그가 실행됨
-    			//미니게임 다이얼로그 띄워야됨
-    			//MiniGame game = new MiniGame();
-    			//game.show(getFragmentManager(), "USER");
-    			
-    			//Toast.makeText(getApplicationContext(), "덤벼", Toast.LENGTH_LONG) .show();
-           // }
+    			    			
+    			if(!team.equals(match[2])){
+    				Bundle data = new Bundle();
+    				data.putString("data", match[0]);
+    				Message msg = Message.obtain();
+    				msg.setData(data);
+    				mHandler.sendMessage(msg); 
+    			}
+    			    			
     		    		
     		return false;
     	}
