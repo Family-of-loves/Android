@@ -119,7 +119,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	    uid= Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 	    
 	    TextView nameview= (TextView)findViewById(R.id.textView1) ;
-	    nameview.setText(name+"ดิ");
+	    nameview.setText(team+"ฦภ"+name+"ดิ");
 	    player = new Player(uid,name ,team,item ,getApplicationContext(), gmap);
 	    //participant = new Participant(getApplicationContext(), gmap);
 	    participant = new Participant(team ,getApplicationContext(), gmap,handler);

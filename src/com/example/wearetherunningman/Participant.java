@@ -48,9 +48,7 @@ public class Participant extends FragmentActivity  {
 	public GoogleMap gmap;
 	public static Marker m;
 	public String team;
-	
-	
-	
+		
 	public Handler mHandler;
 	
 	private Handler handler = new Handler(Looper.getMainLooper());
@@ -215,7 +213,7 @@ public class Participant extends FragmentActivity  {
     		
     			String[] match = dbHandler.search(marker.getSnippet());
     			    			
-    			if(!team.equals(match[2])){
+    			if(!team.equals(match[2])){	// 마커가 우리편일 아닐때만 다이얼로그를 띄우겟다
     				Bundle data = new Bundle();
     				data.putString("data", match[0]);
     				Message msg = Message.obtain();
