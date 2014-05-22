@@ -26,16 +26,22 @@ public class Player extends FragmentActivity implements OnMyLocationChangeListen
 	private GoogleMap gmap;
 	private LatLng loc;
 	
-	public Player(String name, String team, String item, Context context,GoogleMap gmap){
+	public Player(String uid,String name, String team, String item, Context context,GoogleMap gmap){
 		this.gmap = gmap;
 		this.gmap.setMyLocationEnabled(true);
 		this.gmap.setOnMyLocationChangeListener(this);
 				
-		this.uid = Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+		//this.uid = Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+		this.uid=uid;
 		this.name = name;
 		this.team = team;
 		this.item = item;
 	}
+	
+	public LatLng myLocation(){
+		return loc;
+	}
+	
 	@Override
 	public void onMyLocationChange(Location location) {
 		if (location != null) {

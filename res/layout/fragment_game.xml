@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/RelativeLayout1"
+    android:id="@+id/RelativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -15,38 +15,64 @@
         class="com.google.android.gms.maps.SupportMapFragment" />
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/viewUserInfoOverlay"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_marginTop="14dp"
-        android:src="@drawable/btn_user" /><TextView
-        android:id="@+id/textView1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="30dp"
         android:gravity="center"
-        android:includeFontPadding="false"
-        android:shadowColor="#FF464646"
-        android:shadowDx="1.0"
-        android:shadowDy="1.0"
-        android:shadowRadius="1.0"
-       
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#FFFF"
-        android:textStyle="bold" />
+        android:src="@drawable/btn_user" />
 
-        <ImageButton
-            android:id="@+id/imageButton1"
+	<TextView
+	    android:id="@+id/viewUserName"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true"
+	    android:layout_marginTop="30dp"
+	    android:gravity="center"
+	    android:includeFontPadding="false"
+	    android:shadowColor="#FF464646"
+	    android:shadowDx="1.0"
+	    android:shadowDy="1.0"
+	    android:shadowRadius="1.0"
+	    android:textAppearance="?android:attr/textAppearanceMedium"
+	    android:textColor="#FFFF"
+	    android:textStyle="bold" />
+      		
+	<SlidingDrawer
+	    android:id="@+id/gameState"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:allowSingleTap="true"
+	    android:animateOnClick="true"
+	    android:bottomOffset="5dp"
+	    android:content="@+id/content"
+	    android:handle="@+id/handle"
+	    android:orientation="vertical"
+	    android:topOffset="60dp" >
+
+        <ImageView 
+            android:id="@+id/handle"
+            android:src="@drawable/btn_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="30dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/btn_menu" />
+            />
+        <LinearLayout 
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFFFF"
+            android:orientation="vertical"
+            >
+            <TextView 
+                android:id="@+id/slidingtext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="4"
+   				android:lines="4"
+                />
+            
+        </LinearLayout>
+    </SlidingDrawer>
 
 </RelativeLayout>

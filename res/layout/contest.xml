@@ -10,25 +10,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/t_enemy"
-        android:layout_alignTop="@+id/imageView1"
+        android:layout_alignTop="@+id/viewUserInfoOverlay"
         android:layout_marginLeft="20dp"
-        android:src="@drawable/btn_rock" />
+         />
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/viewUserInfoOverlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/t_user"
         android:layout_marginRight="46dp"
         android:layout_marginTop="20dp"
         android:layout_toLeftOf="@+id/imageView2"
-        />
+        android:src="@drawable/btn_rock"/>
 
     <TextView
         android:id="@+id/t_enemy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/imageView1"
+        android:layout_above="@+id/viewUserInfoOverlay"
         android:layout_alignParentRight="true"
         android:layout_marginRight="16dp"
         android:text="상대방의 무기"

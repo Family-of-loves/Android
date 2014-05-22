@@ -75,6 +75,7 @@ public class DBManagerHandler {
 			val.put("latitude", obj.getString("latitude"));
 			val.put("longitude", obj.getString("longitude"));
 			val.put("name", obj.getString("name"));
+			val.put("item", obj.getString("item"));	// 추가한부분
 			
 			db.update(TB_NAME, val, "uid=?", new String[]{obj.getString("uid")});
 		} catch (JSONException e) {
@@ -93,7 +94,7 @@ public class DBManagerHandler {
 		Cursor result = db.rawQuery(sql, null);
 		
 		if(result.moveToFirst()){
-			String[] fetchRows = {result.getString(1), result.getString(2), result.getString(4), result.getString(5), result.getString(6)};
+			String[] fetchRows = {result.getString(1), result.getString(2),result.getString(3), result.getString(4), result.getString(5), result.getString(6)};
 			return fetchRows;
         }
         result.close();
