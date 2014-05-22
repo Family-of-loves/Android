@@ -95,7 +95,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
     AlertDialog rejectdialog;// 거절시 뜨는 다이얼로그
     AlertDialog okdialog;// 승인시 뜨는 다이얼로그
     AlertDialog startdialog;// 받은사람에게 게임을 진행하겟냐고 묻는  다이얼로그
-        
+    AlertDialog resultdialog;   
     TextView slidingtext;
     ArrayList<String[]> pa;
     
@@ -345,7 +345,73 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 						ghandler.sendEmptyMessage(1);
 	                }
 	            	sendEmptyMessageDelayed( MSG_ONLY_DISMISS, 2000);
-	                break;     
+	                break;
+	                
+	            case 4:						// 게임을 받은 입장에서 결과 확인을 눌러주지 않으면 게임 신청자가 결과를 확인하지 못하는걸 방지함
+		               
+	                if(resultdialog != null &&  resultdialog.isShowing()) {
+	                	resultdialog.dismiss();
+	                	
+	                	final String[] opponent= participant.search(youruid);
+	                	MiniGame mg = new MiniGame();
+						final String re=mg.compare(item,opponent[5]);
+						
+						ws.gameResult(uid,youruid,re);	// 확인과 함께 결과를 상대방에게도 보내준다.
+						
+						AlertDialog.Builder builder2 = new AlertDialog.Builder(GameActivity.this);
+						builder2.setTitle("게임창");
+						
+						if(re.equals("이김")){
+							builder2.setMessage("당신은 이겼습니다.");
+							builder2.setCancelable(true); 
+							builder2.setPositiveButton("확인", new DialogInterface.OnClickListener() {			
+								public void onClick(DialogInterface dialog, int whichButton) {
+									
+									dialog.cancel();
+								}
+							});
+						
+							builder2.setNegativeButton("아이템바꾸기", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int whichButton) {
+									item= opponent[5];
+									//ws.gameResult(uid,youruid,re);
+									dialog.cancel();
+								}
+							});
+
+							builder2.show();
+						}
+						else if(re.equals("졌슴")){
+							builder2.setMessage("당신은 졌습니다.");
+							builder2.setCancelable(true); 
+											
+							builder2.setNegativeButton("나가기", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int whichButton) {
+									ws.gameOut(uid);
+									android.os.Process.killProcess(android.os.Process.myPid());
+									dialog.cancel();
+								}
+							});
+
+							builder2.show();
+						}
+						else{	
+							builder2.setMessage("당신은 비겼습니다.");
+							builder2.setCancelable(true); 
+							builder2.setPositiveButton("확인", new DialogInterface.OnClickListener() {			
+								public void onClick(DialogInterface dialog, int whichButton) {
+									//ws.gameResult(uid,youruid,re); 
+									dialog.cancel();
+								}
+							});
+						
+							builder2.show();
+						}
+						
+	                }
+	            	sendEmptyMessageDelayed( MSG_ONLY_DISMISS, 2000);
+	                break;    
+	                
 	            }
 	        }
 	    };
@@ -548,8 +614,10 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 						}
 					}
 				});
-								
-				builder.show();
+				
+				resultdialog=builder.create();
+				resultdialog.show();
+				dHandler.sendEmptyMessageDelayed(4, 5000);
 				break;	
 				
 				
@@ -660,7 +728,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 				
 				rejectdialog=builder.create();
 				rejectdialog.show();
-				//dHandler.sendEmptyMessageDelayed(1, 3000);	// 시간지나면 자동종료
+				dHandler.sendEmptyMessageDelayed(1, 5000);	// 시간지나면 자동종료
 				break;
 				
 			case	 4	:	// 게임을 신청한입장에서 뜨는 다이어얼로그
@@ -676,7 +744,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 				});	
 				okdialog=builder.create();
 				okdialog.show();
-				//dHandler.sendEmptyMessageDelayed(2, 3000);	// 시간지나면 자동종료
+				dHandler.sendEmptyMessageDelayed(2, 5000);	// 시간지나면 자동종료
 				break;	
 				
 			}
