@@ -167,7 +167,7 @@ public class Participant extends FragmentActivity  {
 							//이 메소드가 호출되고 나면 distance 행렬의 첫번째 요소로 두 지점의 거리가 할당된다.
 							
 							actual_distance = distance[0] * 0.000621371192f; //간단한 사용을 위해 일반 변수로 넘겨주기.
-														
+							//							
 							String aa=""+actual_distance;
 							Log.i("실제거리",aa);
 							if(actual_distance<=30.0147793E-9 && actual_distance>=1.80482E-9){	// 계산된 거리 비교
