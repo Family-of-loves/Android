@@ -17,6 +17,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
@@ -39,19 +42,23 @@ public class MainActivity extends ActionBarActivity {
 	 * @uml.property  name="inputUid"
 	 */
 	String inputUid;
-	
+	static WebView mWebView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-					
+		
+		
+				
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
 		
 	}
+	  
+   
 	// 뒤로가기 버튼
 		@Override
 		  public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -94,6 +101,8 @@ public class MainActivity extends ActionBarActivity {
 			return super.onOptionsItemSelected(item);
 		}
 
+		
+		
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
@@ -111,6 +120,11 @@ public class MainActivity extends ActionBarActivity {
 			ImageButton how_to_use = (ImageButton) rootView.findViewById(R.id.how);
 			how_to_use.setOnClickListener(this);
 			
+			ImageButton web = (ImageButton) rootView.findViewById(R.id.web);
+			web.setOnClickListener(this);
+			
+			mWebView = (WebView)rootView.findViewById(R.id.webview);
+			mWebView.setVisibility(View.GONE);
 			return rootView;
 		}
 
@@ -120,6 +134,7 @@ public class MainActivity extends ActionBarActivity {
 			//
 			UserInfoDialog mUserInfoDialog;
 			HowToDialog mHowToDialog;
+			
 			switch (v.getId()) {
 			case R.id.enter:
 				inputRoom = room.getText().toString();
@@ -131,9 +146,18 @@ public class MainActivity extends ActionBarActivity {
 			case R.id.how:
 				mHowToDialog= new HowToDialog();
 				mHowToDialog.show(getFragmentManager(), "사용방법");
+				break;
+			
+			case R.id.web:
+							     
+				//mWebView.setVisibility(View.VISIBLE); 
+				 mWebView.loadUrl("http://dev.hagi4u.net:3000/");
+				 mWebView.getSettings().setJavaScriptEnabled(true);
+				 break;
 			}
 		}
 
+		
 	}
 		
 	
