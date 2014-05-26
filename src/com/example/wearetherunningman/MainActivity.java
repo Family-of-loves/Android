@@ -8,9 +8,12 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,29 +67,32 @@ public class MainActivity extends ActionBarActivity {
 		                         })
 		                         .setNegativeButton("아니오", null).show();
 		                         return false;
-		          default:
+		         case KeyEvent.KEYCODE_MENU:                
+		        	 return true;     
+		        	 
+		         default:
 		            return false;
 		      }
 		  }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		@Override
+		public boolean onCreateOptionsMenu(Menu menu) {
+			// Inflate the menu; this adds items to the action bar if it is present.
+			getMenuInflater().inflate(R.menu.game, menu);
 			return true;
 		}
-		return super.onOptionsItemSelected(item);
-	}
+
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item) {
+			// Handle action bar item clicks here. The action bar will
+			// automatically handle clicks on the Home/Up button, so long
+			// as you specify a parent activity in AndroidManifest.xml.
+			int id = item.getItemId();
+			if (id == R.id.action_settings) {
+				return true;
+			}
+			return super.onOptionsItemSelected(item);
+		}
 
 	/**
 	 * A placeholder fragment containing a simple view.
@@ -102,6 +108,9 @@ public class MainActivity extends ActionBarActivity {
 			ImageButton b_enter = (ImageButton) rootView.findViewById(R.id.enter);
 			b_enter.setOnClickListener(this);
 			
+			ImageButton how_to_use = (ImageButton) rootView.findViewById(R.id.how);
+			how_to_use.setOnClickListener(this);
+			
 			return rootView;
 		}
 
@@ -110,6 +119,7 @@ public class MainActivity extends ActionBarActivity {
 			// TODO Auto-generated method stub
 			//
 			UserInfoDialog mUserInfoDialog;
+			HowToDialog mHowToDialog;
 			switch (v.getId()) {
 			case R.id.enter:
 				inputRoom = room.getText().toString();
@@ -117,10 +127,48 @@ public class MainActivity extends ActionBarActivity {
 				mUserInfoDialog = new UserInfoDialog();
 				mUserInfoDialog.show(getFragmentManager(), "USER");
 				break;
-			}// 사용자 인증번호 허락시 방참가???
+			
+			case R.id.how:
+				mHowToDialog= new HowToDialog();
+				mHowToDialog.show(getFragmentManager(), "사용방법");
+			}
 		}
 
 	}
+		
+	
+	public static class HowToDialog extends DialogFragment {
+		
+		@Override
+		public Dialog onCreateDialog(Bundle savedInstanceState) {
+						
+			AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+									
+			mBuilder.setTitle("사용방법");
+			mBuilder.setMessage("1. 주최자가 웹을 통해 방을 생성합니다.\n"
+					+ "    http://dev.hagi4u.net:3000/\n"
+					+"2. 참가자는 생성된 방으로 참가를 하고\n"
+					+"    정보를 입력 후 게임을 시작합니다.");	
+						
+			mBuilder.setCancelable(false)
+					.setPositiveButton("OK",
+							new DialogInterface.OnClickListener() {
+								
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									
+										dialog.cancel();
+									}
+							});
+					
+			return mBuilder.create();
+		}
+		public void onStop() {
+			super.onStop();
+		}
+				
+	}
+	
 	public static class UserInfoDialog extends DialogFragment {
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {

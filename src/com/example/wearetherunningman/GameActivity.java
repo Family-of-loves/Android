@@ -269,7 +269,10 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	                         })
 	                         .setNegativeButton("¾Æ´Ï¿À", null).show();
 	                         return false;
-	          default:
+	         
+	         case KeyEvent.KEYCODE_MENU:                
+	        	 return true;              
+	         default:
 	            return false;
 	      }
 	  }
