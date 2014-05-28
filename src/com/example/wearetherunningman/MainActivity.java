@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -131,12 +132,7 @@ public class MainActivity extends ActionBarActivity {
 
 			ImageButton web = (ImageButton) rootView.findViewById(R.id.web);
 			web.setOnClickListener(this);
-
-			mWebView = (WebView) rootView.findViewById(R.id.webview);
-			//mWebView.getSettings().setUseWideViewPort(true);
-			//mWebView.getSettings().setLoadWithOverviewMode(true);
-			//mWebView.getSettings().setAllowUniversalAccessFromFileURLs(true);
-			mWebView.setVisibility(View.GONE);
+			
 			return rootView;
 		}
 
@@ -161,24 +157,9 @@ public class MainActivity extends ActionBarActivity {
 				break;
 
 			case R.id.web:
-
-				mWebView.setVisibility(View.VISIBLE);
-				//mWebView.loadData("", "text/html", null);
-				mWebView.loadUrl("http://dev.hagi4u.net:3000/");
-
-				mWebView.getSettings().setJavaScriptEnabled(true);
-				/*
-				mWebView.setWebViewClient(new WebViewClient() {
-
-					@Override
-					public boolean shouldOverrideUrlLoading(WebView view,
-							String url) {
-						// TODO Auto-generated method stub
-						view.loadUrl(url);
-						return true;
-					}
-				});
-				*/
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://dev.hagi4u.net:3000/"));
+				startActivity(browserIntent);
+				
 				break;
 			}
 		}
