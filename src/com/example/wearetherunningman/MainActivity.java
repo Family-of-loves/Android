@@ -162,7 +162,7 @@ public class MainActivity extends ActionBarActivity {
 
 			case R.id.web:
 
-				//mWebView.setVisibility(View.VISIBLE);
+				mWebView.setVisibility(View.VISIBLE);
 				//mWebView.loadData("", "text/html", null);
 				mWebView.loadUrl("http://dev.hagi4u.net:3000/");
 
