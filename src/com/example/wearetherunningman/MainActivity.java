@@ -106,6 +106,7 @@ public class MainActivity extends ActionBarActivity {
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
+	@SuppressLint("NewApi")
 	public static class PlaceholderFragment extends Fragment implements
 			View.OnClickListener {
 		public PlaceholderFragment() {
@@ -132,9 +133,9 @@ public class MainActivity extends ActionBarActivity {
 			web.setOnClickListener(this);
 
 			mWebView = (WebView) rootView.findViewById(R.id.webview);
-			mWebView.getSettings().setJavaScriptEnabled(true);
-			mWebView.getSettings().setUseWideViewPort(true);
-			mWebView.getSettings().setLoadWithOverviewMode(true);
+			//mWebView.getSettings().setUseWideViewPort(true);
+			//mWebView.getSettings().setLoadWithOverviewMode(true);
+			//mWebView.getSettings().setAllowUniversalAccessFromFileURLs(true);
 			mWebView.setVisibility(View.GONE);
 			return rootView;
 		}
@@ -161,8 +162,12 @@ public class MainActivity extends ActionBarActivity {
 
 			case R.id.web:
 
-				mWebView.setVisibility(View.VISIBLE);
+				//mWebView.setVisibility(View.VISIBLE);
+				//mWebView.loadData("", "text/html", null);
 				mWebView.loadUrl("http://dev.hagi4u.net:3000/");
+
+				mWebView.getSettings().setJavaScriptEnabled(true);
+				/*
 				mWebView.setWebViewClient(new WebViewClient() {
 
 					@Override
@@ -173,7 +178,7 @@ public class MainActivity extends ActionBarActivity {
 						return true;
 					}
 				});
-				
+				*/
 				break;
 			}
 		}
