@@ -53,7 +53,7 @@ public class Participant extends FragmentActivity  {
 	
 	private Handler handler = new Handler(Looper.getMainLooper());
 	Player player;
-	int num=0; // »ó´ëÆÀ ¸¶Ä¿ ÂïÀ»¶§ °¹¼ö
+	
 	
 	public Participant( String team,Context c,GoogleMap gmap,Handler handler, Player player){
 		// »ý¼º
@@ -108,7 +108,7 @@ public class Participant extends FragmentActivity  {
 		
 		handler.post(new Runnable() {
 		      public void run() {
-		    	  num=0;
+		    	  
 		    	  new asyncTaskMarker().execute();
 		      }
 		   });
