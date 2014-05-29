@@ -47,30 +47,39 @@ public class GameActivity extends ActionBarActivity implements
 	/*
 	 * Creator Objects
 	 */
+
 	/**
 	 * @uml.property name="player"
 	 * @uml.associationEnd
 	 */
+
 	Player player;
+
 	/**
 	 * @uml.property name="participant"
 	 * @uml.associationEnd
 	 */
+
 	Participant participant;
+
 	/**
 	 * @uml.property name="gmap"
 	 * @uml.associationEnd
 	 */
+
 	GoogleMap gmap;
+
 	/**
 	 * @uml.property name="ws"
 	 * @uml.associationEnd multiplicity="(1 1)"
 	 */
+
 	WsConn ws = new WsConn(this);
 	Vibrator vib;// 진동효과
 	/*
 	 * Using variables
 	 */
+
 	/**
 	 * @uml.property name="room"
 	 */
@@ -116,8 +125,11 @@ public class GameActivity extends ActionBarActivity implements
 
 	int gameOver = 0;
 	int oneTOone = 0;
+    
+   
+    
+    @Override
 
-	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_game);

@@ -15,19 +15,8 @@ import android.util.Log;
  * @author  JeongMyoungHak
  */
 public class DBManagerHandler {
-    /**
-	 * @uml.property  name="mDBManager"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
     private DBManager mDBManager;
-    /**
-	 * @uml.property  name="db"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
     private SQLiteDatabase db;
-    /**
-	 * @uml.property  name="tB_NAME"
-	 */
     private String TB_NAME = "participant";
      
     public DBManagerHandler (Context context){
