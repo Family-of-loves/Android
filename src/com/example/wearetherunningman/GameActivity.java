@@ -45,45 +45,17 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	/*
 	 * Creator Objects 
 	 */
-	/**
-	 * @uml.property  name="player"
-	 * @uml.associationEnd  
-	 */
 	Player player;
-	/**
-	 * @uml.property  name="participant"
-	 * @uml.associationEnd  
-	 */
 	Participant participant;
-	/**
-	 * @uml.property  name="gmap"
-	 * @uml.associationEnd  
-	 */
 	GoogleMap gmap;
-	/**
-	 * @uml.property  name="ws"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
 	WsConn ws = new WsConn(this);
 	Vibrator vib ;// 진동효과
 	/*
 	 * Using variables
 	 */
-    /**
-	 * @uml.property  name="room"
-	 */
     String room;
-    /**
-	 * @uml.property  name="name"
-	 */
     String name;
-    /**
-	 * @uml.property  name="team"
-	 */
     String team;
-    /**
-	 * @uml.property  name="item"
-	 */
     String item;
     String uid;
     

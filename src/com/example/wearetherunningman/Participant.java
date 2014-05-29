@@ -31,20 +31,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class Participant extends FragmentActivity  {
-	/**
-	 * @uml.property  name="context"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
+	
 	Context context;
-	/**
-	 * @uml.property  name="dbHandler"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
 	public DBManagerHandler dbHandler;
-	/**
-	 * @uml.property  name="gmap"
-	 * @uml.associationEnd  multiplicity="(1 1)"
-	 */
 	public GoogleMap gmap;
 	public static Marker m;
 	public String team;
