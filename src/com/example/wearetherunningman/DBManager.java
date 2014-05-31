@@ -8,7 +8,6 @@ public class DBManager extends SQLiteOpenHelper {
     private final static String TB_NAME = "participant";
     public static final String DB_NAME = "participant.db";
     public static final int DB_VERSION = 1;
-
     String quary ;
      
     //constructor
@@ -25,12 +24,12 @@ public class DBManager extends SQLiteOpenHelper {
                 + ");";
     }  
  
-    //Å×ÀÌºíÀ» »ı¼º
+    //í…Œì´ë¸”ì„ ìƒì„±
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(quary);
     }
-    //¾÷±×·¹ÀÌµå 
+    //ì—…ê·¸ë ˆì´ë“œ 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     	String sql_droptable = "DROP TABLE IF EXISTS " + TB_NAME;  

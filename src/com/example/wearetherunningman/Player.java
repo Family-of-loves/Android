@@ -18,6 +18,7 @@ public class Player extends FragmentActivity implements OnMyLocationChangeListen
 	String item ;
 	double latitude ;
 	double longitude ;
+
 	boolean isAlive = true;
 	boolean isSetComplete = false;
 	

@@ -31,12 +31,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class Participant extends FragmentActivity  {
-
 	Context context;
 	public DBManagerHandler dbHandler;
 	public GoogleMap gmap;
 	public static Marker m;
 	public String team;
+
 	public Handler mHandler;
 	private Handler handler = new Handler(Looper.getMainLooper());
 	Player player;
@@ -154,10 +154,10 @@ public class Participant extends FragmentActivity  {
 							//이 메소드가 호출되고 나면 distance 행렬의 첫번째 요소로 두 지점의 거리가 할당된다.
 							
 							actual_distance = distance[0] * 0.000621371192f; //간단한 사용을 위해 일반 변수로 넘겨주기.
-														
+							//							
 							String aa=""+actual_distance;
 							Log.i("실제거리",aa);
-							if(actual_distance<=50.0147793E-9 && actual_distance>=2.80482E-9){	// 계산된 거리 비교
+							if(actual_distance<=30.0147793E-9 && actual_distance>=1.80482E-9){	// 계산된 거리 비교
 																
 								if(rows[2].equals("1")){	// 같은팀이 아닌데 레드일경우
 									LatLng loc = new LatLng(Double.parseDouble(rows[3]), Double.parseDouble(rows[4]));

@@ -22,56 +22,239 @@
         android:gravity="center"
         android:src="@drawable/btn_user" />
 
-	<TextView
-	    android:id="@+id/viewUserName"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentLeft="true"
-	    android:layout_alignParentTop="true"
-	    android:layout_marginTop="30dp"
-	    android:gravity="center"
-	    android:includeFontPadding="false"
-	    android:shadowColor="#FF464646"
-	    android:shadowDx="1.0"
-	    android:shadowDy="1.0"
-	    android:shadowRadius="1.0"
-	    android:textAppearance="?android:attr/textAppearanceMedium"
-	    android:textColor="#FFFF"
-	    android:textStyle="bold" />
-      		
-	<SlidingDrawer
-	    android:id="@+id/gameState"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    android:allowSingleTap="true"
-	    android:animateOnClick="true"
-	    android:bottomOffset="5dp"
-	    android:content="@+id/content"
-	    android:handle="@+id/handle"
-	    android:orientation="vertical"
-	    android:topOffset="60dp" >
+    <TextView
+        android:id="@+id/viewUserName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:shadowColor="#FF464646"
+        android:shadowDx="1.0"
+        android:shadowDy="1.0"
+        android:shadowRadius="1.0"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#FFFF"
+        android:textStyle="bold" />
 
-        <ImageView 
+    <SlidingDrawer
+        android:id="@+id/gameState"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:allowSingleTap="true"
+        android:animateOnClick="true"
+        android:bottomOffset="5dp"
+        android:content="@+id/content"
+        android:handle="@+id/handle"
+        android:orientation="vertical"
+        android:topOffset="60dp" >
+
+        <ImageView
             android:id="@+id/handle"
-            android:src="@drawable/btn_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
-        <LinearLayout 
+            android:src="@drawable/btn_menu" />
+
+        
+        <LinearLayout
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#FFFFFFFF"
-            android:orientation="vertical"
-            >
-            <TextView 
-                android:id="@+id/slidingtext"
+            android:orientation="vertical" >
+
+            <ScrollView
+                android:id="@+id/scrollView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.24" >
+                <LinearLayout
+            android:id="@+id/content_wrap"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFFFF"
+            android:orientation="vertical" >
+            <TextView
+                android:id="@+id/txt_myInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="4"
-   				android:lines="4"
-                />
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:text="나의 정보"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <ImageView
+                android:id="@+id/myItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="14dp"
+                android:src="@drawable/dialog_paperbtn" />
+
+            <ImageView
+                android:id="@+id/myTeam"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/dialog_redbtn" />
+
+            <TextView
+                android:id="@+id/txt_gameInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="14dp"
+                android:text="게임 정보"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:stretchColumns="*" >
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp" />
+
+                    <TableRow
+                        android:id="@+id/table_head"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="1dp"
+                            android:layout_marginLeft="1dp"
+                            android:background="#666666"
+                            android:gravity="center"
+                            android:padding="3dp"
+                            android:text="항목" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="1dp"
+                            android:layout_marginLeft="1dp"
+                            android:background="#666666"
+                            android:gravity="center"
+                            android:padding="3dp"
+                            android:text="정보" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/table_game"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="1dp"
+                            android:layout_marginLeft="1dp"
+                            android:padding="3dp"
+                            android:text="게임횟수"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:id="@+id/num_game"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="1dp"
+                            android:layout_marginLeft="1dp"
+                            android:text="1 명"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/table_refuse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="1dp"
+                            android:layout_marginLeft="1dp"
+                            android:padding="3dp"
+                            android:text="남은게임 거절횟수"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:id="@+id/num_refuse"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="1dp"
+                            android:layout_marginLeft="1dp"
+                            android:text="3 회/5회"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/table_myTeam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="1dp"
+                            android:layout_marginLeft="1dp"
+                            android:padding="3dp"
+                            android:text="우리팀 인원"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:id="@+id/num_myTeam"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="1dp"
+                            android:layout_marginLeft="1dp"
+                            android:text="3 명"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+                    </TableRow>
+
+                    <TableRow
+                        android:id="@+id/table_enemyTeam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="1dp"
+                            android:layout_marginLeft="1dp"
+                            android:padding="3dp"
+                            android:text="상대팀 인원"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                        <TextView
+                            android:id="@+id/num_enemyTeam"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="1dp"
+                            android:layout_marginLeft="1dp"
+                            android:text="5 명"
+                            android:textAppearance="?android:attr/textAppearanceLarge" />
+                    </TableRow>
+                </TableLayout>
+
+            <ImageButton
+                android:id="@+id/btn_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/game_logout" />
+
+           
             
+        </LinearLayout>
+            </ScrollView>
         </LinearLayout>
     </SlidingDrawer>
 

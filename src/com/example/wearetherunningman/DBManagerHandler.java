@@ -11,11 +11,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
  
-/**
- * @author  JeongMyoungHak
- */
 public class DBManagerHandler {
-    
+
     private DBManager mDBManager;
     private SQLiteDatabase db;
     private String TB_NAME = "participant";
