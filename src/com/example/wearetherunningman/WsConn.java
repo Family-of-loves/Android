@@ -35,6 +35,7 @@ public class WsConn extends Application {
             json.put("latitude", p.latitude);
             json.put("longitude", p.longitude);
             json.put("item", p.item);
+            json.put("flag", p.flag);
         } catch (JSONException ex) {
             ex.printStackTrace();
         }
@@ -51,6 +52,7 @@ public class WsConn extends Application {
             json.put("latitude", p.latitude);
             json.put("longitude", p.longitude);
             json.put("item", p.item);
+            json.put("flag", p.flag);
             
             socket.emit("join", callback, json);
         } catch (Exception ex) {

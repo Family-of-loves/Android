@@ -17,6 +17,7 @@ public class Player extends FragmentActivity implements OnMyLocationChangeListen
 	String name ;
 	String team ;
 	String item ;
+	String flag;
 	double latitude ;
 	double longitude ;
 	
@@ -28,7 +29,7 @@ public class Player extends FragmentActivity implements OnMyLocationChangeListen
 	private GoogleMap gmap;
 	private LatLng loc;
 	
-	public Player(String uid,String name, String team, String item, Context context,GoogleMap gmap){
+	public Player(String uid,String name, String team, String item, String flag,Context context,GoogleMap gmap){
 		this.gmap = gmap;
 		this.gmap.setMyLocationEnabled(true);
 		this.gmap.setOnMyLocationChangeListener(this);
@@ -38,6 +39,7 @@ public class Player extends FragmentActivity implements OnMyLocationChangeListen
 		this.name = name;
 		this.team = team;
 		this.item = item;
+		this.flag = flag;
 	}
 	
 	public LatLng myLocation(){

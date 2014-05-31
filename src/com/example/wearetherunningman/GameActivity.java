@@ -44,59 +44,21 @@ import android.graphics.drawable.BitmapDrawable;
 public class GameActivity extends ActionBarActivity implements
 		WsCallbackInterface {
 
-	/*
-	 * Creator Objects
-	 */
-
-	/**
-	 * @uml.property name="player"
-	 * @uml.associationEnd
-	 */
-
 	Player player;
-
-	/**
-	 * @uml.property name="participant"
-	 * @uml.associationEnd
-	 */
 
 	Participant participant;
 
-	/**
-	 * @uml.property name="gmap"
-	 * @uml.associationEnd
-	 */
-
 	GoogleMap gmap;
-
-	/**
-	 * @uml.property name="ws"
-	 * @uml.associationEnd multiplicity="(1 1)"
-	 */
 
 	WsConn ws = new WsConn(this);
 	Vibrator vib;// 진동효과
-	/*
-	 * Using variables
-	 */
 
-	/**
-	 * @uml.property name="room"
-	 */
 	String room;
-	/**
-	 * @uml.property name="name"
-	 */
-	String name;
-	/**
-	 * @uml.property name="team"
-	 */
-	String team;
-	/**
-	 * @uml.property name="item"
-	 */
-	String item;
 	String uid;
+	String name;
+	String team;
+	String item;
+	String flag;
 
 	String youruid; // "미니게임" 이벤트를 받앗을때 게임을 건디바이스의 uid를 저장하겟다. -- 게임제안을 받은놈만이 이
 					// 값을 사용한다.
@@ -125,11 +87,8 @@ public class GameActivity extends ActionBarActivity implements
 
 	int gameOver = 0;
 	int oneTOone = 0;
-    
-   
-    
-    @Override
 
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_game);
@@ -148,11 +107,12 @@ public class GameActivity extends ActionBarActivity implements
 		item = intent.getExtras().getString("param4");
 		uid = Secure
 				.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-
+		flag = "0";
+		
 		TextView nameview = (TextView) findViewById(R.id.viewUserName);
 		nameview.setText(name + "님");
-		player = new Player(uid, name, team, item, getApplicationContext(),
-				gmap);
+		player = new Player(uid, name, team, item, flag,
+				getApplicationContext(), gmap);
 		// participant = new Participant(getApplicationContext(), gmap);
 		participant = new Participant(team, getApplicationContext(), gmap,
 				handler, player);
@@ -238,14 +198,14 @@ public class GameActivity extends ActionBarActivity implements
 
 								String[] st = null;
 								ArrayList<String[]> pa = pa = new ArrayList<String[]>();
-								;
+
 								ArrayList<String[]> pa1 = new ArrayList<String[]>();
 
 								pa1 = participant.read();
 
 								if (pa1 != null) {
 									pa.addAll(pa1);
-									
+
 									if (pa.size() != 0) {
 
 										for (int i = 0; i < pa.size(); i++) {
@@ -259,22 +219,28 @@ public class GameActivity extends ActionBarActivity implements
 										}
 									}
 								}
+								
 								if (otherTeamCount == 0)
 									gameOver += 1; // 상대편 수가 0인 채로 지속되면 증가
 
-								if (gameOver == 7)
+								if (gameOver == 30)
 									ghandler.sendEmptyMessage(5); // 게임을 이겻다고 알림
+								 
+								if (otherTeamCount == 1 && myTeamCount == 0) // 나와
+																				// 상대편
+																				// 한명이
+																				// 남았을
+																				// 경우
 
-								if (otherTeamCount == 1 && myTeamCount == 0) // 나와 상대편 한명이 남았을 경우
-																				
 									oneTOone += 1;
 
-								if (oneTOone == 7) {
+								if (oneTOone == 30) {
 									if (item.equals(st[5])) {
 										vib.vibrate(3000);// 진동
 										Random r = new Random();
-										item = Integer.toString(r.nextInt(2 - 0 + 1) + 0);
-										
+										item = Integer.toString(r
+												.nextInt(2 - 0 + 1) + 0);
+
 									}
 								}
 								myTeamNum.setText(myTeamCount + "명");
@@ -284,8 +250,9 @@ public class GameActivity extends ActionBarActivity implements
 							}
 						});
 
-						Thread.sleep(3000);
+						Thread.sleep(1000);
 						player.item = item;
+						player.flag=flag;
 						ws.emitMessage(player);
 						participant.regMarker();
 					} catch (InterruptedException e) {
@@ -456,6 +423,7 @@ public class GameActivity extends ActionBarActivity implements
 
 				if (rejectdialog != null && rejectdialog.isShowing()) {
 					rejectdialog.dismiss();
+					flag="0";
 				}
 				sendEmptyMessageDelayed(MSG_ONLY_DISMISS, 2000);
 				break;
@@ -503,7 +471,7 @@ public class GameActivity extends ActionBarActivity implements
 								new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog,
 											int whichButton) {
-
+										flag="0";
 										dialog.cancel();
 									}
 								});
@@ -513,7 +481,7 @@ public class GameActivity extends ActionBarActivity implements
 									public void onClick(DialogInterface dialog,
 											int whichButton) {
 										item = opponent[5];
-										// ws.gameResult(uid,youruid,re);
+										flag="0";
 										dialog.cancel();
 									}
 								});
@@ -543,7 +511,7 @@ public class GameActivity extends ActionBarActivity implements
 								new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog,
 											int whichButton) {
-										// ws.gameResult(uid,youruid,re);
+										flag="0";
 										dialog.cancel();
 									}
 								});
@@ -566,87 +534,106 @@ public class GameActivity extends ActionBarActivity implements
 			AlertDialog.Builder builder = new AlertDialog.Builder(
 					GameActivity.this);
 
-			builder.setTitle("미니게임");
-			builder.setMessage("진행 하시겟습니까?");
-			builder.setCancelable(true); // 뒤로 버튼 클릭시 취소 가능 설정
 			final String matchuid = msg.getData().getString("data"); // 마커로부터 받은
-																		// uid값을
-																		// 저장한다.
+			// uid값을
+			// 저장한다.
 			final String[] consort = participant.search(matchuid); // 마커로부터 받은
-																	// uid를 통해
-																	// 디비에서 찾아서
-																	// 배열에 대입
+			// uid를 통해
+			// 디비에서 찾아서
+			// 배열에 대입
+			
+			if (consort[6].equals("1")) {
+				builder.setTitle("미니게임");
+				builder.setMessage("게임이 진행중인 참가자입니다.");
+				builder.setCancelable(true); // 뒤로 버튼 클릭시 취소 가능 설정
 
-			builder.setPositiveButton("예",
-					new DialogInterface.OnClickListener() {
-						@SuppressWarnings("deprecation")
-						public void onClick(DialogInterface dialog,
-								int whichButton) {
-
-							ws.gameStart(uid, consort[0]); // 나의 uid와 상대의uid를
-															// 서버로 전송
-							AlertDialog.Builder mybuilder = new AlertDialog.Builder(
-									GameActivity.this);
-
-							LayoutInflater mLayoutInflater = GameActivity.this
-									.getLayoutInflater();
-							View dialogView = mLayoutInflater.inflate(
-									R.layout.contest, null);
-							ImageView iv1 = (ImageView) dialogView
-									.findViewById(R.id.imageView1); // 내무기 이미지뷰에
-																	// 표시
-							BitmapDrawable dr1 = null;
-							ImageView iv2 = (ImageView) dialogView
-									.findViewById(R.id.imageView2); // 상대무기
-																	// 이미지뷰에
-																	// 표시..
-																	// null값이다.
-							BitmapDrawable dr2 = null;
-
-							if (item.equals("0")) {
-								dr1 = (BitmapDrawable) getResources()
-										.getDrawable(R.drawable.btn_scissor);
-							} else if (item.equals("1")) {
-								dr1 = (BitmapDrawable) getResources()
-										.getDrawable(R.drawable.btn_rock);
-							} else {
-								dr1 = (BitmapDrawable) getResources()
-										.getDrawable(R.drawable.btn_paper);
+				builder.setPositiveButton("확인",
+						new DialogInterface.OnClickListener() {
+							@SuppressWarnings("deprecation")
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+								dialog.cancel();
 							}
-							iv1.setImageDrawable(dr1);
+						});
+				builder.show();
+			} else {
+				builder.setTitle("미니게임");
+				builder.setMessage("진행 하시겟습니까?");
+				builder.setCancelable(true); // 뒤로 버튼 클릭시 취소 가능 설정
 
-							iv2.setImageDrawable(dr2); // null값을 그냥 사용함으로써 상대의
-														// 무기는 알수가 없게 된다.
+				builder.setPositiveButton("예",
+						new DialogInterface.OnClickListener() {
+							@SuppressWarnings("deprecation")
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+								flag="1";
+								ws.gameStart(uid, consort[0]); // 나의 uid와
+																// 상대의uid를
+																// 서버로 전송
+								AlertDialog.Builder mybuilder = new AlertDialog.Builder(
+										GameActivity.this);
 
-							mybuilder.setView(dialogView);
-							mybuilder.setCancelable(true);
+								LayoutInflater mLayoutInflater = GameActivity.this
+										.getLayoutInflater();
+								View dialogView = mLayoutInflater.inflate(
+										R.layout.contest, null);
+								ImageView iv1 = (ImageView) dialogView
+										.findViewById(R.id.imageView1); // 내무기
+																		// 이미지뷰에
+																		// 표시
+								BitmapDrawable dr1 = null;
+								ImageView iv2 = (ImageView) dialogView
+										.findViewById(R.id.imageView2); // 상대무기
+																		// 이미지뷰에
+																		// 표시..
+																		// null값이다.
+								BitmapDrawable dr2 = null;
 
-							mybuilder.setNegativeButton("계속진행",
-									new DialogInterface.OnClickListener() {
-										public void onClick(
-												DialogInterface dialog,
-												int whichButton) {
+								if (item.equals("0")) {
+									dr1 = (BitmapDrawable) getResources()
+											.getDrawable(R.drawable.btn_scissor);
+								} else if (item.equals("1")) {
+									dr1 = (BitmapDrawable) getResources()
+											.getDrawable(R.drawable.btn_rock);
+								} else {
+									dr1 = (BitmapDrawable) getResources()
+											.getDrawable(R.drawable.btn_paper);
+								}
+								iv1.setImageDrawable(dr1);
 
-											dialog.cancel();
-										}
-									});
-							mydialog = mybuilder.create();
-							mydialog.show();
-							dHandler.sendEmptyMessageDelayed(0, 3000); // 시간지나면
-																		// 자동종료
-						}
-					});
+								iv2.setImageDrawable(dr2); // null값을 그냥 사용함으로써
+															// 상대의
+															// 무기는 알수가 없게 된다.
 
-			builder.setNegativeButton("아니오",
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog,
-								int whichButton) {
-							dialog.cancel();
-						}
-					});
+								mybuilder.setView(dialogView);
+								mybuilder.setCancelable(true);
 
-			builder.show();
+								mybuilder.setNegativeButton("계속진행",
+										new DialogInterface.OnClickListener() {
+											public void onClick(
+													DialogInterface dialog,
+													int whichButton) {
 
+												dialog.cancel();
+											}
+										});
+								mydialog = mybuilder.create();
+								mydialog.show();
+								dHandler.sendEmptyMessageDelayed(0, 3000); // 시간지나면
+																			// 자동종료
+							}
+						});
+
+				builder.setNegativeButton("아니오",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+								dialog.cancel();
+							}
+						});
+
+				builder.show();
+			}
 			super.handleMessage(msg);
 		}
 	};
@@ -670,7 +657,7 @@ public class GameActivity extends ActionBarActivity implements
 			switch (msg.what) {
 			case 0: // 게임을 받은입장에서 뜨는 다이어얼로그
 				vib.vibrate(5000);// 진동
-
+				flag = "1";
 				if (rejectNum == 5) {
 					builder.setTitle("미니게임");
 					builder.setMessage("더이상 거절할수 없습니다. 게임을 진행합니다.");
@@ -705,6 +692,7 @@ public class GameActivity extends ActionBarActivity implements
 									rejectNum++;
 									String re = "거절";
 									ws.gameResult(uid, youruid, re);
+									flag = "0";
 									dialog.cancel();
 								}
 							});
@@ -772,7 +760,7 @@ public class GameActivity extends ActionBarActivity implements
 												public void onClick(
 														DialogInterface dialog,
 														int whichButton) {
-
+													flag = "0";
 													dialog.cancel();
 												}
 											});
@@ -784,7 +772,7 @@ public class GameActivity extends ActionBarActivity implements
 														DialogInterface dialog,
 														int whichButton) {
 													item = opponent[5];
-													// ws.gameResult(uid,youruid,re);
+													flag = "0";
 													dialog.cancel();
 												}
 											});
@@ -818,7 +806,7 @@ public class GameActivity extends ActionBarActivity implements
 												public void onClick(
 														DialogInterface dialog,
 														int whichButton) {
-													// ws.gameResult(uid,youruid,re);
+													flag = "0";
 													dialog.cancel();
 												}
 											});
@@ -890,6 +878,7 @@ public class GameActivity extends ActionBarActivity implements
 												public void onClick(
 														DialogInterface dialog,
 														int whichButton) {
+													flag = "0";
 													dialog.cancel();
 												}
 											});
@@ -901,7 +890,7 @@ public class GameActivity extends ActionBarActivity implements
 														DialogInterface dialog,
 														int whichButton) {
 													item = opponent1[5];
-
+													flag = "0";
 													dialog.cancel();
 												}
 											});
@@ -935,7 +924,7 @@ public class GameActivity extends ActionBarActivity implements
 												public void onClick(
 														DialogInterface dialog,
 														int whichButton) {
-
+													flag = "0";
 													dialog.cancel();
 												}
 											});
@@ -958,7 +947,7 @@ public class GameActivity extends ActionBarActivity implements
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int whichButton) {
-
+								flag="0";
 								dialog.cancel();
 							}
 						});
@@ -999,8 +988,7 @@ public class GameActivity extends ActionBarActivity implements
 									int whichButton) {
 								ws.gameOut(uid);
 								android.os.Process
-										.killProcess(android.os.Process
-												.myPid());
+										.killProcess(android.os.Process.myPid());
 								dialog.cancel();
 							}
 						});

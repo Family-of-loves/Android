@@ -17,7 +17,7 @@ import android.util.Log;
 public class DBManagerHandler {
     private DBManager mDBManager;
     private SQLiteDatabase db;
-    private String TB_NAME = "participant";
+    private String TB_NAME = "participant1";
      
     public DBManagerHandler (Context context){
         this.mDBManager = new DBManager(context);
@@ -42,6 +42,7 @@ public class DBManagerHandler {
 			val.put("latitude", obj.getString("latitude"));
 			val.put("longitude", obj.getString("longitude"));
 			val.put("item", obj.getString("item"));
+			val.put("flag", obj.getString("flag"));
 			
 			db.insert(TB_NAME, null, val);
 		} catch (JSONException e) {
@@ -60,7 +61,7 @@ public class DBManagerHandler {
 			System.out.println("정보가 없습니다.");
 		} else {
 			while(!cursor.isAfterLast()){
-				fetchArrayRows.add(new String[]{cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6)});
+				fetchArrayRows.add(new String[]{cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7)});
 	            cursor.moveToNext();
 			}
 		}
@@ -75,6 +76,7 @@ public class DBManagerHandler {
 			val.put("longitude", obj.getString("longitude"));
 			val.put("name", obj.getString("name"));
 			val.put("item", obj.getString("item"));	// 추가한부분
+			val.put("flag", obj.getString("flag"));	// 추가한부분
 			
 			db.update(TB_NAME, val, "uid=?", new String[]{obj.getString("uid")});
 		} catch (JSONException e) {
@@ -93,7 +95,7 @@ public class DBManagerHandler {
 		Cursor result = db.rawQuery(sql, null);
 		
 		if(result.moveToFirst()){
-			String[] fetchRows = {result.getString(1), result.getString(2),result.getString(3), result.getString(4), result.getString(5), result.getString(6)};
+			String[] fetchRows = {result.getString(1), result.getString(2),result.getString(3), result.getString(4), result.getString(5), result.getString(6),result.getString(7)};
 			return fetchRows;
         }
         result.close();
