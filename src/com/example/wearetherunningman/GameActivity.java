@@ -2,6 +2,7 @@ package com.example.wearetherunningman;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,275 +41,366 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.graphics.drawable.BitmapDrawable;
 
-public class GameActivity extends ActionBarActivity implements WsCallbackInterface {
-	
+public class GameActivity extends ActionBarActivity implements
+		WsCallbackInterface {
+
 	/*
-	 * Creator Objects 
+	 * Creator Objects
 	 */
+
+	/**
+	 * @uml.property name="player"
+	 * @uml.associationEnd
+	 */
+
 	Player player;
+
+	/**
+	 * @uml.property name="participant"
+	 * @uml.associationEnd
+	 */
+
 	Participant participant;
+
+	/**
+	 * @uml.property name="gmap"
+	 * @uml.associationEnd
+	 */
+
 	GoogleMap gmap;
+
+	/**
+	 * @uml.property name="ws"
+	 * @uml.associationEnd multiplicity="(1 1)"
+	 */
+
 	WsConn ws = new WsConn(this);
-	Vibrator vib ;// Áøµ¿È¿°ú
+	Vibrator vib;// ì§„ë™íš¨ê³¼
 	/*
 	 * Using variables
 	 */
-    String room;
-    String name;
-    String team;
-    String item;
 
-    String uid;
+	/**
+	 * @uml.property name="room"
+	 */
+	String room;
+	/**
+	 * @uml.property name="name"
+	 */
+	String name;
+	/**
+	 * @uml.property name="team"
+	 */
+	String team;
+	/**
+	 * @uml.property name="item"
+	 */
+	String item;
+	String uid;
+
+	String youruid; // "ë¯¸ë‹ˆê²Œì„" ì´ë²¤íŠ¸ë¥¼ ë°›ì•—ì„ë•Œ ê²Œì„ì„ ê±´ë””ë°”ì´ìŠ¤ì˜ uidë¥¼ ì €ì¥í•˜ê²Ÿë‹¤. -- ê²Œì„ì œì•ˆì„ ë°›ì€ë†ˆë§Œì´ ì´
+					// ê°’ì„ ì‚¬ìš©í•œë‹¤.
+	String resultyouruid;// "resë¯¸ë‹ˆê²Œì„" ì´ë²¤íŠ¸ë¥¼ ë°›ì•˜ì„ë•Œ ê²Œì„ì œì•ˆì„ ë°›ì€ ë””ë°”ì´ìŠ¤ì˜ uidë¥¼ ì €ì¥í•œë‹¤.(ë‚´ê°€
+							// ê±¸ì—ˆê³ , ë‹¤ë¥¸ì‚¬ëŒì´ ë°›ìŒ)
+							// --> ë‚´ê°€ ê²Œì„ ì œì•ˆì„ ê±¸ì—ˆê³  , ìƒëŒ€ì— ì˜í•´ ê²°ê³¼ê°’ì´ ë³´ë‚´ì¡Œì„ë•Œ ë‚˜ëŠ” ë‹¤ì‹œ ë°›ê²Œë˜ê³ 
+							// ê·¸ ìƒëŒ€ì˜ uidë¥¼ ì €ì¥í•˜ê²Œëœë‹¤.
+
+	AlertDialog mydialog;// ê²Œì„ì‹ ì²­ìê°€ ê²Œì„ì‹ ì²­í›„ ìì‹ ì˜ ì•„ì´í…œë§Œ ë„ì›Œì£¼ëŠ” ë‹¤ì´ì–¼ë¡œê·¸// ìë™ì¢…ë£Œë¨
+	AlertDialog rejectdialog;// ê±°ì ˆì‹œ ëœ¨ëŠ” ë‹¤ì´ì–¼ë¡œê·¸
+	AlertDialog okdialog;// ìŠ¹ì¸ì‹œ ëœ¨ëŠ” ë‹¤ì´ì–¼ë¡œê·¸
+	AlertDialog startdialog;// ë°›ì€ì‚¬ëŒì—ê²Œ ê²Œì„ì„ ì§„í–‰í•˜ê²Ÿëƒê³  ë¬»ëŠ” ë‹¤ì´ì–¼ë¡œê·¸
+	AlertDialog resultdialog;
+
+	ImageView myItem;
+	ImageView myTeam;
+
+	int okNum = 0;
+	int rejectNum = 0;
+	TextView okGame;
+	TextView rejectGame;
+	int myTeamCount = 0;
+	int otherTeamCount = 0;
+	TextView myTeamNum;
+	TextView otherTeamNum;
+
+	int gameOver = 0;
+	int oneTOone = 0;
     
-    String youruid; // "¹Ì´Ï°ÔÀÓ" ÀÌº¥Æ®¸¦ ¹Ş¾ÑÀ»¶§ °ÔÀÓÀ» °Çµğ¹ÙÀÌ½ºÀÇ uid¸¦ ÀúÀåÇÏ°Ù´Ù.	-- °ÔÀÓÁ¦¾ÈÀ» ¹ŞÀº³ğ¸¸ÀÌ ÀÌ °ªÀ» »ç¿ëÇÑ´Ù.
-    String resultyouruid;// "res¹Ì´Ï°ÔÀÓ" ÀÌº¥Æ®¸¦ ¹Ş¾ÒÀ»¶§ °ÔÀÓÁ¦¾ÈÀ» ¹ŞÀº µğ¹ÙÀÌ½ºÀÇ uid¸¦ ÀúÀåÇÑ´Ù.(³»°¡ °É¾ú°í, ´Ù¸¥»ç¶÷ÀÌ ¹ŞÀ½)
-    						//--> ³»°¡ °ÔÀÓ Á¦¾ÈÀ» °É¾ú°í , »ó´ë¿¡ ÀÇÇØ °á°ú°ªÀÌ º¸³»Á³À»¶§ ³ª´Â ´Ù½Ã ¹Ş°ÔµÇ°í ±× »ó´ëÀÇ uid¸¦ ÀúÀåÇÏ°ÔµÈ´Ù. 
-	
    
-    AlertDialog mydialog;// °ÔÀÓ½ÅÃ»ÀÚ°¡ °ÔÀÓ½ÅÃ»ÈÄ ÀÚ½ÅÀÇ ¾ÆÀÌÅÛ¸¸ ¶ç¿öÁÖ´Â ´ÙÀÌ¾ó·Î±×// ÀÚµ¿Á¾·áµÊ
-    AlertDialog rejectdialog;// °ÅÀı½Ã ¶ß´Â ´ÙÀÌ¾ó·Î±×
-    AlertDialog okdialog;// ½ÂÀÎ½Ã ¶ß´Â ´ÙÀÌ¾ó·Î±×
-    AlertDialog startdialog;// ¹ŞÀº»ç¶÷¿¡°Ô °ÔÀÓÀ» ÁøÇàÇÏ°Ù³Ä°í ¹¯´Â  ´ÙÀÌ¾ó·Î±×
-    AlertDialog resultdialog;   
-    
-    ImageView myItem;
-    ImageView myTeam;
-    
-    int okNum=0;
-    int rejectNum=0;
-    TextView okGame;
-    TextView rejectGame;
-    int myTeamCount=0;
-    int otherTeamCount=0;
-    TextView myTeamNum;
-    TextView otherTeamNum;
-    
     
     @Override
+
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_game);
-		
-		vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-		
-		gmap = ((SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.gMap)).getMap();
-		
-		ws.run("http://dev.hagi4u.net:3000");
-		
-		Intent intent = getIntent(); // °ªÀ» ¹Ş¾Æ¿Â´Ù.
-	    room = intent.getExtras().getString("param1"); 
-	    name = intent.getExtras().getString("param2"); 
-	    team = intent.getExtras().getString("param3"); 
-	    item = intent.getExtras().getString("param4");
-	    uid= Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-	    
-	    TextView nameview= (TextView)findViewById(R.id.viewUserName) ;
-	    nameview.setText(team+"ÆÀ"+name+"´Ô");
-	    player = new Player(uid,name ,team,item ,getApplicationContext(), gmap);
-	    //participant = new Participant(getApplicationContext(), gmap);
-	    participant = new Participant(team ,getApplicationContext(), gmap,handler ,player);
 
-	    // ½½¶óÀÌµù¸Ş´º ºÎºĞ ÃÊ±âÈ­
-	    myItem= (ImageView)findViewById(R.id.myItem) ;
-	    myTeam= (ImageView)findViewById(R.id.myTeam) ;
-	    okGame= (TextView)findViewById(R.id.num_game) ;
-	    rejectGame= (TextView)findViewById(R.id.num_refuse) ;
-	    myTeamNum= (TextView)findViewById(R.id.num_myTeam) ;
-	    otherTeamNum= (TextView)findViewById(R.id.num_enemyTeam) ;
-	    
-	    ImageButton logOut = (ImageButton) findViewById(R.id. btn_logout);
-	    logOut.setOnClickListener(new View.OnClickListener()
-	    {
-	    	@Override
-	    	public void onClick(View v)
-	    	{
-	    		AlertDialog.Builder builder2 = new AlertDialog.Builder(GameActivity.this);
-				builder2.setTitle("Á¾·á");
-				builder2.setMessage("Á¾·áÇÏ½Ã°Ú½À´Ï±î?");
-				builder2.setCancelable(true); 
-				builder2.setPositiveButton("È®ÀÎ", new DialogInterface.OnClickListener() {			
-					public void onClick(DialogInterface dialog, int whichButton) {
-						android.os.Process.killProcess(android.os.Process.myPid());
-						dialog.cancel();
-					}
-				});
-			
-				builder2.setNegativeButton("¾Æ´Ï¿À", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						
-						dialog.cancel();
-					}
-				});
+		vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+		gmap = ((SupportMapFragment) getSupportFragmentManager()
+				.findFragmentById(R.id.gMap)).getMap();
+
+		ws.run("http://dev.hagi4u.net:3000");
+
+		Intent intent = getIntent(); // ê°’ì„ ë°›ì•„ì˜¨ë‹¤.
+		room = intent.getExtras().getString("param1");
+		name = intent.getExtras().getString("param2");
+		team = intent.getExtras().getString("param3");
+		item = intent.getExtras().getString("param4");
+		uid = Secure
+				.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
+		TextView nameview = (TextView) findViewById(R.id.viewUserName);
+		nameview.setText(name + "ë‹˜");
+		player = new Player(uid, name, team, item, getApplicationContext(),
+				gmap);
+		// participant = new Participant(getApplicationContext(), gmap);
+		participant = new Participant(team, getApplicationContext(), gmap,
+				handler, player);
+		// ìŠ¬ë¼ì´ë”©ë©”ë‰´ ë¶€ë¶„ ì´ˆê¸°í™”
+		myItem = (ImageView) findViewById(R.id.myItem);
+		myTeam = (ImageView) findViewById(R.id.myTeam);
+		okGame = (TextView) findViewById(R.id.num_game);
+		rejectGame = (TextView) findViewById(R.id.num_refuse);
+		myTeamNum = (TextView) findViewById(R.id.num_myTeam);
+		otherTeamNum = (TextView) findViewById(R.id.num_enemyTeam);
+
+		ImageButton logOut = (ImageButton) findViewById(R.id.btn_logout);
+		logOut.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AlertDialog.Builder builder2 = new AlertDialog.Builder(
+						GameActivity.this);
+				builder2.setTitle("ì¢…ë£Œ");
+				builder2.setMessage("ì¢…ë£Œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?");
+				builder2.setCancelable(true);
+				builder2.setPositiveButton("í™•ì¸",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+								android.os.Process
+										.killProcess(android.os.Process.myPid());
+								dialog.cancel();
+							}
+						});
+
+				builder2.setNegativeButton("ì•„ë‹ˆì˜¤",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+
+								dialog.cancel();
+							}
+						});
 
 				builder2.show();
-	    	}
-	    });
-	    
-	    ws.emitJoin(room, player);
+			}
+		});
+
+		ws.emitJoin(room, player);
 		emitServer();
 	}
-	
-	public void emitServer(){
-		
-		new Thread(new Runnable() {           
+
+	public void emitServer() {
+
+		new Thread(new Runnable() {
 			public void run() {
 				while (true) {
 					try {
-						runOnUiThread(new Runnable() {  
-			                    @Override
-			                    public void run() {
-			                    	   // TODO Auto-generated method stub
-			                    	BitmapDrawable dmyItem = null;
-			                    	if(item.equals("0")){
-			                    		dmyItem = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_scissor);
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								BitmapDrawable dmyItem = null;
+								if (item.equals("0")) {
+									dmyItem = (BitmapDrawable) getResources()
+											.getDrawable(R.drawable.btn_scissor);
+								} else if (item.equals("1")) {
+									dmyItem = (BitmapDrawable) getResources()
+											.getDrawable(R.drawable.btn_rock);
+								} else {
+									dmyItem = (BitmapDrawable) getResources()
+											.getDrawable(R.drawable.btn_paper);
+								}
+								myItem.setImageDrawable(dmyItem);
+
+								BitmapDrawable dmyTeam = null;
+								if (team.equals("0")) {
+									dmyTeam = (BitmapDrawable) getResources()
+											.getDrawable(R.drawable.btn_blue);
+								} else {
+									dmyTeam = (BitmapDrawable) getResources()
+											.getDrawable(R.drawable.btn_red);
+								}
+								myTeam.setImageDrawable(dmyTeam);
+
+								okGame.setText(okNum + "íšŒ");
+								rejectGame.setText(rejectNum + "íšŒ/5íšŒ");
+
+								String[] st = null;
+								ArrayList<String[]> pa = pa = new ArrayList<String[]>();
+								;
+								ArrayList<String[]> pa1 = new ArrayList<String[]>();
+
+								pa1 = participant.read();
+
+								if (pa1 != null) {
+									pa.addAll(pa1);
+
+									if (pa.size() != 0) {
+
+										for (int i = 0; i < pa.size(); i++) {
+											st = pa.get(i);
+
+											if (team.equals(st[2]))
+												myTeamCount++;
+
+											else
+												otherTeamCount++;
+										}
 									}
-									else if(item.equals("1")){
-										dmyItem = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_rock);
+								}
+								if (otherTeamCount == 0)
+									gameOver += 1; // ìƒëŒ€í¸ ìˆ˜ê°€ 0ì¸ ì±„ë¡œ ì§€ì†ë˜ë©´ ì¦ê°€
+
+								if (gameOver == 7)
+									ghandler.sendEmptyMessage(5); // ê²Œì„ì„ ì´ê²»ë‹¤ê³  ì•Œë¦¼
+
+								if (otherTeamCount == 1 && myTeamCount == 0) // ë‚˜ì™€ ìƒëŒ€í¸ í•œëª…ì´ ë‚¨ì•˜ì„ ê²½ìš°
+
+									oneTOone += 1;
+
+								if (oneTOone == 7) {
+									if (item.equals(st[5])) {
+										vib.vibrate(3000);// ì§„ë™
+										Random r = new Random();
+										item = Integer.toString(r.nextInt(2 - 0 + 1) + 0);
+
 									}
-									else{
-										dmyItem = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_paper);
-									}
-			                    	myItem.setImageDrawable(dmyItem);
-			                    	
-			                    	BitmapDrawable dmyTeam = null;
-			                    	if(team.equals("0")){
-			                    		dmyTeam = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_blue);
-									}
-									else{
-										dmyTeam = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_red);
-									}
-			                    	myTeam.setImageDrawable(dmyTeam);
-			                    	
-			                    	okGame.setText(okNum+"È¸");
-			                    	rejectGame.setText(rejectNum+"È¸/5È¸");
-			                    				                    	  	
-			                    	String[] st = null;					
-			                    	 ArrayList<String[]> pa=pa=new ArrayList<String[]>(); ;								
-									 ArrayList<String[]> pa1=new ArrayList<String[]>(); 
-									 						
-									 pa1=participant.read();
-									
-									 if(pa1!=null){
-										 pa.addAll(pa1);
-										Log.i("»çÀÌÁî",""+pa.size());								 									 
-										 if(pa.size()!=0){
-											 
-											 for(int i=0; i<pa.size(); i++){
-												st = pa.get(i);
-											 	
-												if(team.equals(st[2]))
-											 		myTeamCount++;
-											 	
-											 	else
-											 		otherTeamCount++;
-											 } 
-										 }	 
-									 }
-									 
-									 myTeamNum.setText(myTeamCount+"¸í");
-									 otherTeamNum.setText(otherTeamCount+"¸í");
-									 myTeamCount=0;
-									 otherTeamCount=0;
-								 }		                
-			                 });
+								}
+								myTeamNum.setText(myTeamCount + "ëª…");
+								otherTeamNum.setText(otherTeamCount + "ëª…");
+								myTeamCount = 0;
+								otherTeamCount = 0;
+							}
+						});
+
 						Thread.sleep(3000);
-						player.item=item;
+						player.item = item;
 						ws.emitMessage(player);
 						participant.regMarker();
-                    } catch (InterruptedException e) {
-                    	e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-		
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}).start();
+
 	}
-	// µÚ·Î°¡±â ¹öÆ°
+
+	// ë’¤ë¡œê°€ê¸° ë²„íŠ¼
 	@Override
-	  public boolean onKeyDown(int keyCode, KeyEvent event) {
-	      switch(keyCode) {
-	         case KeyEvent.KEYCODE_BACK:
-	           new AlertDialog.Builder(this)
-	                          .setTitle("Á¾·á")
-	                          .setMessage("Á¾·á ÇÏ½Ã°Ú¾î¿ä?")
-	                          .setPositiveButton("¿¹", new DialogInterface.OnClickListener() {
-	                           public void onClick(DialogInterface dialog, int whichButton) {
-	                        	   android.os.Process.killProcess(android.os.Process.myPid());
-	                           }
-	                         })
-	                         .setNegativeButton("¾Æ´Ï¿À", null).show();
-	                         return false;
-	         
-	         case KeyEvent.KEYCODE_MENU:                
-	        	 return true;              
-	         default:
-	            return false;
-	      }
-	  }
-	
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_BACK:
+			new AlertDialog.Builder(this)
+					.setTitle("ì¢…ë£Œ")
+					.setMessage("ì¢…ë£Œ í•˜ì‹œê² ì–´ìš”?")
+					.setPositiveButton("ì˜ˆ",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									android.os.Process
+											.killProcess(android.os.Process
+													.myPid());
+								}
+							}).setNegativeButton("ì•„ë‹ˆì˜¤", null).show();
+			return false;
+
+		case KeyEvent.KEYCODE_MENU:
+			return true;
+		default:
+			return false;
+		}
+	}
+
 	/*
 	 * WebSocket Connection.
 	 */
 	@Override
 	public void on(String event, JSONObject obj) {
-		if (event.equals("message")){
+		if (event.equals("message")) {
 			participant.regParticipant(obj);
-		} else if (event.equals("leaved")){
+		} else if (event.equals("leaved")) {
 			participant.unRegParticipant(obj);
-			
-		}else if(event.equals("minigame")){	// °ÔÀÓ½ÅÃ»À» ¹ŞÀº »ç¶÷ÀÌ ¼öÇàÇÏ´Â ºÎºĞ(¸ğµÎ°¡ ¹Ş°ÙÁö¸¸) 
+
+		} else if (event.equals("minigame")) { // ê²Œì„ì‹ ì²­ì„ ë°›ì€ ì‚¬ëŒì´ ìˆ˜í–‰í•˜ëŠ” ë¶€ë¶„(ëª¨ë‘ê°€ ë°›ê²Ÿì§€ë§Œ)
 			String myuid = null;
 			try {
-				myuid=obj.getString("desUid");		// °ÔÀÓÀ» ½ÅÃ» ¹ŞÀº³ğÀÌ  ¸ñÀûÁö uid¸¦ ÀÚ½ÅÀÇuid¿¡ ÀúÀå
-				youruid=obj.getString("uid");		// º¸³½»ç¶÷ÀÇuid¸¦ »ó´ëuid·Î ÁöÁ¤ // ³ªÁß¿¡ ÀÌ°ªÀ» »ç¿ëÇÏ°Ô µÈ´Ù.
+				myuid = obj.getString("desUid"); // ê²Œì„ì„ ì‹ ì²­ ë°›ì€ë†ˆì´ ëª©ì ì§€ uidë¥¼ ìì‹ ì˜uidì—
+													// ì €ì¥
+				youruid = obj.getString("uid"); // ë³´ë‚¸ì‚¬ëŒì˜uidë¥¼ ìƒëŒ€uidë¡œ ì§€ì • // ë‚˜ì¤‘ì—
+												// ì´ê°’ì„ ì‚¬ìš©í•˜ê²Œ ëœë‹¤.
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			if( uid.equals(myuid)){	// ³» uid¿Í ºñ±³ÇØ¼­ ¸Â´Ù¸é..
-				ghandler.sendEmptyMessage(0); // °ÔÀÓÀ» ÁøÇàÇÏ°Ù³Ä´Â ´ÙÀÌ¾ó·Î±×¸¦ ¶ç¿øÁØ´Ù.
+
+			if (uid.equals(myuid)) { // ë‚´ uidì™€ ë¹„êµí•´ì„œ ë§ë‹¤ë©´..
+				ghandler.sendEmptyMessage(0); // ê²Œì„ì„ ì§„í–‰í•˜ê²ŸëƒëŠ” ë‹¤ì´ì–¼ë¡œê·¸ë¥¼ ë„ì›ì¤€ë‹¤.
 			}
-			
-		}else if(event.equals("resMinigame")){
+
+		} else if (event.equals("resMinigame")) { // ê²Œì„ì„ ì œì•ˆí•œ ì‚¬ëŒì´ ìˆ˜í–‰
 			String resultmyuid = null;
-			String answer=null;
+			String answer = null;
 			try {
-				resultmyuid=obj.getString("desUid");
-				resultyouruid=obj.getString("uid");
-				answer=obj.getString("result");
+				resultmyuid = obj.getString("desUid");
+				resultyouruid = obj.getString("uid");
+				answer = obj.getString("result");
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-						
-			if( uid.equals(resultmyuid)){	// °ÔÀÓ °á°ú¿¡ ´ëÇØ¼­ ³» uid¿Í ÀÏÄ¡ÇÑ´Ù¸é
-				if(answer.equals("°ÅÀı"))
-					ghandler.sendEmptyMessage(3);// °ÅÀı ´ÙÀÌ¾ó·Î±×
-				else if(answer.equals("½ÂÀÎ"))
-					//ghandler.sendEmptyMessage(2);
-					ghandler.sendEmptyMessage(4);// ½ÂÀÎ ´ÙÀÌ¾ó·Î±×
-				else											//re°¡ °ÅÀı,½ÂÀÎ ¿Ü¿¡ ÀÌ±è,Á³À½,ºñ±è ÀÏ °æ¿ì 
-					ghandler.sendEmptyMessage(2);				// °á°ú°¡ ³ª¿ÂÈÄÀÇ °ÔÀÓÃ¢ ´ÙÀÌ¾ó·Î±×¸¦ ¶ç¿î´Ù. (³»¹«±â,»ó´ë¹«±â ´Ùº¸ÀÓ)
+
+			if (uid.equals(resultmyuid)) { // ê²Œì„ ê²°ê³¼ì— ëŒ€í•´ì„œ ë‚´ uidì™€ ì¼ì¹˜í•œë‹¤ë©´
+				if (answer.equals("ê±°ì ˆ"))
+					ghandler.sendEmptyMessage(3);// ê±°ì ˆ ë‹¤ì´ì–¼ë¡œê·¸
+				else if (answer.equals("ìŠ¹ì¸"))
+					// ghandler.sendEmptyMessage(2);
+					ghandler.sendEmptyMessage(4);// ìŠ¹ì¸ ë‹¤ì´ì–¼ë¡œê·¸
+				else
+					// reê°€ ê±°ì ˆ,ìŠ¹ì¸ ì™¸ì— ì´ê¹€,ì¡ŒìŒ,ë¹„ê¹€ ì¼ ê²½ìš°
+					ghandler.sendEmptyMessage(2); // ê²°ê³¼ê°€ ë‚˜ì˜¨í›„ì˜ ê²Œì„ì°½ ë‹¤ì´ì–¼ë¡œê·¸ë¥¼ ë„ìš´ë‹¤.
+													// (ë‚´ë¬´ê¸°,ìƒëŒ€ë¬´ê¸° ë‹¤ë³´ì„)
 			}
-		}
-		else {
-			// ¿¡·¯Ã³¸®
+		} else {
+			// ì—ëŸ¬ì²˜ë¦¬
 		}
 	}
+
 	@Override
-	public void callback(JSONArray data) throws JSONException {}
+	public void callback(JSONArray data) throws JSONException {
+	}
+
 	@Override
-	public void onMessage(String message) {}
+	public void onMessage(String message) {
+	}
+
 	@Override
-	public void onMessage(JSONObject json) {}
+	public void onMessage(JSONObject json) {
+	}
+
 	@Override
-	public void onConnect() {}
+	public void onConnect() {
+	}
+
 	@Override
-	public void onDisconnect() {}
+	public void onDisconnect() {
+	}
+
 	@Override
-	public void onConnectFailure() {}
-	
+	public void onConnectFailure() {
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -327,535 +419,599 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
 	/**
 	 * A placeholder fragment containing a simple view.
 	 */
 	@SuppressLint("NewApi")
 	public static class PlaceholderFragment extends Fragment {
-		public PlaceholderFragment() {}
+		public PlaceholderFragment() {
+		}
+
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_game, container,false);
+				Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.fragment_game, container,
+					false);
 
 			return rootView;
 		}
-	}
-	
-	
-    private final int MSG_ONLY_DISMISS = 1;
-	
-    // ´ÙÀÌ¾ó·Î±× ÀÚµ¿Á¾·á¸¦ À§ÇÑ ÇÚµé·¯
-	 private Handler dHandler = new Handler() {
-	        public void handleMessage(Message msg) {
-	            switch (msg.what) {
-	            case 0:						// ³»¹«±â¸¸ ¶ß´Â °ÔÀÓÃ¢ ºÎºĞ¿¡ ´ëÇÑ ÀÚµ¿Á¾·á
-	               	               
-	                if(mydialog != null &&  mydialog.isShowing()) {
-	            		mydialog.dismiss();
-	                }
-	            	sendEmptyMessageDelayed( MSG_ONLY_DISMISS, 2000);
-	                break;
-	            	                
-	            case 1:						// °ÅÀı ºÎºĞ¿¡ ´ëÇÑ ÀÚµ¿Á¾·á
-   	            			               
-	                if(rejectdialog != null &&  rejectdialog.isShowing()) {
-	                	rejectdialog.dismiss();
-	                }
-	            	sendEmptyMessageDelayed( MSG_ONLY_DISMISS, 2000);
-	                break;  
-	            
-	            case 2:							// ½ÂÀÎ¿¡ ´ëÇÑ ÀÚµ¿Á¾·á
-		               
-	                if(okdialog != null &&  okdialog.isShowing()) {
-	                	okdialog.dismiss();
-	                }
-	            	sendEmptyMessageDelayed( MSG_ONLY_DISMISS, 2000);
-	                break;       
-	            
-	            case 3:						// °ÔÀÓÀ» ¹ŞÀº ÀÔÀå¿¡¼­ °ÔÀÓÀ» ÁøÇàÇÏ°Ù³Ä¿¡ ´ëÇÑ ÀÇ»ç°¡ ¾øÀ»¶§ ½ÂÀÎÀ¸·Î ¹Ş¾Æ µéÀÌ°í ÀÚµ¿Á¾·áÇÔ.
-		               
-	                if(startdialog != null &&  startdialog.isShowing()) {
-	                	startdialog.dismiss();
-	                	okNum++;
-	                	String re="½ÂÀÎ";
-						ws.gameResult(uid,youruid,re);
-						ghandler.sendEmptyMessage(1);
-	                }
-	            	sendEmptyMessageDelayed( MSG_ONLY_DISMISS, 2000);
-	                break;
-	                
-	            case 4:						// °ÔÀÓÀ» ¹ŞÀº ÀÔÀå¿¡¼­ °á°ú È®ÀÎÀ» ´­·¯ÁÖÁö ¾ÊÀ¸¸é °ÔÀÓ ½ÅÃ»ÀÚ°¡ °á°ú¸¦ È®ÀÎÇÏÁö ¸øÇÏ´Â°É ¹æÁöÇÔ
-		               
-	                if(resultdialog != null &&  resultdialog.isShowing()) {
-	                	resultdialog.dismiss();
-	                	
-	                	final String[] opponent= participant.search(youruid);
-	                	MiniGame mg = new MiniGame();
-						final String re=mg.compare(item,opponent[5]);
-						
-						ws.gameResult(uid,youruid,re);	// È®ÀÎ°ú ÇÔ²² °á°ú¸¦ »ó´ë¹æ¿¡°Ôµµ º¸³»ÁØ´Ù.
-						
-						AlertDialog.Builder builder2 = new AlertDialog.Builder(GameActivity.this);
-						builder2.setTitle("°ÔÀÓÃ¢");
-						
-						if(re.equals("ÀÌ±è")){
-							builder2.setMessage("´ç½ÅÀº ÀÌ°å½À´Ï´Ù.");
-							builder2.setCancelable(true); 
-							builder2.setPositiveButton("È®ÀÎ", new DialogInterface.OnClickListener() {			
-								public void onClick(DialogInterface dialog, int whichButton) {
-									
-									dialog.cancel();
-								}
-							});
-						
-							builder2.setNegativeButton("¾ÆÀÌÅÛ¹Ù²Ù±â", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int whichButton) {
-									item= opponent[5];
-									//ws.gameResult(uid,youruid,re);
+	}//
+
+	private final int MSG_ONLY_DISMISS = 1;
+
+	// ë‹¤ì´ì–¼ë¡œê·¸ ìë™ì¢…ë£Œë¥¼ ìœ„í•œ í•¸ë“¤ëŸ¬
+	private Handler dHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			switch (msg.what) {
+			case 0: // ë‚´ë¬´ê¸°ë§Œ ëœ¨ëŠ” ê²Œì„ì°½ ë¶€ë¶„ì— ëŒ€í•œ ìë™ì¢…ë£Œ
+
+				if (mydialog != null && mydialog.isShowing()) {
+					mydialog.dismiss();
+				}
+				sendEmptyMessageDelayed(MSG_ONLY_DISMISS, 2000);
+				break;
+
+			case 1: // ê±°ì ˆ ë¶€ë¶„ì— ëŒ€í•œ ìë™ì¢…ë£Œ
+
+				if (rejectdialog != null && rejectdialog.isShowing()) {
+					rejectdialog.dismiss();
+				}
+				sendEmptyMessageDelayed(MSG_ONLY_DISMISS, 2000);
+				break;
+
+			case 2: // ìŠ¹ì¸ì— ëŒ€í•œ ìë™ì¢…ë£Œ
+
+				if (okdialog != null && okdialog.isShowing()) {
+					okdialog.dismiss();
+				}
+				sendEmptyMessageDelayed(MSG_ONLY_DISMISS, 2000);
+				break;
+
+			case 3: // ê²Œì„ì„ ë°›ì€ ì…ì¥ì—ì„œ ê²Œì„ì„ ì§„í–‰í•˜ê²Ÿëƒì— ëŒ€í•œ ì˜ì‚¬ê°€ ì—†ì„ë•Œ ìŠ¹ì¸ìœ¼ë¡œ ë°›ì•„ ë“¤ì´ê³  ìë™ì¢…ë£Œí•¨.
+
+				if (startdialog != null && startdialog.isShowing()) {
+					startdialog.dismiss();
+					okNum++;
+					String re = "ìŠ¹ì¸";
+					ws.gameResult(uid, youruid, re);
+					ghandler.sendEmptyMessage(1);
+				}
+				sendEmptyMessageDelayed(MSG_ONLY_DISMISS, 2000);
+				break;
+
+			case 4: // ê²Œì„ì„ ë°›ì€ ì…ì¥ì—ì„œ ê²°ê³¼ í™•ì¸ì„ ëˆŒëŸ¬ì£¼ì§€ ì•Šìœ¼ë©´ ê²Œì„ ì‹ ì²­ìê°€ ê²°ê³¼ë¥¼ í™•ì¸í•˜ì§€ ëª»í•˜ëŠ”ê±¸ ë°©ì§€í•¨
+
+				if (resultdialog != null && resultdialog.isShowing()) {
+					resultdialog.dismiss();
+
+					final String[] opponent = participant.search(youruid);
+
+					MiniGame mg = new MiniGame();
+					final String re = mg.compare(item, opponent[5]);
+
+					ws.gameResult(uid, youruid, re); // í™•ì¸ê³¼ í•¨ê»˜ ê²°ê³¼ë¥¼ ìƒëŒ€ë°©ì—ê²Œë„ ë³´ë‚´ì¤€ë‹¤.
+
+					AlertDialog.Builder builder2 = new AlertDialog.Builder(
+							GameActivity.this);
+					builder2.setTitle("ê²Œì„ì°½");
+
+					if (re.equals("ì´ê¹€")) {
+						builder2.setMessage("ë‹¹ì‹ ì€ ì´ê²¼ìŠµë‹ˆë‹¤.");
+						builder2.setCancelable(true);
+						builder2.setPositiveButton("í™•ì¸",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int whichButton) {
+
+										dialog.cancel();
+									}
+								});
+
+						builder2.setNegativeButton("ì•„ì´í…œë°”ê¾¸ê¸°",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int whichButton) {
+										item = opponent[5];
+										// ws.gameResult(uid,youruid,re);
+										dialog.cancel();
+									}
+								});
+
+						builder2.show();
+					} else if (re.equals("ì¡ŒìŠ´")) {
+						builder2.setMessage("ë‹¹ì‹ ì€ ì¡ŒìŠµë‹ˆë‹¤.");
+						builder2.setCancelable(true);
+
+						builder2.setNegativeButton("ë‚˜ê°€ê¸°",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int whichButton) {
+										ws.gameOut(uid);
+										android.os.Process
+												.killProcess(android.os.Process
+														.myPid());
+										dialog.cancel();
+									}
+								});
+
+						builder2.show();
+					} else {
+						builder2.setMessage("ë‹¹ì‹ ì€ ë¹„ê²¼ìŠµë‹ˆë‹¤.");
+						builder2.setCancelable(true);
+						builder2.setPositiveButton("í™•ì¸",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int whichButton) {
+										// ws.gameResult(uid,youruid,re);
+										dialog.cancel();
+									}
+								});
+
+						builder2.show();
+					}
+
+				}
+				sendEmptyMessageDelayed(MSG_ONLY_DISMISS, 2000);
+				break;
+
+			}
+		}
+	};
+
+	// ë§ˆì»¤ë¥¼ ì°ì€í›„ ë‹¤ì´ì–¼ë¡œê·¸ë¥¼ ë„ìš°ê¸° ìœ„í•œ ëœë“¤ëŸ¬
+	// ë§ˆì»¤ë¥¼ ì°ì–´ì„œ ê²Œì„ì„ ì‹ ì²­í•˜ëŠ” ì…ì¥ì—ì„œ ì‚¬ìš©í•œë‹¤.
+	public Handler handler = new Handler() {
+		public void handleMessage(Message msg) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					GameActivity.this);
+
+			builder.setTitle("ë¯¸ë‹ˆê²Œì„");
+			builder.setMessage("ì§„í–‰ í•˜ì‹œê²ŸìŠµë‹ˆê¹Œ?");
+			builder.setCancelable(true); // ë’¤ë¡œ ë²„íŠ¼ í´ë¦­ì‹œ ì·¨ì†Œ ê°€ëŠ¥ ì„¤ì •
+			final String matchuid = msg.getData().getString("data"); // ë§ˆì»¤ë¡œë¶€í„° ë°›ì€
+																		// uidê°’ì„
+																		// ì €ì¥í•œë‹¤.
+			final String[] consort = participant.search(matchuid); // ë§ˆì»¤ë¡œë¶€í„° ë°›ì€
+																	// uidë¥¼ í†µí•´
+																	// ë””ë¹„ì—ì„œ ì°¾ì•„ì„œ
+																	// ë°°ì—´ì— ëŒ€ì…
+
+			builder.setPositiveButton("ì˜ˆ",
+					new DialogInterface.OnClickListener() {
+						@SuppressWarnings("deprecation")
+						public void onClick(DialogInterface dialog,
+								int whichButton) {
+
+							ws.gameStart(uid, consort[0]); // ë‚˜ì˜ uidì™€ ìƒëŒ€ì˜uidë¥¼
+															// ì„œë²„ë¡œ ì „ì†¡
+							AlertDialog.Builder mybuilder = new AlertDialog.Builder(
+									GameActivity.this);
+
+							LayoutInflater mLayoutInflater = GameActivity.this
+									.getLayoutInflater();
+							View dialogView = mLayoutInflater.inflate(
+									R.layout.contest, null);
+							ImageView iv1 = (ImageView) dialogView
+									.findViewById(R.id.imageView1); // ë‚´ë¬´ê¸° ì´ë¯¸ì§€ë·°ì—
+																	// í‘œì‹œ
+							BitmapDrawable dr1 = null;
+							ImageView iv2 = (ImageView) dialogView
+									.findViewById(R.id.imageView2); // ìƒëŒ€ë¬´ê¸°
+																	// ì´ë¯¸ì§€ë·°ì—
+																	// í‘œì‹œ..
+																	// nullê°’ì´ë‹¤.
+							BitmapDrawable dr2 = null;
+
+							if (item.equals("0")) {
+								dr1 = (BitmapDrawable) getResources()
+										.getDrawable(R.drawable.btn_scissor);
+							} else if (item.equals("1")) {
+								dr1 = (BitmapDrawable) getResources()
+										.getDrawable(R.drawable.btn_rock);
+							} else {
+								dr1 = (BitmapDrawable) getResources()
+										.getDrawable(R.drawable.btn_paper);
+							}
+							iv1.setImageDrawable(dr1);
+
+							iv2.setImageDrawable(dr2); // nullê°’ì„ ê·¸ëƒ¥ ì‚¬ìš©í•¨ìœ¼ë¡œì¨ ìƒëŒ€ì˜
+														// ë¬´ê¸°ëŠ” ì•Œìˆ˜ê°€ ì—†ê²Œ ëœë‹¤.
+
+							mybuilder.setView(dialogView);
+							mybuilder.setCancelable(true);
+
+							mybuilder.setNegativeButton("ê³„ì†ì§„í–‰",
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog,
+												int whichButton) {
+
+											dialog.cancel();
+										}
+									});
+							mydialog = mybuilder.create();
+							mydialog.show();
+							dHandler.sendEmptyMessageDelayed(0, 3000); // ì‹œê°„ì§€ë‚˜ë©´
+																		// ìë™ì¢…ë£Œ
+						}
+					});
+
+			builder.setNegativeButton("ì•„ë‹ˆì˜¤",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog,
+								int whichButton) {
+							dialog.cancel();
+						}
+					});
+
+			builder.show();
+
+			super.handleMessage(msg);
+		}
+	};
+
+	// ì—¬ëŸ¬ ë‹¤ì´ì–¼ë¡œê·¸ë“¤ì„ ì œì–´
+	public Handler ghandler = new Handler() {
+		public void handleMessage(Message msg) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					GameActivity.this);
+
+			LayoutInflater mLayoutInflater = GameActivity.this
+					.getLayoutInflater();
+			View dialogView = mLayoutInflater.inflate(R.layout.contest, null);
+			ImageView iv1 = (ImageView) dialogView
+					.findViewById(R.id.imageView1); // ë‚´ë¬´ê¸° ì´ë¯¸ì§€ë·°ì— í‘œì‹œ
+			BitmapDrawable dr1 = null;
+			ImageView iv2 = (ImageView) dialogView
+					.findViewById(R.id.imageView2); // ìƒëŒ€ë¬´ê¸° ì´ë¯¸ì§€ë·°ì— í‘œì‹œ
+			BitmapDrawable dr2 = null;
+
+			switch (msg.what) {
+			case 0: // ê²Œì„ì„ ë°›ì€ì…ì¥ì—ì„œ ëœ¨ëŠ” ë‹¤ì´ì–´ì–¼ë¡œê·¸
+				vib.vibrate(5000);// ì§„ë™
+
+				if (rejectNum == 5) {
+					builder.setTitle("ë¯¸ë‹ˆê²Œì„");
+					builder.setMessage("ë”ì´ìƒ ê±°ì ˆí• ìˆ˜ ì—†ìŠµë‹ˆë‹¤. ê²Œì„ì„ ì§„í–‰í•©ë‹ˆë‹¤.");
+					startdialog = builder.create();
+					startdialog.show();
+					dHandler.sendEmptyMessageDelayed(3, 5000);
+				} else {
+					builder.setTitle("ë¯¸ë‹ˆê²Œì„");
+					builder.setMessage("ëˆ„êµ°ê°€ê°€ ê²Œì„ì„ ì‹ ì²­í–ˆìŠµë‹ˆë‹¤. ì§„í–‰ í•˜ì‹œê²ŸìŠµë‹ˆê¹Œ?");
+					builder.setCancelable(true); // ë’¤ë¡œ ë²„íŠ¼ í´ë¦­ì‹œ ì·¨ì†Œ ê°€ëŠ¥ ì„¤ì •
+
+					builder.setPositiveButton("ì˜ˆ",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									// ghandler.sendEmptyMessage(1);
+									okNum++;
+									String re = "ìŠ¹ì¸";
+									ws.gameResult(uid, youruid, re);
+									ghandler.sendEmptyMessage(1); // ê²Œì„ì°½ ë‹¤ì´ì–¼ë¡œê·¸
+																	// ë‚˜ì˜ ë¬´ê¸°ì™€
+																	// ìƒëŒ€ë¬´ê¸°ë¥¼
+																	// ë³´ì—¬ì¤€ë‹¤.
 									dialog.cancel();
 								}
 							});
 
-							builder2.show();
-						}
-						else if(re.equals("Á³½¿")){
-							builder2.setMessage("´ç½ÅÀº Á³½À´Ï´Ù.");
-							builder2.setCancelable(true); 
-											
-							builder2.setNegativeButton("³ª°¡±â", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int whichButton) {
-									ws.gameOut(uid);
-									android.os.Process.killProcess(android.os.Process.myPid());
+					builder.setNegativeButton("ì•„ë‹ˆì˜¤",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int whichButton) {
+									rejectNum++;
+									String re = "ê±°ì ˆ";
+									ws.gameResult(uid, youruid, re);
 									dialog.cancel();
 								}
 							});
+					startdialog = builder.create();
+					startdialog.show();
+					dHandler.sendEmptyMessageDelayed(3, 5000); // ì‹œê°„ì§€ë‚˜ë©´ ìë™ì¢…ë£Œ,,
+																// ìŠ¹ì¸ì„ ëœ»í•˜ê²Œëœë‹¤.
+				}
+				break;
 
-							builder2.show();
-						}
-						else{	
-							builder2.setMessage("´ç½ÅÀº ºñ°å½À´Ï´Ù.");
-							builder2.setCancelable(true); 
-							builder2.setPositiveButton("È®ÀÎ", new DialogInterface.OnClickListener() {			
-								public void onClick(DialogInterface dialog, int whichButton) {
-									//ws.gameResult(uid,youruid,re); 
-									dialog.cancel();
+			case 1: // ê²Œì„ì„ ë°›ì€ ì…ì¥ì—ì„œ ê²Œì„í•˜ê²Ÿë‹¤ê³  í–ˆì„ë•Œ ê°€ìœ„ë°”ìœ„ë³´ ê²Œì„ì°½ ë‹¤ì´ì–¼ë¡œê·¸ë¥¼ ë›°ì›€ -->> ê²Œì„ì„ ë°›ì€ë†ˆì´
+					// ê²Œì„ì„í•˜ê²Ÿë‹¤ê³  í•˜ë©´ ë„ëŠ” ê²Œì„ì°½ ë‹¤ì´ì–¼ë¡œê·¸
+				final String[] opponent = participant.search(youruid);
+				builder.setTitle("ê²Œì„ì°½");
+
+				if (item.equals("0")) {
+					dr1 = (BitmapDrawable) getResources().getDrawable(
+							R.drawable.btn_scissor);
+				} else if (item.equals("1")) {
+					dr1 = (BitmapDrawable) getResources().getDrawable(
+							R.drawable.btn_rock);
+				} else {
+					dr1 = (BitmapDrawable) getResources().getDrawable(
+							R.drawable.btn_paper);
+				}
+				iv1.setImageDrawable(dr1);
+
+				if (opponent[5].equals("0")) {
+					dr2 = (BitmapDrawable) getResources().getDrawable(
+							R.drawable.btn_scissor);
+				} else if (opponent[5].equals("1")) {
+					dr2 = (BitmapDrawable) getResources().getDrawable(
+							R.drawable.btn_rock);
+				} else {
+					dr2 = (BitmapDrawable) getResources().getDrawable(
+							R.drawable.btn_paper);
+				}
+				iv2.setImageDrawable(dr2);
+
+				builder.setView(dialogView);
+				builder.setCancelable(true);
+
+				builder.setPositiveButton("í™•ì¸",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+
+								MiniGame mg = new MiniGame();
+								final String re = mg.compare(item, opponent[5]);
+
+								ws.gameResult(uid, youruid, re); // í™•ì¸ê³¼ í•¨ê»˜ ê²°ê³¼ë¥¼
+																	// ìƒëŒ€ë°©ì—ê²Œë„
+																	// ë³´ë‚´ì¤€ë‹¤.
+								dialog.cancel();
+								AlertDialog.Builder builder2 = new AlertDialog.Builder(
+										GameActivity.this);
+								builder2.setTitle("ê²Œì„ì°½");
+
+								if (re.equals("ì´ê¹€")) {
+									builder2.setMessage("ë‹¹ì‹ ì€ ì´ê²¼ìŠµë‹ˆë‹¤.");
+									builder2.setCancelable(true);
+									builder2.setPositiveButton(
+											"í™•ì¸",
+											new DialogInterface.OnClickListener() {
+												public void onClick(
+														DialogInterface dialog,
+														int whichButton) {
+
+													dialog.cancel();
+												}
+											});
+
+									builder2.setNegativeButton(
+											"ì•„ì´í…œë°”ê¾¸ê¸°",
+											new DialogInterface.OnClickListener() {
+												public void onClick(
+														DialogInterface dialog,
+														int whichButton) {
+													item = opponent[5];
+													// ws.gameResult(uid,youruid,re);
+													dialog.cancel();
+												}
+											});
+
+									builder2.show();
+								} else if (re.equals("ì¡ŒìŠ´")) {
+									builder2.setMessage("ë‹¹ì‹ ì€ ì¡ŒìŠµë‹ˆë‹¤.");
+									builder2.setCancelable(true);
+
+									builder2.setNegativeButton(
+											"ë‚˜ê°€ê¸°",
+											new DialogInterface.OnClickListener() {
+												public void onClick(
+														DialogInterface dialog,
+														int whichButton) {
+													ws.gameOut(uid);
+													android.os.Process
+															.killProcess(android.os.Process
+																	.myPid());
+													dialog.cancel();
+												}
+											});
+
+									builder2.show();
+								} else {
+									builder2.setMessage("ë‹¹ì‹ ì€ ë¹„ê²¼ìŠµë‹ˆë‹¤.");
+									builder2.setCancelable(true);
+									builder2.setPositiveButton(
+											"í™•ì¸",
+											new DialogInterface.OnClickListener() {
+												public void onClick(
+														DialogInterface dialog,
+														int whichButton) {
+													// ws.gameResult(uid,youruid,re);
+													dialog.cancel();
+												}
+											});
+
+									builder2.show();
 								}
-							});
-						
-							builder2.show();
-						}
-						
-	                }
-	            	sendEmptyMessageDelayed( MSG_ONLY_DISMISS, 2000);
-	                break;    
-	                
-	            }
-	        }
-	    };
-	
-	
-	
-	// ¸¶Ä¿¸¦ ÂïÀºÈÄ  ´ÙÀÌ¾ó·Î±×¸¦ ¶ç¿ì±â À§ÇÑ ·£µé·¯ 
-	// ¸¶Ä¿¸¦ Âï¾î¼­ °ÔÀÓÀ» ½ÅÃ»ÇÏ´Â ÀÔÀå¿¡¼­ »ç¿ëÇÑ´Ù.
-	public Handler handler = new Handler()	{
-		public void handleMessage( Message msg )		{
-			AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
-			
-				builder.setTitle("¹Ì´Ï°ÔÀÓ");
-				builder.setMessage("ÁøÇà ÇÏ½Ã°Ù½À´Ï±î?");
-				builder.setCancelable(true);        // µÚ·Î ¹öÆ° Å¬¸¯½Ã Ãë¼Ò °¡´É ¼³Á¤
-				final String matchuid = msg.getData().getString("data");	//¸¶Ä¿·ÎºÎÅÍ ¹ŞÀº uid°ªÀ» ÀúÀåÇÑ´Ù.
-				final String[] consort= participant.search(matchuid);		// ¸¶Ä¿·ÎºÎÅÍ ¹ŞÀº uid¸¦ ÅëÇØ µğºñ¿¡¼­ Ã£¾Æ¼­ ¹è¿­¿¡ ´ëÀÔ
-				
-				builder.setPositiveButton("¿¹", new DialogInterface.OnClickListener() {			
-					@SuppressWarnings("deprecation")
-					public void onClick(DialogInterface dialog, int whichButton) {
-						
-						ws.gameStart(uid, consort[0]);	// ³ªÀÇ uid¿Í »ó´ëÀÇuid¸¦ ¼­¹ö·Î Àü¼Û
-						 AlertDialog.Builder mybuilder = new AlertDialog.Builder(GameActivity.this);
-												
-						LayoutInflater mLayoutInflater = GameActivity.this.getLayoutInflater();
-						View dialogView = mLayoutInflater.inflate(R.layout.contest, null);
-						ImageView iv1= (ImageView)dialogView.findViewById(R.id.viewUserInfoOverlay);	// ³»¹«±â ÀÌ¹ÌÁöºä¿¡ Ç¥½Ã
-						BitmapDrawable dr1 = null;
-						ImageView iv2= (ImageView)dialogView.findViewById(R.id.imageView2);	// »ó´ë¹«±â ÀÌ¹ÌÁöºä¿¡ Ç¥½Ã.. null°ªÀÌ´Ù.
-						BitmapDrawable dr2 = null;
-						
-						if(item.equals("0")){
-							dr1 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_scissor);
-						}
-						else if(item.equals("1")){
-							dr1 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_rock);
-						}
-						else{
-							dr1 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_paper);
-						}
-						iv1.setImageDrawable(dr1);
-												
-						iv2.setImageDrawable(dr2);	// null°ªÀ» ±×³É »ç¿ëÇÔÀ¸·Î½á »ó´ëÀÇ ¹«±â´Â ¾Ë¼ö°¡ ¾ø°Ô µÈ´Ù.
-						
-						mybuilder.setView(dialogView);
-						mybuilder.setCancelable(true);
+							}
+						});
 
-						mybuilder.setNegativeButton("°è¼ÓÁøÇà", new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) {
-								
+				resultdialog = builder.create();
+				resultdialog.show();
+				dHandler.sendEmptyMessageDelayed(4, 5000);
+				break;
+
+			case 2: // ê²Œì„ì„ ì‹ ì²­í•œ ë””ë°”ì´ìŠ¤ì— ê²°ê³¼ê°€ ë‚˜ì˜¨ í›„ì— ë„ì›Œì§€ëŠ” ë‹¤ì´ì–¼ë¡œê·¸ ( ê²Œì„ì°½ í™”ë©´)--> ê²°ê³¼ë¥¼ ë°›ì€í›„
+					// ë‹¤ì´ì–¼ë¡œê·¸
+				final String[] opponent1 = participant.search(resultyouruid);
+				vib.vibrate(5000);
+				builder.setTitle("ê²°ê³¼");
+
+				if (item.equals("0")) {
+					dr1 = (BitmapDrawable) getResources().getDrawable(
+							R.drawable.btn_scissor);
+				} else if (item.equals("1")) {
+					dr1 = (BitmapDrawable) getResources().getDrawable(
+							R.drawable.btn_rock);
+				} else {
+					dr1 = (BitmapDrawable) getResources().getDrawable(
+							R.drawable.btn_paper);
+				}
+				iv1.setImageDrawable(dr1);
+
+				if (opponent1[5].equals("0")) {
+					dr2 = (BitmapDrawable) getResources().getDrawable(
+							R.drawable.btn_scissor);
+				} else if (opponent1[5].equals("1")) {
+					dr2 = (BitmapDrawable) getResources().getDrawable(
+							R.drawable.btn_rock);
+				} else {
+					dr2 = (BitmapDrawable) getResources().getDrawable(
+							R.drawable.btn_paper);
+				}
+				iv2.setImageDrawable(dr2);
+
+				builder.setView(dialogView);
+				builder.setCancelable(true);
+
+				builder.setPositiveButton("ê²°ê³¼í™•ì¸",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+
+								MiniGame mg = new MiniGame();
+								final String re = mg
+										.compare(item, opponent1[5]);
+
+								dialog.cancel();
+								AlertDialog.Builder builder2 = new AlertDialog.Builder(
+										GameActivity.this);
+								builder2.setTitle("ê²Œì„ì°½");
+
+								if (re.equals("ì´ê¹€")) {
+
+									builder2.setMessage("ë‹¹ì‹ ì€ ì´ê²¼ìŠµë‹ˆë‹¤.");
+									builder2.setCancelable(true);
+									builder2.setPositiveButton(
+											"í™•ì¸",
+											new DialogInterface.OnClickListener() {
+												public void onClick(
+														DialogInterface dialog,
+														int whichButton) {
+													dialog.cancel();
+												}
+											});
+
+									builder2.setNegativeButton(
+											"ì•„ì´í…œë°”ê¾¸ê¸°",
+											new DialogInterface.OnClickListener() {
+												public void onClick(
+														DialogInterface dialog,
+														int whichButton) {
+													item = opponent1[5];
+
+													dialog.cancel();
+												}
+											});
+
+									builder2.show();
+								} else if (re.equals("ì¡ŒìŠ´")) {
+									builder2.setMessage("ë‹¹ì‹ ì€ ì¡ŒìŠµë‹ˆë‹¤.");
+									builder2.setCancelable(true);
+
+									builder2.setNegativeButton(
+											"ë‚˜ê°€ê¸°",
+											new DialogInterface.OnClickListener() {
+												public void onClick(
+														DialogInterface dialog,
+														int whichButton) {
+													ws.gameOut(uid);
+													android.os.Process
+															.killProcess(android.os.Process
+																	.myPid());
+													dialog.cancel();
+												}
+											});
+
+									builder2.show();
+								} else {
+									builder2.setMessage("ë‹¹ì‹ ì€ ë¹„ê²¼ìŠµë‹ˆë‹¤.");
+									builder2.setCancelable(true);
+									builder2.setPositiveButton(
+											"í™•ì¸",
+											new DialogInterface.OnClickListener() {
+												public void onClick(
+														DialogInterface dialog,
+														int whichButton) {
+
+													dialog.cancel();
+												}
+											});
+
+									builder2.show();
+								}
+							}
+						});
+
+				builder.show();
+
+				break;
+
+			case 3: // ê²Œì„ì„ ì‹ ì²­í•œì…ì¥ì—ì„œ ëœ¨ëŠ” ë‹¤ì´ì–´ì–¼ë¡œê·¸
+				builder.setTitle("ë¯¸ë‹ˆê²Œì„");
+				builder.setMessage("ê±°ì ˆë‹¹í–ˆìŠµë‹ˆë‹¤.");
+				builder.setCancelable(true); // ë’¤ë¡œ ë²„íŠ¼ í´ë¦­ì‹œ ì·¨ì†Œ ê°€ëŠ¥ ì„¤ì •
+
+				builder.setPositiveButton("ì˜ˆ",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+
 								dialog.cancel();
 							}
 						});
-						mydialog = mybuilder.create();
-						mydialog.show();
-						dHandler.sendEmptyMessageDelayed(0, 3000);	// ½Ã°£Áö³ª¸é ÀÚµ¿Á¾·á
-					}
-				});	
-						
-				builder.setNegativeButton("¾Æ´Ï¿À", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						dialog.cancel();
-					}
-				});
 
-				builder.show();
-							
-			super.handleMessage( msg );
-		}
-	};
-	
-	// ¿©·¯ ´ÙÀÌ¾ó·Î±×µéÀ» Á¦¾î
-	public Handler ghandler = new Handler()	{
-		public void handleMessage( Message msg )		{
-			AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
-						
-			LayoutInflater mLayoutInflater = GameActivity.this.getLayoutInflater();
-			View dialogView = mLayoutInflater.inflate(R.layout.contest, null);
-			ImageView iv1= (ImageView)dialogView.findViewById(R.id.imageView1);	// ³»¹«±â ÀÌ¹ÌÁöºä¿¡ Ç¥½Ã
-			BitmapDrawable dr1 = null;
-			ImageView iv2= (ImageView)dialogView.findViewById(R.id.imageView2);	// »ó´ë¹«±â ÀÌ¹ÌÁöºä¿¡ Ç¥½Ã
-			BitmapDrawable dr2 = null;
-			
-			switch ( msg.what )	{
-			case	 0	:	// °ÔÀÓÀ» ¹ŞÀºÀÔÀå¿¡¼­ ¶ß´Â ´ÙÀÌ¾î¾ó·Î±×
-				vib.vibrate(5000);// Áøµ¿
-				
-				if(rejectNum==5)
-				{
-					builder.setTitle("¹Ì´Ï°ÔÀÓ");
-					builder.setMessage("´õÀÌ»ó °ÅÀıÇÒ¼ö ¾ø½À´Ï´Ù. °ÔÀÓÀ» ÁøÇàÇÕ´Ï´Ù.");
-					startdialog=builder.create();
-					startdialog.show();
-					dHandler.sendEmptyMessageDelayed(3, 5000);
-				}
-				else{
-
-				builder.setTitle("¹Ì´Ï°ÔÀÓ");
-				builder.setMessage("´©±º°¡°¡ °ÔÀÓÀ» ½ÅÃ»Çß½À´Ï´Ù. ÁøÇà ÇÏ½Ã°Ù½À´Ï±î?");
-				builder.setCancelable(true);        // µÚ·Î ¹öÆ° Å¬¸¯½Ã Ãë¼Ò °¡´É ¼³Á¤
-								
-				builder.setPositiveButton("¿¹", new DialogInterface.OnClickListener() {			
-					public void onClick(DialogInterface dialog, int whichButton) {
-						//ghandler.sendEmptyMessage(1);
-						okNum++;
-						String re="½ÂÀÎ";
-						ws.gameResult(uid,youruid,re);
-						ghandler.sendEmptyMessage(1);	// °ÔÀÓÃ¢ ´ÙÀÌ¾ó·Î±× ³ªÀÇ ¹«±â¿Í »ó´ë¹«±â¸¦ º¸¿©ÁØ´Ù.
-						dialog.cancel();
-					}
-				});	
-
-				builder.setNegativeButton("¾Æ´Ï¿À", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						rejectNum++;
-						String re="°ÅÀı";
-						ws.gameResult(uid,youruid,re);
-						dialog.cancel();
-						AlertDialog.Builder builder2 = new AlertDialog.Builder(GameActivity.this);
-						builder2.setTitle("°ÔÀÓÃ¢");
-						
-						if(re.equals("ÀÌ±è")){
-							builder2.setMessage("´ç½ÅÀº ÀÌ°å½À´Ï´Ù.");
-							builder2.setCancelable(true); 
-							builder2.setPositiveButton("È®ÀÎ", new DialogInterface.OnClickListener() {			
-								public void onClick(DialogInterface dialog, int whichButton) {
-									
-									dialog.cancel();
-								}
-							});
-						
-							builder2.setNegativeButton("¾ÆÀÌÅÛ¹Ù²Ù±â", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int whichButton) {
-									item = opponent[5];
-									//ws.gameResult(uid,youruid,re);
-									dialog.cancel();
-								}
-							});
-
-							builder2.show();
-						}
-						else if(re.equals("Á³½¿")){
-							builder2.setMessage("´ç½ÅÀº Á³½À´Ï´Ù.");
-							builder2.setCancelable(true); 
-											
-							builder2.setNegativeButton("³ª°¡±â", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int whichButton) {
-									ws.gameOut(uid);
-									android.os.Process.killProcess(android.os.Process.myPid());
-									dialog.cancel();
-								}
-							});
-
-							builder2.show();
-						}
-						else{	
-							builder2.setMessage("´ç½ÅÀº ºñ°å½À´Ï´Ù.");
-							builder2.setCancelable(true); 
-							builder2.setPositiveButton("È®ÀÎ", new DialogInterface.OnClickListener() {			
-								public void onClick(DialogInterface dialog, int whichButton) {
-									//ws.gameResult(uid,youruid,re); 
-									dialog.cancel();
-								}
-							});
-						
-							builder2.show();
-						}
-					}
-				});
-				startdialog=builder.create();
-				startdialog.show();
-				dHandler.sendEmptyMessageDelayed(3, 5000);	// ½Ã°£Áö³ª¸é ÀÚµ¿Á¾·á,, ½ÂÀÎÀ» ¶æÇÏ°ÔµÈ´Ù.
-				}
-				break;
-				
-			case 1:	//°ÔÀÓÀ» ¹ŞÀº ÀÔÀå¿¡¼­ °ÔÀÓÇÏ°Ù´Ù°í ÇßÀ»¶§ °¡À§¹ÙÀ§º¸ °ÔÀÓÃ¢ ´ÙÀÌ¾ó·Î±×¸¦ ¶Ù¿ò	-->> °ÔÀÓÀ» ¹ŞÀº³ğÀÌ °ÔÀÓÀ»ÇÏ°Ù´Ù°í ÇÏ¸é ¶ç´Â °ÔÀÓÃ¢ ´ÙÀÌ¾ó·Î±×
-				final String[] opponent = participant.search(youruid);
-				builder.setTitle("°ÔÀÓÃ¢");
-				
-				if(item.equals("0")){
-					dr1 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_scissor);
-				}
-				else if(item.equals("1")){
-					dr1 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_rock);
-				}
-				else{
-					dr1 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_paper);
-				}
-				iv1.setImageDrawable(dr1);
-				
-				
-				if(opponent[5].equals("0")){
-					dr2 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_scissor);
-				}
-				else if(opponent[5].equals("1")){
-					dr2 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_rock);
-				}
-				else{
-					dr2 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_paper);
-				}
-				iv2.setImageDrawable(dr2);
-				
-				builder.setView(dialogView);
-				builder.setCancelable(true);  
-				
-				builder.setPositiveButton("È®ÀÎ", new DialogInterface.OnClickListener() {			
-					public void onClick(DialogInterface dialog, int whichButton) {
-						
-						MiniGame mg = new MiniGame();
-						final String re=mg.compare(item,opponent[5]);
-						
-						ws.gameResult(uid,youruid,re);	// È®ÀÎ°ú ÇÔ²² °á°ú¸¦ »ó´ë¹æ¿¡°Ôµµ º¸³»ÁØ´Ù.
-						dialog.cancel();
-						AlertDialog.Builder builder2 = new AlertDialog.Builder(GameActivity.this);
-						builder2.setTitle("°ÔÀÓÃ¢");
-						
-						if(re.equals("ÀÌ±è")){
-							builder2.setMessage("´ç½ÅÀº ÀÌ°å½À´Ï´Ù.");
-							builder2.setCancelable(true); 
-							builder2.setPositiveButton("È®ÀÎ", new DialogInterface.OnClickListener() {			
-								public void onClick(DialogInterface dialog, int whichButton) {
-									
-									dialog.cancel();
-								}
-							});
-						
-							builder2.setNegativeButton("¾ÆÀÌÅÛ¹Ù²Ù±â", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int whichButton) {
-									item= opponent[5];
-									//ws.gameResult(uid,youruid,re);
-									dialog.cancel();
-								}
-							});
-
-							builder2.show();
-						}
-						else if(re.equals("Á³½¿")){
-							builder2.setMessage("´ç½ÅÀº Á³½À´Ï´Ù.");
-							builder2.setCancelable(true); 
-											
-							builder2.setNegativeButton("³ª°¡±â", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int whichButton) {
-									ws.gameOut(uid);
-									android.os.Process.killProcess(android.os.Process.myPid());
-									dialog.cancel();
-								}
-							});
-
-							builder2.show();
-						}
-						else{	
-							builder2.setMessage("´ç½ÅÀº ºñ°å½À´Ï´Ù.");
-							builder2.setCancelable(true); 
-							builder2.setPositiveButton("È®ÀÎ", new DialogInterface.OnClickListener() {			
-								public void onClick(DialogInterface dialog, int whichButton) {
-									//ws.gameResult(uid,youruid,re); 
-									dialog.cancel();
-								}
-							});
-						
-							builder2.show();
-						}
-					}
-				});
-				
-				resultdialog=builder.create();
-				resultdialog.show();
-				dHandler.sendEmptyMessageDelayed(4, 5000);
-				break;	
-				
-				
-			case 2:		// °ÔÀÓÀ» ½ÅÃ»ÇÑ µğ¹ÙÀÌ½º¿¡ °á°ú°¡ ³ª¿Â ÈÄ¿¡ ¶ç¿öÁö´Â ´ÙÀÌ¾ó·Î±× ( °ÔÀÓÃ¢ È­¸é)--> °á°ú¸¦ ¹ŞÀºÈÄ ´ÙÀÌ¾ó·Î±×
-				final String[] opponent1= participant.search(resultyouruid);
-				vib.vibrate(5000);
-				builder.setTitle("°á°ú");
-				
-				if(item.equals("0")){
-					dr1 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_scissor);
-				}
-				else if(item.equals("1")){
-					dr1 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_rock);
-				}
-				else{
-					dr1 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_paper);
-				}
-				iv1.setImageDrawable(dr1);
-								
-				if(opponent1[5].equals("0")){
-					dr2 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_scissor);
-				}
-				else if(opponent1[5].equals("1")){
-					dr2 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_rock);
-				}
-				else{
-					dr2 = (BitmapDrawable)getResources().getDrawable(R.drawable.btn_paper);
-				}
-				iv2.setImageDrawable(dr2);
-				
-				builder.setView(dialogView);
-				builder.setCancelable(true);  
-				
-				builder.setPositiveButton("°á°úÈ®ÀÎ", new DialogInterface.OnClickListener() {			
-					public void onClick(DialogInterface dialog, int whichButton) {
-					
-						MiniGame mg = new MiniGame();
-						final String re=mg.compare(item,opponent1[5]);
-											
-						dialog.cancel();
-						AlertDialog.Builder builder2 = new AlertDialog.Builder(GameActivity.this);
-						builder2.setTitle("°ÔÀÓÃ¢");
-						
-						if(re.equals("ÀÌ±è")){
-							
-							builder2.setMessage("´ç½ÅÀº ÀÌ°å½À´Ï´Ù.");
-							builder2.setCancelable(true); 
-							builder2.setPositiveButton("È®ÀÎ", new DialogInterface.OnClickListener() {			
-								public void onClick(DialogInterface dialog, int whichButton) {
-									dialog.cancel();
-								}
-							});
-						
-							builder2.setNegativeButton("¾ÆÀÌÅÛ¹Ù²Ù±â", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int whichButton) {
-									item= opponent1[5];
-									
-									dialog.cancel();
-								}
-							});
-
-							builder2.show();
-						}
-						else if(re.equals("Á³½¿")){
-							builder2.setMessage("´ç½ÅÀº Á³½À´Ï´Ù.");
-							builder2.setCancelable(true); 
-													
-							builder2.setNegativeButton("³ª°¡±â", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int whichButton) {
-									ws.gameOut(uid);
-									android.os.Process.killProcess(android.os.Process.myPid());
-									dialog.cancel();
-								}
-							});
-
-							builder2.show();
-						}
-						else{	
-							builder2.setMessage("´ç½ÅÀº ºñ°å½À´Ï´Ù.");
-							builder2.setCancelable(true); 
-							builder2.setPositiveButton("È®ÀÎ", new DialogInterface.OnClickListener() {			
-								public void onClick(DialogInterface dialog, int whichButton) {
-									
-									dialog.cancel();
-								}
-							});
-													
-							builder2.show();
-						}
-					}
-				});
-				
-				builder.show();
-				
-				break;	
-				
-			case	 3	:	// °ÔÀÓÀ» ½ÅÃ»ÇÑÀÔÀå¿¡¼­ ¶ß´Â ´ÙÀÌ¾î¾ó·Î±×
-				builder.setTitle("¹Ì´Ï°ÔÀÓ");
-				builder.setMessage("°ÅÀı´çÇß½À´Ï´Ù.");
-				builder.setCancelable(true);        // µÚ·Î ¹öÆ° Å¬¸¯½Ã Ãë¼Ò °¡´É ¼³Á¤
-								
-				builder.setPositiveButton("¿¹", new DialogInterface.OnClickListener() {			
-					public void onClick(DialogInterface dialog, int whichButton) {
-						
-						dialog.cancel();
-					}
-				});	
-				
-				rejectdialog=builder.create();
+				rejectdialog = builder.create();
 				rejectdialog.show();
-				dHandler.sendEmptyMessageDelayed(1, 5000);	// ½Ã°£Áö³ª¸é ÀÚµ¿Á¾·á
+				dHandler.sendEmptyMessageDelayed(1, 5000); // ì‹œê°„ì§€ë‚˜ë©´ ìë™ì¢…ë£Œ
 				break;
-				
-			case	 4	:	// °ÔÀÓÀ» ½ÅÃ»ÇÑÀÔÀå¿¡¼­ ¶ß´Â ´ÙÀÌ¾î¾ó·Î±×
-				okNum++;	// °ÔÀÓÀ» ½ÅÃ»ÇÑ ÀÔÀå¿¡¼­ ½ÂÀÎÀ» ¹ŞÀ¸¸é °ÔÀÓ Ä«¿îÆ® 1Áõ°¡
-				builder.setTitle("¹Ì´Ï°ÔÀÓ");
-				builder.setMessage("½ÂÀÎÇÏ¿´½À´Ï´Ù.±â´Ù·ÁÁÖ¼¼¿ä.");
-				builder.setCancelable(true);        // µÚ·Î ¹öÆ° Å¬¸¯½Ã Ãë¼Ò °¡´É ¼³Á¤
-								
-				builder.setPositiveButton("¿¹", new DialogInterface.OnClickListener() {			
-					public void onClick(DialogInterface dialog, int whichButton) {
-												
-						dialog.cancel();
-					}
-				});	
-				okdialog=builder.create();
+
+			case 4: // ê²Œì„ì„ ì‹ ì²­í•œì…ì¥ì—ì„œ ëœ¨ëŠ” ë‹¤ì´ì–´ì–¼ë¡œê·¸
+				okNum++; // ê²Œì„ì„ ì‹ ì²­í•œ ì…ì¥ì—ì„œ ìŠ¹ì¸ì„ ë°›ìœ¼ë©´ ê²Œì„ ì¹´ìš´íŠ¸ 1ì¦ê°€
+				builder.setTitle("ë¯¸ë‹ˆê²Œì„");
+				builder.setMessage("ìŠ¹ì¸í•˜ì˜€ìŠµë‹ˆë‹¤.ê¸°ë‹¤ë ¤ì£¼ì„¸ìš”.");
+				builder.setCancelable(true); // ë’¤ë¡œ ë²„íŠ¼ í´ë¦­ì‹œ ì·¨ì†Œ ê°€ëŠ¥ ì„¤ì •
+
+				builder.setPositiveButton("ì˜ˆ",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+
+								dialog.cancel();
+							}
+						});
+				okdialog = builder.create();
 				okdialog.show();
-				dHandler.sendEmptyMessageDelayed(2, 5000);	// ½Ã°£Áö³ª¸é ÀÚµ¿Á¾·á
-				break;	
-				
+				dHandler.sendEmptyMessageDelayed(2, 5000); // ì‹œê°„ì§€ë‚˜ë©´ ìë™ì¢…ë£Œ
+				break;
+
+			case 5: // ê²Œì„ì„ ì‹ ì²­í•œì…ì¥ì—ì„œ ëœ¨ëŠ” ë‹¤ì´ì–´ì–¼ë¡œê·¸
+				vib.vibrate(5000);// ì§„ë™
+				builder.setTitle("ë¯¸ë‹ˆê²Œì„");
+				builder.setMessage("ê²Œì„ì— ìŠ¹ë¦¬í•˜ì˜€ìŠµë‹ˆë‹¤.");
+				builder.setCancelable(true); // ë’¤ë¡œ ë²„íŠ¼ í´ë¦­ì‹œ ì·¨ì†Œ ê°€ëŠ¥ ì„¤ì •
+
+				builder.setPositiveButton("ì˜ˆ",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+								ws.gameOut(uid);
+								android.os.Process
+										.killProcess(android.os.Process
+												.myPid());
+								dialog.cancel();
+							}
+						});
+				builder.show();
+
+				break;
+
 			}
-		
-			
-			super.handleMessage( msg );
+
+			super.handleMessage(msg);
 		}
 	};
-	
-	
-	
+
 }
