@@ -12,7 +12,7 @@ public class MiniGame {
 	public String compare(String my,String you)
 	{
 		String result = null;
-		Log.i("°á°ú","ºñ±³ÇÏ´ÂÁß");
+		Log.i("ê²°ê³¼","ë¹„êµí•˜ëŠ”ì¤‘");
 		int num = Integer.parseInt(you);
 		
 		Log.i("my",my);
@@ -23,16 +23,16 @@ public class MiniGame {
 			switch(num)
 			{
 				case 0:
-					//Log.i("°á°ú","ºñ±è");
-					result ="ºñ±è";
+					//Log.i("ê²°ê³¼","ë¹„ê¹€");
+					result ="ë¹„ê¹€";
 					break;
 				case 1:
-					//Log.i("°á°ú","Á³½¿");
-					result ="Á³½¿";
+					//Log.i("ê²°ê³¼","ì¡ŒìŠ´");
+					result ="ì¡ŒìŠ´";
 					break;
 				case 2:
-					//Log.i("°á°ú","ÀÌ±è");
-					result ="ÀÌ±è";
+					//Log.i("ê²°ê³¼","ì´ê¹€");
+					result ="ì´ê¹€";
 					break;
 			}
 		}
@@ -41,16 +41,16 @@ public class MiniGame {
 			switch(num)
 			{
 				case 0:
-					//Log.i("°á°ú","ÀÌ±è");
-					result ="ÀÌ±è";
+					//Log.i("ê²°ê³¼","ì´ê¹€");
+					result ="ì´ê¹€";
 					break;
 				case 1:
-					//Log.i("°á°ú","ºñ±è");
-					result ="ºñ±è";
+					//Log.i("ê²°ê³¼","ë¹„ê¹€");
+					result ="ë¹„ê¹€";
 					break;
 				case 2:
-					//Log.i("°á°ú","Á³½¿"); 
-					result ="Á³½¿";
+					//Log.i("ê²°ê³¼","ì¡ŒìŠ´"); 
+					result ="ì¡ŒìŠ´";
 					break;
 			}
 			
@@ -61,16 +61,16 @@ public class MiniGame {
 			switch(num)
 			{
 				case 0:
-					//Log.i("°á°ú","Á³½¿"); 
-					result ="Á³½¿";
+					//Log.i("ê²°ê³¼","ì¡ŒìŠ´"); 
+					result ="ì¡ŒìŠ´";
 					break;
 				case 1:
-					//Log.i("°á°ú","ÀÌ±è");
-					result ="ÀÌ±è";
+					//Log.i("ê²°ê³¼","ì´ê¹€");
+					result ="ì´ê¹€";
 					break;
 				case 2:
-					//Log.i("°á°ú","ºñ±è");
-					result ="ºñ±è";
+					//Log.i("ê²°ê³¼","ë¹„ê¹€");
+					result ="ë¹„ê¹€";
 					break;
 			}
 		}

@@ -2,13 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-            android:background="@drawable/main"
+    android:background="@drawable/main"
     tools:context="com.example.wearetherunningman.MainActivity$PlaceholderFragment" >
 
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
+
         android:layout_height="match_parent"
         android:fillViewport="true" >
 
@@ -126,8 +126,6 @@
                 android:text="방만들기"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#FFF" />
-
-            
         </RelativeLayout>
     </ScrollView>
 

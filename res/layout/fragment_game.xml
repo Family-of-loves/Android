@@ -252,6 +252,7 @@
 		                android:layout_marginTop="10dp"
 		                android:src="@drawable/game_logout" />
 		        </LinearLayout>
+
             </ScrollView>
         </LinearLayout>
     </SlidingDrawer>
