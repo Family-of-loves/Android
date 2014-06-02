@@ -1,2 +1,11 @@
 eclipse.preferences.version=1
+encoding//src/com/example/wearetherunningman/DBManager.java=UTF-8
+encoding//src/com/example/wearetherunningman/DBManagerHandler.java=UTF-8
+encoding//src/com/example/wearetherunningman/GameActivity.java=UTF-8
+encoding//src/com/example/wearetherunningman/MainActivity.java=UTF-8
+encoding//src/com/example/wearetherunningman/MiniGame.java=UTF-8
+encoding//src/com/example/wearetherunningman/Participant.java=UTF-8
 encoding//src/com/example/wearetherunningman/Player.java=UTF-8
+encoding//src/com/example/wearetherunningman/WsCallback.java=UTF-8
+encoding//src/com/example/wearetherunningman/WsCallbackInterface.java=UTF-8
+encoding//src/com/example/wearetherunningman/WsConn.java=UTF-8

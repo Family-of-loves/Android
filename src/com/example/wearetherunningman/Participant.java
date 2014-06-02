@@ -45,7 +45,7 @@ public class Participant extends FragmentActivity {
 
 	public Participant(String team, Context c, GoogleMap gmap, Handler handler,
 			Player player) {
-		// »ı¼º
+		// ìƒì„±
 		this.context = c;
 		this.gmap = gmap;
 		this.team = team;
@@ -55,7 +55,7 @@ public class Participant extends FragmentActivity {
 		dbHandler = new DBManagerHandler(this.context);
 
 		System.out.println("Debug Participant Map : " + this.gmap);
-		System.out.println("Âü°¡ »ı¼º");
+		System.out.println("ì°¸ê°€ ìƒì„±");
 	}
 
 	public ArrayList<String[]> read() {
@@ -127,11 +127,11 @@ public class Participant extends FragmentActivity {
 				for (int i = 0; i < fetchRows.size(); i++) {
 					String[] rows = fetchRows.get(i);
 
-					gmap.setOnMarkerClickListener(this); // Áöµµ¿¡ ¸®½º³Êµî·Ï
+					gmap.setOnMarkerClickListener(this); // ì§€ë„ì— ë¦¬ìŠ¤ë„ˆë“±ë¡
 					if (rows != null) {
-						if (team.equals(rows[2])) { // ³ª¿Í °°ÀºÆÀÀÌ¸é
+						if (team.equals(rows[2])) { // ë‚˜ì™€ ê°™ì€íŒ€ì´ë©´
 
-							if (team.equals("1")) { // ·¹µåÆÀÀÏ °æ¿ì
+							if (team.equals("1")) { // ë ˆë“œíŒ€ì¼ ê²½ìš°
 
 								LatLng loc = new LatLng(
 										Double.parseDouble(rows[3]),
@@ -143,7 +143,7 @@ public class Participant extends FragmentActivity {
 										.icon(BitmapDescriptorFactory
 												.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
-							} else { // ºí·çÆÀÀÏ°æ¿ì
+							} else { // ë¸”ë£¨íŒ€ì¼ê²½ìš°
 
 								LatLng loc = new LatLng(
 										Double.parseDouble(rows[3]),
@@ -155,11 +155,11 @@ public class Participant extends FragmentActivity {
 										.icon(BitmapDescriptorFactory
 												.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 							}
-						} else { // ³ª¿Í°°ÀºÆÀÀÌ ¾Æ´Ò°æ¿ì
+						} else { // ë‚˜ì™€ê°™ì€íŒ€ì´ ì•„ë‹ê²½ìš°
 
-							float[] distance = new float[2]; // float ÇüÅÂÀÇ »çÀÌÁî 2ÀÇ
-																// Çà·Ä »ı¼º
-							float actual_distance; // ½ÇÁ¦ °Å¸® °ªÀ» ´ãÀ» º¯¼ö
+							float[] distance = new float[2]; // float í˜•íƒœì˜ ì‚¬ì´ì¦ˆ 2ì˜
+																// í–‰ë ¬ ìƒì„±
+							float actual_distance; // ì‹¤ì œ ê±°ë¦¬ ê°’ì„ ë‹´ì„ ë³€ìˆ˜
 
 							// LatLng myloc=player.
 
@@ -168,26 +168,26 @@ public class Participant extends FragmentActivity {
 									Double.parseDouble(rows[3]) / 1E6,
 									Double.parseDouble(rows[4]) / 1E6, distance);
 
-							// lat1¿Í lon1Àº Ã¹¹øÂ° »ç¿ëÀÚ, lat2¿Í lon2´Â µÎ¹øÂ° »ç¿ëÀÚÀÇ GPS °ª.
-							// distanceBetweenÀº LocationÅ¬·¡½º ³»¿¡¼­ Á¤ÀÇµÈ static ÇÔ¼öÀÌ±â
-							// ¶§¹®¿¡ Location Å¬·¡½º¸¦ ÅëÇØ ¾Æ¹«µ¥¼­³ª ºÎ¸¦ ¼ö ÀÖ´Ù.
-							// ÀÌ ¸Ş¼Òµå°¡ È£ÃâµÇ°í ³ª¸é distance Çà·ÄÀÇ Ã¹¹øÂ° ¿ä¼Ò·Î µÎ ÁöÁ¡ÀÇ °Å¸®°¡
-							// ÇÒ´çµÈ´Ù.
+							// lat1ì™€ lon1ì€ ì²«ë²ˆì§¸ ì‚¬ìš©ì, lat2ì™€ lon2ëŠ” ë‘ë²ˆì§¸ ì‚¬ìš©ìì˜ GPS ê°’.
+							// distanceBetweenì€ Locationí´ë˜ìŠ¤ ë‚´ì—ì„œ ì •ì˜ëœ static í•¨ìˆ˜ì´ê¸°
+							// ë•Œë¬¸ì— Location í´ë˜ìŠ¤ë¥¼ í†µí•´ ì•„ë¬´ë°ì„œë‚˜ ë¶€ë¥¼ ìˆ˜ ìˆë‹¤.
+							// ì´ ë©”ì†Œë“œê°€ í˜¸ì¶œë˜ê³  ë‚˜ë©´ distance í–‰ë ¬ì˜ ì²«ë²ˆì§¸ ìš”ì†Œë¡œ ë‘ ì§€ì ì˜ ê±°ë¦¬ê°€
+							// í• ë‹¹ëœë‹¤.
 
-							actual_distance = distance[0] * 0.000621371192f; // °£´ÜÇÑ
-																				// »ç¿ëÀ»
-																				// À§ÇØ
-																				// ÀÏ¹İ
-																				// º¯¼ö·Î
-																				// ³Ñ°ÜÁÖ±â.
+							actual_distance = distance[0] * 0.000621371192f; // ê°„ë‹¨í•œ
+																				// ì‚¬ìš©ì„
+																				// ìœ„í•´
+																				// ì¼ë°˜
+																				// ë³€ìˆ˜ë¡œ
+																				// ë„˜ê²¨ì£¼ê¸°.
 							//
 							String aa = "" + actual_distance;
-							Log.i("½ÇÁ¦°Å¸®", aa);
+							Log.i("ì‹¤ì œê±°ë¦¬", aa);
 							if (actual_distance <= 30.0147793E-9
-									&& actual_distance >= 1.80482E-9) { // °è»êµÈ
-																		// °Å¸® ºñ±³
+									&& actual_distance >= 1.80482E-9) { // ê³„ì‚°ëœ
+																		// ê±°ë¦¬ ë¹„êµ
 
-								if (rows[2].equals("1")) { // °°ÀºÆÀÀÌ ¾Æ´Ñµ¥ ·¹µåÀÏ°æ¿ì
+								if (rows[2].equals("1")) { // ê°™ì€íŒ€ì´ ì•„ë‹Œë° ë ˆë“œì¼ê²½ìš°
 									LatLng loc = new LatLng(
 											Double.parseDouble(rows[3]),
 											Double.parseDouble(rows[4]));
@@ -199,7 +199,7 @@ public class Participant extends FragmentActivity {
 											.icon(BitmapDescriptorFactory
 													.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
 
-								} else { // ºí·çÀÏ°æ¿ì
+								} else { // ë¸”ë£¨ì¼ê²½ìš°
 									LatLng loc = new LatLng(
 											Double.parseDouble(rows[3]),
 											Double.parseDouble(rows[4]));
@@ -213,7 +213,7 @@ public class Participant extends FragmentActivity {
 								}
 							}
 
-							// »ó´ëÆÀÀÌ¸é ¹İ°æ 10¹ÌÅÍ ÀÌ³»ÀÏ¶§¸¸ Âï±â
+							// ìƒëŒ€íŒ€ì´ë©´ ë°˜ê²½ 10ë¯¸í„° ì´ë‚´ì¼ë•Œë§Œ ì°ê¸°
 
 						}
 					} else {
@@ -230,11 +230,11 @@ public class Participant extends FragmentActivity {
 		}
 
 		@Override
-		public boolean onMarkerClick(Marker marker) { // ¸¶Ä¿Å¬¸¯ ¸Ş¼Òµå
+		public boolean onMarkerClick(Marker marker) { // ë§ˆì»¤í´ë¦­ ë©”ì†Œë“œ
 
 			String[] match = dbHandler.search(marker.getSnippet());
 
-			if (!team.equals(match[2])) { // ¸¶Ä¿°¡ ¿ì¸®ÆíÀÏ ¾Æ´Ò¶§¸¸ ´ÙÀÌ¾ó·Î±×¸¦ ¶ç¿ì°Ù´Ù
+			if (!team.equals(match[2])) { // ë§ˆì»¤ê°€ ìš°ë¦¬í¸ì¼ ì•„ë‹ë•Œë§Œ ë‹¤ì´ì–¼ë¡œê·¸ë¥¼ ë„ìš°ê²Ÿë‹¤
 				Bundle data = new Bundle();
 				data.putString("data", match[0]);
 				Message msg = Message.obtain();

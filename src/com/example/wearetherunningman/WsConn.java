@@ -25,7 +25,7 @@ public class WsConn extends Application {
 			e.printStackTrace();
 		}
     }
-    // ¸Ş½ÃÁö Àü´Ş
+    // ë©”ì‹œì§€ ì „ë‹¬
     public void emitMessage(Player p) {
     	JSONObject json = new JSONObject();
     	try {
@@ -41,7 +41,7 @@ public class WsConn extends Application {
         }
         socket.emit("message", json);
     }
-    // ¹æ Âü°¡ ¸Ş¼Òµå 
+    // ë°© ì°¸ê°€ ë©”ì†Œë“œ 
     public void emitJoin(String roomId, Player p ){
     	try {
             JSONObject json = new JSONObject();
@@ -72,7 +72,7 @@ public class WsConn extends Application {
         }
     }
      
-    //°ÔÀÓÀ» ÇÏÀÚ°í ¸Ş¼¼Áö¸¦ º¸³¿
+    //ê²Œì„ì„ í•˜ìê³  ë©”ì„¸ì§€ë¥¼ ë³´ëƒ„
     public void gameStart(String uid, String destUid ){
     	try {
             JSONObject json = new JSONObject();

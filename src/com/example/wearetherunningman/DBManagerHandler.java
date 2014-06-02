@@ -24,14 +24,14 @@ public class DBManagerHandler {
         db = mDBManager.getWritableDatabase();
         String sql = "delete from " + TB_NAME + ";";
         db.execSQL(sql);
-        System.out.println("ÃÊ±âÈ­ ¿Ï·á!");
+        System.out.println("ì´ˆê¸°í™” ì™„ë£Œ!");
     }
-	//´İ±â
+	//ë‹«ê¸°
 	public void close() {
 		db.close();
 	}
 	
-	 //ÀúÀå
+	 //ì €ì¥
 	public void insert (JSONObject obj){
 	    db = mDBManager.getWritableDatabase();
 	    ContentValues val = new ContentValues();
@@ -58,7 +58,7 @@ public class DBManagerHandler {
 
 		cursor.moveToFirst();
 		if(cursor.isAfterLast()){
-			System.out.println("Á¤º¸°¡ ¾ø½À´Ï´Ù.");
+			System.out.println("ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤.");
 		} else {
 			while(!cursor.isAfterLast()){
 				fetchArrayRows.add(new String[]{cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7)});
@@ -75,8 +75,8 @@ public class DBManagerHandler {
 			val.put("latitude", obj.getString("latitude"));
 			val.put("longitude", obj.getString("longitude"));
 			val.put("name", obj.getString("name"));
-			val.put("item", obj.getString("item"));	// Ãß°¡ÇÑºÎºĞ
-			val.put("flag", obj.getString("flag"));	// Ãß°¡ÇÑºÎºĞ
+			val.put("item", obj.getString("item"));	// ì¶”ê°€í•œë¶€ë¶„
+			val.put("flag", obj.getString("flag"));	// ì¶”ê°€í•œë¶€ë¶„
 			
 			db.update(TB_NAME, val, "uid=?", new String[]{obj.getString("uid")});
 		} catch (JSONException e) {
@@ -87,7 +87,7 @@ public class DBManagerHandler {
 	public void delete(String uid){
 		db = mDBManager.getWritableDatabase();
 		db.delete(TB_NAME, "uid=?", new String[]{uid});
-		Log.i("SQLite : ", uid + "°¡ Á¤»óÀûÀ¸·Î »èÁ¦ µÇ¾ú½À´Ï´Ù.");
+		Log.i("SQLite : ", uid + "ê°€ ì •ìƒì ìœ¼ë¡œ ì‚­ì œ ë˜ì—ˆìŠµë‹ˆë‹¤.");
 	}
 	public String[] search(String uid){
 		db = mDBManager.getWritableDatabase();
