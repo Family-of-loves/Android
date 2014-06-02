@@ -7,19 +7,21 @@
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="8dp"
         android:orientation="vertical" >
 
         <TextView
             android:id="@+id/t_name"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="이름" />
 
         <EditText
             android:id="@+id/name"
-            android:layout_width="290dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginBottom="13dp"
             android:hint="이름을 입력하세요"
             android:inputType="textPersonName" >
 
@@ -30,7 +32,7 @@
             android:id="@+id/t_team"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="팀선택" />
+            android:text="팀" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -40,6 +42,8 @@
                 android:id="@+id/radioGrup1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:layout_marginBottom="13dp"
                 android:orientation="horizontal" >
 
                 <RadioButton
@@ -47,7 +51,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginLeft="10dp"
                     android:background="@drawable/dialog_redbtn"
                     android:button="@null"
                     android:checked="false"
@@ -58,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="20dp"
                     android:background="@drawable/dialog_bluebtn"
                     android:checked="false"
                     android:button="@null"
@@ -70,7 +73,7 @@
             android:id="@+id/t_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="무기선택" />
+            android:text="무기" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,6 +84,8 @@
                 android:id="@+id/radioGrup2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="13dp"
+                android:layout_marginBottom="13dp"
                 android:orientation="horizontal" >
 
                 <RadioButton

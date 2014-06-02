@@ -584,7 +584,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 						
 							builder2.setNegativeButton("아이템바꾸기", new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int whichButton) {
-									item = opponent[5];
+									//item = opponent[5];
 									//ws.gameResult(uid,youruid,re);
 									dialog.cancel();
 								}
