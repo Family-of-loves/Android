@@ -26,12 +26,12 @@ public class DBManager extends SQLiteOpenHelper {
                 + ");";
     }  
  
-    //í…Œì´ë¸”ì„ ìƒì„±
+    //Å×ÀÌºíÀ» »ı¼º
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(quary);
     }
-    //ì—…ê·¸ë ˆì´ë“œ 
+    //¾÷±×·¹ÀÌµå 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     	String sql_droptable = "DROP TABLE IF EXISTS " + TB_NAME;  

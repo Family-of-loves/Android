@@ -52,15 +52,15 @@ public class MainActivity extends ActionBarActivity {
 
 	}
 
-	// ë’¤ë¡œê°€ê¸° ë²„íŠ¼
+	// µÚ·Î°¡±â ¹öÆ°
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_BACK:
 			new AlertDialog.Builder(this)
-					.setTitle("ì¢…ë£Œ")
-					.setMessage("ì¢…ë£Œ í•˜ì‹œê² ì–´ìš”?")
-					.setPositiveButton("ì˜ˆ",
+					.setTitle("Á¾·á")
+					.setMessage("Á¾·á ÇÏ½Ã°Ú¾î¿ä?")
+					.setPositiveButton("¿¹",
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
@@ -68,7 +68,7 @@ public class MainActivity extends ActionBarActivity {
 											.killProcess(android.os.Process
 													.myPid());
 								}
-							}).setNegativeButton("ì•„ë‹ˆì˜¤", null).show();
+							}).setNegativeButton("¾Æ´Ï¿À", null).show();
 			return false;
 		case KeyEvent.KEYCODE_MENU:
 			return true;
@@ -113,7 +113,7 @@ public class MainActivity extends ActionBarActivity {
 			View rootView = inflater.inflate(R.layout.fragment_main, container,
 					false);
 			room = (EditText) rootView.findViewById(R.id.put_num);
-			; // ë°©ì´ë¦„ ì…ë ¥ ë°›ìŒ
+			; // ¹æÀÌ¸§ ÀÔ·Â ¹ŞÀ½
 
 			ImageButton b_enter = (ImageButton) rootView
 					.findViewById(R.id.enter);
@@ -146,7 +146,7 @@ public class MainActivity extends ActionBarActivity {
 
 			case R.id.how:
 				mHowToDialog = new HowToDialog();
-				mHowToDialog.show(getFragmentManager(), "ì‚¬ìš©ë°©ë²•");
+				mHowToDialog.show(getFragmentManager(), "»ç¿ë¹æ¹ı");
 				break;
 
 			case R.id.web:
@@ -168,10 +168,10 @@ public class MainActivity extends ActionBarActivity {
 			AlertDialog.Builder mBuilder = new AlertDialog.Builder(
 					getActivity());
 
-			mBuilder.setTitle("ì‚¬ìš©ë°©ë²•");
-			mBuilder.setMessage("1. ì£¼ìµœìê°€ ì›¹ì„ í†µí•´ ë°©ì„ ìƒì„±í•©ë‹ˆë‹¤.\n"
+			mBuilder.setTitle("»ç¿ë¹æ¹ı");
+			mBuilder.setMessage("1. ÁÖÃÖÀÚ°¡ À¥À» ÅëÇØ ¹æÀ» »ı¼ºÇÕ´Ï´Ù.\n"
 					+ "    http://dev.hagi4u.net:3000/\n"
-					+ "2. ì°¸ê°€ìëŠ” ìƒì„±ëœ ë°©ìœ¼ë¡œ ì°¸ê°€ë¥¼ í•˜ê³ \n" + "    ì •ë³´ë¥¼ ì…ë ¥ í›„ ê²Œì„ì„ ì‹œì‘í•©ë‹ˆë‹¤.");
+					+ "2. Âü°¡ÀÚ´Â »ı¼ºµÈ ¹æÀ¸·Î Âü°¡¸¦ ÇÏ°í\n" + "    Á¤º¸¸¦ ÀÔ·Â ÈÄ °ÔÀÓÀ» ½ÃÀÛÇÕ´Ï´Ù.");
 
 			mBuilder.setCancelable(false).setPositiveButton("OK",
 					new DialogInterface.OnClickListener() {
@@ -203,7 +203,7 @@ public class MainActivity extends ActionBarActivity {
 					getActivity());
 			LayoutInflater mLayoutInflater = getActivity().getLayoutInflater();
 
-			// name = (EditText) findViewById(R.id.name); // ë°©ì´ë¦„ ì…ë ¥ ë°›ìŒ
+			// name = (EditText) findViewById(R.id.name); // ¹æÀÌ¸§ ÀÔ·Â ¹ŞÀ½
 			// mBuilder.setView(mLayoutInflater.inflate(R.layout.dialog, null,
 			// false));
 
@@ -211,7 +211,7 @@ public class MainActivity extends ActionBarActivity {
 			View dialogView = mLayoutInflater.inflate(R.layout.dialog, null);
 			mBuilder.setView(dialogView);
 
-			name = (EditText) dialogView.findViewById(R.id.name); // ë°©ì´ë¦„ ì…ë ¥ ë°›ìŒ
+			name = (EditText) dialogView.findViewById(R.id.name); // ¹æÀÌ¸§ ÀÔ·Â ¹ŞÀ½
 			RadioGroup teamgroup = (RadioGroup) dialogView
 					.findViewById(R.id.radioGrup1);
 			RadioGroup itemgroup = (RadioGroup) dialogView
@@ -269,18 +269,18 @@ public class MainActivity extends ActionBarActivity {
 									if (inputName.equals("")) {
 										Toast.makeText(
 												getActivity().getBaseContext(),
-												"ì´ë¦„ì„ ì…ë ¥í•˜ì„¸ìš”", Toast.LENGTH_SHORT)
+												"ÀÌ¸§À» ÀÔ·ÂÇÏ¼¼¿ä", Toast.LENGTH_SHORT)
 												.show();
 
 									} else if (team == null) {
 										Toast.makeText(
 												getActivity().getBaseContext(),
-												"íŒ€ì„ ì„ íƒí•˜ì„¸ìš”", Toast.LENGTH_SHORT)
+												"ÆÀÀ» ¼±ÅÃÇÏ¼¼¿ä", Toast.LENGTH_SHORT)
 												.show();
 									} else if (item == null) {
 										Toast.makeText(
 												getActivity().getBaseContext(),
-												"ì•„ì´í…œì„ ì„ íƒí•˜ì„¸ìš”",
+												"¾ÆÀÌÅÛÀ» ¼±ÅÃÇÏ¼¼¿ä",
 												Toast.LENGTH_SHORT).show();
 									} else {
 										Intent myIntent = new Intent(
