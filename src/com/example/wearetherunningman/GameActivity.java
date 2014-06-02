@@ -86,7 +86,7 @@ public class GameActivity extends ActionBarActivity implements
 	TextView otherTeamNum;
 
 	int gameOver = 0;
-	int oneTOone = 0;
+	int sameItem = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -216,33 +216,37 @@ public class GameActivity extends ActionBarActivity implements
 
 											else
 												otherTeamCount++;
+											
+											if(item.equals(st[5]))
+												sameItem += 1;	// 나와 모든 참가자의 무기가 같을경우 이값은 참가자의 값만큼은 증가
+											else
+												sameItem=0;
 										}
 									}
 								}
 								
 								if (otherTeamCount == 0)
 									gameOver += 1; // 상대편 수가 0인 채로 지속되면 증가
-
+								else
+									gameOver=0;
+								
+								
 								if (gameOver == 30)
 									ghandler.sendEmptyMessage(5); // 게임을 이겻다고 알림
 								 
-								if (otherTeamCount == 1 && myTeamCount == 0) // 나와
-																				// 상대편
-																				// 한명이
-																				// 남았을
-																				// 경우
-
-									oneTOone += 1;
-
-								if (oneTOone == 30) {
-									if (item.equals(st[5])) {
-										vib.vibrate(3000);// 진동
-										Random r = new Random();
-										item = Integer.toString(r
-												.nextInt(2 - 0 + 1) + 0);
-
-									}
+								
+								if (sameItem== pa.size() && sameItem!=0){
+									vib.vibrate(3000);// 진동
+									 Toast.makeText(GameActivity.this,"참가자 모두의 무기가 똑같습니다. 무기를 랜덤하게 바꿉니다", 
+						                        Toast.LENGTH_LONG).show();    
+									Random r = new Random();
+									item = Integer.toString(r
+										.nextInt(2 - 0 + 1) + 0);
+									sameItem=0;
 								}
+									
+
+								
 								myTeamNum.setText(myTeamCount + "명");
 								otherTeamNum.setText(otherTeamCount + "명");
 								myTeamCount = 0;
@@ -557,6 +561,7 @@ public class GameActivity extends ActionBarActivity implements
 						});
 				builder.show();
 			} else {
+				flag="1";
 				builder.setTitle("미니게임");
 				builder.setMessage("진행 하시겟습니까?");
 				builder.setCancelable(true); // 뒤로 버튼 클릭시 취소 가능 설정
@@ -566,7 +571,7 @@ public class GameActivity extends ActionBarActivity implements
 							@SuppressWarnings("deprecation")
 							public void onClick(DialogInterface dialog,
 									int whichButton) {
-								flag="1";
+								
 								ws.gameStart(uid, consort[0]); // 나의 uid와
 																// 상대의uid를
 																// 서버로 전송
@@ -628,6 +633,7 @@ public class GameActivity extends ActionBarActivity implements
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int whichButton) {
+								flag="0";
 								dialog.cancel();
 							}
 						});
@@ -657,14 +663,16 @@ public class GameActivity extends ActionBarActivity implements
 			switch (msg.what) {
 			case 0: // 게임을 받은입장에서 뜨는 다이어얼로그
 				vib.vibrate(5000);// 진동
-				flag = "1";
+				
 				if (rejectNum == 5) {
+					flag = "1";
 					builder.setTitle("미니게임");
 					builder.setMessage("더이상 거절할수 없습니다. 게임을 진행합니다.");
 					startdialog = builder.create();
 					startdialog.show();
 					dHandler.sendEmptyMessageDelayed(3, 5000);
 				} else {
+					flag = "1";
 					builder.setTitle("미니게임");
 					builder.setMessage("누군가가 게임을 신청했습니다. 진행 하시겟습니까?");
 					builder.setCancelable(true); // 뒤로 버튼 클릭시 취소 가능 설정
