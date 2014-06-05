@@ -41,8 +41,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.graphics.drawable.BitmapDrawable;
 
-public class GameActivity extends ActionBarActivity implements
-		WsCallbackInterface {
+public class GameActivity extends ActionBarActivity implements WsCallbackInterface {
 
 	Player player;
 
@@ -72,7 +71,9 @@ public class GameActivity extends ActionBarActivity implements
 	AlertDialog okdialog;// 승인시 뜨는 다이얼로그
 	AlertDialog startdialog;// 받은사람에게 게임을 진행하겟냐고 묻는 다이얼로그
 	AlertDialog resultdialog;
+	AlertDialog gameoutdialog;
 
+	
 	ImageView myItem;
 	ImageView myTeam;
 
@@ -507,7 +508,9 @@ public class GameActivity extends ActionBarActivity implements
 									}
 								});
 
-						builder2.show();
+						gameoutdialog = builder2.create();
+						gameoutdialog.show();
+						dHandler.sendEmptyMessageDelayed(5, 3000);
 					} else {
 						builder2.setMessage("당신은 비겼습니다.");
 						builder2.setCancelable(true);
@@ -526,7 +529,23 @@ public class GameActivity extends ActionBarActivity implements
 				}
 				sendEmptyMessageDelayed(MSG_ONLY_DISMISS, 2000);
 				break;
+				
+				
+				case 5: // 게임을 받은 입장에서 게임을 진행하겟냐에 대한 의사가 없을때 승인으로 받아 들이고 자동종료함.
 
+				if (gameoutdialog != null && gameoutdialog.isShowing()) {
+					gameoutdialog.dismiss();
+					
+					ws.gameOut(uid);
+					android.os.Process
+							.killProcess(android.os.Process
+									.myPid());
+					
+				}
+				sendEmptyMessageDelayed(MSG_ONLY_DISMISS, 2000);
+				break;
+				
+				
 			}
 		}
 	};
@@ -538,13 +557,8 @@ public class GameActivity extends ActionBarActivity implements
 			AlertDialog.Builder builder = new AlertDialog.Builder(
 					GameActivity.this);
 
-			final String matchuid = msg.getData().getString("data"); // 마커로부터 받은
-			// uid값을
-			// 저장한다.
-			final String[] consort = participant.search(matchuid); // 마커로부터 받은
-			// uid를 통해
-			// 디비에서 찾아서
-			// 배열에 대입
+			final String matchuid = msg.getData().getString("data"); // 마커로부터 받은  uid값을 저장한다.
+			final String[] consort = participant.search(matchuid); // 마커로부터 받은 uid를 통해 디비에서 찾아서 배열에 대입
 
 			if (consort[6].equals("1")) {
 				builder.setTitle("미니게임");
@@ -804,7 +818,9 @@ public class GameActivity extends ActionBarActivity implements
 												}
 											});
 
-									builder2.show();
+									gameoutdialog = builder2.create();
+									gameoutdialog.show();
+									dHandler.sendEmptyMessageDelayed(5, 3000);
 								} else {
 									builder2.setMessage("당신은 비겼습니다.");
 									builder2.setCancelable(true);
@@ -922,7 +938,9 @@ public class GameActivity extends ActionBarActivity implements
 												}
 											});
 
-									builder2.show();
+									gameoutdialog = builder2.create();
+									gameoutdialog.show();
+									dHandler.sendEmptyMessageDelayed(5, 3000);
 								} else {
 									builder2.setMessage("당신은 비겼습니다.");
 									builder2.setCancelable(true);
