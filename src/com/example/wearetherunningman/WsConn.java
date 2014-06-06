@@ -85,12 +85,13 @@ public class WsConn extends Application {
         }
     }
     
-    public void gameOut(String uid){
+    public void gameOut(String uid, String name){
     	try {
             JSONObject json = new JSONObject();
             json.put("uid", uid);
+            json.put("name", name);
             		                
-            socket.emit("leaved", callback, json);
+            socket.emit("leave", callback, json);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

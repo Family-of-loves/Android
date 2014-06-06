@@ -89,6 +89,8 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	int gameOver = 0;
 	int sameItem = 0;
 
+	int gameStartflag=0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -217,20 +219,22 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 
 											else
 												otherTeamCount++;
-
-											if(item.equals(st[5]))
-												sameItem += 1;	// 나와 모든 참가자의 무기가 같을경우 이값은 참가자의 값만큼은 증가
-											else
-												sameItem=0;
+											if(gameStartflag==1){	// 게임이 시작 되었다면
+												if(item.equals(st[5]))
+													sameItem += 1;	// 나와 모든 참가자의 무기가 같을경우 이값은 참가자의 값만큼은 증가
+												else
+													sameItem=0;
+											}
 										}
 									}
 								}
-
+								Log.i("flag",gameStartflag+"");
+								
+								
 								if (otherTeamCount == 0)
 									gameOver += 1; // 상대편 수가 0인 채로 지속되면 증가
 								else
 									gameOver=0;
-
 
 								if (gameOver == 30)
 									ghandler.sendEmptyMessage(5); // 게임을 이겻다고 알림
@@ -238,15 +242,14 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 
 								if (sameItem== pa.size() && sameItem!=0){
 									vib.vibrate(3000);// 진동
-									 Toast.makeText(GameActivity.this,"참가자 모두의 무기가 똑같습니다. 무기를 랜덤하게 바꿉니다", 
-						                        Toast.LENGTH_LONG).show();    
+									Toast.makeText(GameActivity.this,"참가자 모두의 무기가 똑같습니다. 무기를 랜덤하게 바꿉니다", 
+					                        Toast.LENGTH_LONG).show();    
 									Random r = new Random();
-									item = Integer.toString(r
-										.nextInt(2 - 0 + 1) + 0);
+									item = Integer.toString(r.nextInt(2 - 0 + 1) + 0);
 									sameItem=0;
 								}
 
-
+								
 
 								myTeamNum.setText(myTeamCount + "명");
 								otherTeamNum.setText(otherTeamCount + "명");
@@ -344,8 +347,8 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 					ghandler.sendEmptyMessage(2); // 결과가 나온후의 게임창 다이얼로그를 띄운다.
 													// (내무기,상대무기 다보임)
 			}
-		} else {
-			// 에러처리
+		} else if (event.equals("gameStart")) {	// 게임이 시작되었음을 알림
+			gameStartflag+=1;
 		}
 	}
 
@@ -500,7 +503,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 								new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog,
 											int whichButton) {
-										ws.gameOut(uid);
+										ws.gameOut(uid,name);
 										android.os.Process
 												.killProcess(android.os.Process
 														.myPid());
@@ -536,7 +539,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 				if (gameoutdialog != null && gameoutdialog.isShowing()) {
 					gameoutdialog.dismiss();
 					
-					ws.gameOut(uid);
+					ws.gameOut(uid,name);
 					android.os.Process
 							.killProcess(android.os.Process
 									.myPid());
@@ -810,10 +813,11 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 												public void onClick(
 														DialogInterface dialog,
 														int whichButton) {
-													ws.gameOut(uid);
+													ws.gameOut(uid,name);
 													android.os.Process
 															.killProcess(android.os.Process
 																	.myPid());
+													 System.exit(1);
 													dialog.cancel();
 												}
 											});
@@ -930,7 +934,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 												public void onClick(
 														DialogInterface dialog,
 														int whichButton) {
-													ws.gameOut(uid);
+													ws.gameOut(uid,name);
 													android.os.Process
 															.killProcess(android.os.Process
 																	.myPid());
@@ -1012,7 +1016,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int whichButton) {
-								ws.gameOut(uid);
+								ws.gameOut(uid,name);
 								android.os.Process
 										.killProcess(android.os.Process.myPid());
 								dialog.cancel();
