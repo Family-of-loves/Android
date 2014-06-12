@@ -140,9 +140,19 @@ public class MainActivity extends ActionBarActivity {
 			case R.id.enter:
 				inputRoom = room.getText().toString();
 				// inputName = name.getText().toString();
-				mUserInfoDialog = new UserInfoDialog();
-				mUserInfoDialog.show(getFragmentManager(), "USER");
+				if (inputRoom.equals("")) {
+					Toast.makeText(
+							getActivity().getBaseContext(),
+							"방 이름을 입력하세요", Toast.LENGTH_SHORT)
+							.show();
+
+				}
+				else{
+					mUserInfoDialog = new UserInfoDialog();
+					mUserInfoDialog.show(getFragmentManager(), "USER");
+				}
 				break;
+				
 
 			case R.id.how:
 				mHowToDialog = new HowToDialog();
