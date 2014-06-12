@@ -24,7 +24,7 @@ public class DBManagerHandler {
         db = mDBManager.getWritableDatabase();
         String sql = "delete from " + TB_NAME + ";";
         db.execSQL(sql);
-        System.out.println("초기화 완료!");
+        System.out.println("DB Initialize");
     }
 	//닫기
 	public void close() {
@@ -58,7 +58,7 @@ public class DBManagerHandler {
 
 		cursor.moveToFirst();
 		if(cursor.isAfterLast()){
-			System.out.println("정보가 없습니다.");
+			System.out.println("User's empty.");
 		} else {
 			while(!cursor.isAfterLast()){
 				fetchArrayRows.add(new String[]{cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7)});
@@ -87,7 +87,6 @@ public class DBManagerHandler {
 	public void delete(String uid){
 		db = mDBManager.getWritableDatabase();
 		db.delete(TB_NAME, "uid=?", new String[]{uid});
-		Log.i("SQLite : ", uid + "가 정상적으로 삭제 되었습니다.");
 	}
 	public String[] search(String uid){
 		db = mDBManager.getWritableDatabase();

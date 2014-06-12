@@ -59,7 +59,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	String item;
 	String flag;
 
-	String youruid; // "미니게임" 이벤트를 받앗을때 게임을 건디바이스의 uid를 저장하겟다. -- 게임제안을 받은놈만이 이
+	String youruid; // "미니게임" 이벤트를 받앗을때 게임을 건디바이스의 uid를 저장하겠다. -- 게임제안을 받은놈만이 이
 					// 값을 사용한다.
 	String resultyouruid;// "res미니게임" 이벤트를 받았을때 게임제안을 받은 디바이스의 uid를 저장한다.(내가
 							// 걸었고, 다른사람이 받음)
@@ -69,7 +69,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 	AlertDialog mydialog;// 게임신청자가 게임신청후 자신의 아이템만 띄워주는 다이얼로그// 자동종료됨
 	AlertDialog rejectdialog;// 거절시 뜨는 다이얼로그
 	AlertDialog okdialog;// 승인시 뜨는 다이얼로그
-	AlertDialog startdialog;// 받은사람에게 게임을 진행하겟냐고 묻는 다이얼로그
+	AlertDialog startdialog;// 받은사람에게 게임을 진행하겠냐고 묻는 다이얼로그
 	AlertDialog resultdialog;
 	AlertDialog gameoutdialog;
 
@@ -228,11 +228,9 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 											}
 										}
 									}
-								}
-								Log.i("flag",gameStartflag+"");
+								}								
 								
-								
-								if (otherTeamCount == 0)
+								if ( gameStartflag == 1 && otherTeamCount == 0)
 									gameOver += 1; // 상대편 수가 0인 채로 지속되면 증가
 								else
 									gameOver=0;
@@ -259,7 +257,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 							}
 						});
 
-						Thread.sleep(1000);
+						Thread.sleep(500);
 						player.item = item;
 						player.flag=flag;
 						ws.emitMessage(player);
@@ -310,7 +308,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 		} else if (event.equals("leaved")) {
 			participant.unRegParticipant(obj);
 
-		} else if (event.equals("minigame")) { // 게임신청을 받은 사람이 수행하는 부분(모두가 받겟지만)
+		} else if (event.equals("minigame")) { // 게임신청을 받은 사람이 수행하는 부분(모두가 받겠지만)
 			String myuid = null;
 			try {
 				myuid = obj.getString("desUid"); // 게임을 신청 받은놈이 목적지 uid를 자신의uid에
@@ -323,7 +321,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 			}
 
 			if (uid.equals(myuid)) { // 내 uid와 비교해서 맞다면..
-				ghandler.sendEmptyMessage(0); // 게임을 진행하겟냐는 다이얼로그를 띄원준다.
+				ghandler.sendEmptyMessage(0); // 게임을 진행하겠냐는 다이얼로그를 띄원준다.
 			}
 
 		} else if (event.equals("resMinigame")) { // 게임을 제안한 사람이 수행
@@ -350,7 +348,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 													// (내무기,상대무기 다보임)
 			}
 		} else if (event.equals("gameStart")) {	// 게임이 시작되었음을 알림
-			gameStartflag+=1;
+			gameStartflag = 1;
 		}
 	}
 
@@ -446,7 +444,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 				sendEmptyMessageDelayed(MSG_ONLY_DISMISS, 2000);
 				break;
 
-			case 3: // 게임을 받은 입장에서 게임을 진행하겟냐에 대한 의사가 없을때 승인으로 받아 들이고 자동종료함.
+			case 3: // 게임을 받은 입장에서 게임을 진행하겠냐에 대한 의사가 없을때 승인으로 받아 들이고 자동종료함.
 
 				if (startdialog != null && startdialog.isShowing()) {
 					startdialog.dismiss();
@@ -536,7 +534,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 				break;
 				
 				
-				case 5: // 게임을 받은 입장에서 게임을 진행하겟냐에 대한 의사가 없을때 승인으로 받아 들이고 자동종료함.
+				case 5: // 게임을 받은 입장에서 게임을 진행하겠냐에 대한 의사가 없을때 승인으로 받아 들이고 자동종료함.
 
 				if (gameoutdialog != null && gameoutdialog.isShowing()) {
 					gameoutdialog.dismiss();
@@ -582,7 +580,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 			} else {
 				flag="1";
 				builder.setTitle("미니게임");
-				builder.setMessage("진행 하시겟습니까?");
+				builder.setMessage("진행 하시습니까?");
 				builder.setCancelable(true); // 뒤로 버튼 클릭시 취소 가능 설정
 
 				builder.setPositiveButton("예",
@@ -678,7 +676,9 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 			ImageView iv2 = (ImageView) dialogView
 					.findViewById(R.id.imageView2); // 상대무기 이미지뷰에 표시
 			BitmapDrawable dr2 = null;
-
+			
+			System.out.println("Debug  : "+ msg.what);
+			
 			switch (msg.what) {
 			case 0: // 게임을 받은입장에서 뜨는 다이어얼로그
 				vib.vibrate(5000);// 진동
@@ -693,7 +693,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 				} else {
 					flag = "1";
 					builder.setTitle("미니게임");
-					builder.setMessage("누군가가 게임을 신청했습니다. 진행 하시겟습니까?");
+					builder.setMessage("누군가가 게임을 신청했습니다. 진행 하시습니까?");
 					builder.setCancelable(true); // 뒤로 버튼 클릭시 취소 가능 설정
 
 					builder.setPositiveButton("예",
@@ -730,8 +730,8 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 				}
 				break;
 
-			case 1: // 게임을 받은 입장에서 게임하겟다고 했을때 가위바위보 게임창 다이얼로그를 뛰움 -->> 게임을 받은놈이
-					// 게임을하겟다고 하면 띄는 게임창 다이얼로그
+			case 1: // 게임을 받은 입장에서 게임하겠다고 했을때 가위바위보 게임창 다이얼로그를 뛰움 -->> 게임을 받은놈이
+					// 게임을하겠다고 하면 띄는 게임창 다이얼로그
 				final String[] opponent = participant.search(youruid);
 				builder.setTitle("게임창");
 

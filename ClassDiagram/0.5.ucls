@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.5" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true">  
+  <interface id="1" language="java" name="com.example.wearetherunningman.WsCallbackInterface" 
+    project="WeAreTheRunningMan" file="/WeAreTheRunningMan/src/com/example/wearetherunningman/WsCallbackInterface.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="188" width="191" x="1325" y="1360"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="2" language="java" name="com.example.wearetherunningman.MainActivity" project="WeAreTheRunningMan" 
+    file="/WeAreTheRunningMan/src/com/example/wearetherunningman/MainActivity.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="314" width="263" x="30" y="-242"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="com.example.wearetherunningman.MainActivity.UserInfoDialog" 
+    project="WeAreTheRunningMan" file="/WeAreTheRunningMan/src/com/example/wearetherunningman/MainActivity.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="116" width="199" x="-209" y="652"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="com.example.wearetherunningman.MainActivity.PlaceholderFragment" 
+    project="WeAreTheRunningMan" file="/WeAreTheRunningMan/src/com/example/wearetherunningman/MainActivity.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="116" width="322" x="30" y="652"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="com.example.wearetherunningman.WsCallback" project="WeAreTheRunningMan" 
+    file="/WeAreTheRunningMan/src/com/example/wearetherunningman/WsCallback.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="206" width="280" x="1024" y="970"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="com.example.wearetherunningman.Participant" project="WeAreTheRunningMan" 
+    file="/WeAreTheRunningMan/src/com/example/wearetherunningman/Participant.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="278" width="342" x="631" y="652"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="com.example.wearetherunningman.Player" project="WeAreTheRunningMan" 
+    file="/WeAreTheRunningMan/src/com/example/wearetherunningman/Player.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="350" width="353" x="631" y="970"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="com.example.wearetherunningman.DBManager" project="WeAreTheRunningMan" 
+    file="/WeAreTheRunningMan/src/com/example/wearetherunningman/DBManager.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="188" width="244" x="76" y="1360"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="com.example.wearetherunningman.MiniGame" project="WeAreTheRunningMan" 
+    file="/WeAreTheRunningMan/src/com/example/wearetherunningman/MiniGame.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="98" width="184" x="571" y="-242"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="com.example.wearetherunningman.GameActivity" project="WeAreTheRunningMan" 
+    file="/WeAreTheRunningMan/src/com/example/wearetherunningman/GameActivity.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="854" width="263" x="1034" y="-242"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="com.example.wearetherunningman.GameActivity.PlaceholderFragment" 
+    project="WeAreTheRunningMan" file="/WeAreTheRunningMan/src/com/example/wearetherunningman/GameActivity.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="98" width="322" x="1365" y="652"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="com.example.wearetherunningman.WsConn" project="WeAreTheRunningMan" 
+    file="/WeAreTheRunningMan/src/com/example/wearetherunningman/WsConn.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="206" width="228" x="1034" y="652"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="com.example.wearetherunningman.MainActivity.HowToDialog" 
+    project="WeAreTheRunningMan" file="/WeAreTheRunningMan/src/com/example/wearetherunningman/MainActivity.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="116" width="199" x="392" y="652"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="com.example.wearetherunningman.DBManagerHandler" project="WeAreTheRunningMan" 
+    file="/WeAreTheRunningMan/src/com/example/wearetherunningman/DBManagerHandler.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="224" width="206" x="76" y="970"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="com.example.wearetherunningman.Participant.asyncTaskMarker" 
+    project="WeAreTheRunningMan" file="/WeAreTheRunningMan/src/com/example/wearetherunningman/Participant.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="188" width="269" x="322" y="970"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="16">    
+    <bendpoint x="1003" y="652"/>    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="17" name="player"/>      
+      <multiplicity id="18" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="19">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="20" name="mDBManager"/>      
+      <multiplicity id="21" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="22">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </nesting>  
+  <association id="23">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="24" name="ws"/>      
+      <multiplicity id="25" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="26">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="3"/>  
+  </nesting>  
+  <association id="27">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="28" name="callback"/>      
+      <multiplicity id="29" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="30">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="13"/>  
+  </nesting>  
+  <realization id="31">    
+    <bendpoint x="1334" y="652"/>    
+    <bendpoint x="1334" y="970"/>    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
+  <nesting id="32">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="15"/>  
+  </nesting>  
+  <association id="33">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="34" name="player"/>      
+      <multiplicity id="35" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="36">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="37" name="dbHandler"/>      
+      <multiplicity id="38" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="39">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="11"/>  
+  </nesting>  
+  <association id="40">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="41" name="participant"/>      
+      <multiplicity id="42" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="43">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="44" name="callback"/>      
+      <multiplicity id="45" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="true" signature="true" 
+    accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
