@@ -140,6 +140,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,
 									int whichButton) {
+								ws.gameOut(uid,name);
 								android.os.Process
 										.killProcess(android.os.Process.myPid());
 								dialog.cancel();
@@ -284,6 +285,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 							new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog,
 										int whichButton) {
+									ws.gameOut(uid,name);
 									android.os.Process
 											.killProcess(android.os.Process
 													.myPid());
