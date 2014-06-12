@@ -96,4 +96,20 @@ public class WsConn extends Application {
             ex.printStackTrace();
         }
     }
+    public void chkRoom(int uid, String roomid){
+    	try {
+            JSONObject json = new JSONObject();
+            json.put("uid", uid);
+            json.put("roomid", roomid);
+            		                
+            socket.emit("chkRoom", callback, json);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+	public void onDisconnect() {
+		// TODO Auto-generated method stub
+		this.socket.disconnect();
+	}
+    
 }
