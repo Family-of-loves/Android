@@ -1,5 +1,7 @@
 package com.example.wearetherunningman;
 
+import java.util.regex.Pattern;
+
 import io.socket.IOAcknowledge;
 
 import org.json.JSONArray;
@@ -317,40 +319,58 @@ public class MainActivity extends ActionBarActivity {
 								public void onClick(DialogInterface dialog,	int whichButton) {
 									inputName = name.getText().toString();
 									
-									if (inputName.equals("")) {
-										Toast.makeText(
+									Pattern ps = Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-흐]+$");//영문, 숫자, 한글만 허용
+				                    if(!ps.matcher(inputName).matches()){
+				                        
+				                    	Toast.makeText(
 												getActivity().getBaseContext(),
-												"이름을 입력하세요", Toast.LENGTH_SHORT)
+												"이름에 특수문자가 포함되어있습니다.", Toast.LENGTH_SHORT)
 												.show();
+				                    	
+				                    	
+				                    }
+				                    else{
+				                    	
+				                    	
+				                    	
+				                    	if (inputName.equals("")) {
+											Toast.makeText(
+													getActivity().getBaseContext(),
+													"이름을 입력하세요", Toast.LENGTH_SHORT)
+													.show();
 
-									} else if (team == null) {
-										Toast.makeText(
-												getActivity().getBaseContext(),
-												"팀을 선택하세요", Toast.LENGTH_SHORT)
-												.show();
-									} else if (item == null) {
-										Toast.makeText(
-												getActivity().getBaseContext(),
-												"아이템을 선택하세요",
-												Toast.LENGTH_SHORT).show();
-									} else {
-										Intent myIntent = new Intent(
-												((Dialog) dialog).getContext(),
-												GameActivity.class);
+										} else if (team == null) {
+											Toast.makeText(
+													getActivity().getBaseContext(),
+													"팀을 선택하세요", Toast.LENGTH_SHORT)
+													.show();
+										} else if (item == null) {
+											Toast.makeText(
+													getActivity().getBaseContext(),
+													"아이템을 선택하세요",
+													Toast.LENGTH_SHORT).show();
+										} else {
+											Intent myIntent = new Intent(
+													((Dialog) dialog).getContext(),
+													GameActivity.class);
 
-										myIntent.putExtra("param1", inputRoom);
-										myIntent.putExtra("param2", inputName);
-										myIntent.putExtra("param3", team);
-										myIntent.putExtra("param4", item);
-										System.out.println(team + " / " + item);
-										startActivity(myIntent); // If usert
-																	// push
-																	// "ok"button,
-																	// turn the
-																	// page to
-																	// GameActivity
-										return;
-									}
+											myIntent.putExtra("param1", inputRoom);
+											myIntent.putExtra("param2", inputName);
+											myIntent.putExtra("param3", team);
+											myIntent.putExtra("param4", item);
+											System.out.println(team + " / " + item);
+											startActivity(myIntent); // If usert
+																		// push
+																		// "ok"button,
+																		// turn the
+																		// page to
+																		// GameActivity
+											return;
+										}
+				                    }
+									
+									
+									
 								}
 							})
 					.setNegativeButton("Cancel",
