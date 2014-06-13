@@ -1,5 +1,11 @@
 package com.example.wearetherunningman;
 
+import io.socket.IOAcknowledge;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.DialogFragment;
@@ -12,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,9 +43,6 @@ public class MainActivity extends ActionBarActivity {
 	static String team;
 	static String item;
 
-	EditText uid;
-	String inputUid;
-	static WebView mWebView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -101,30 +105,34 @@ public class MainActivity extends ActionBarActivity {
 	 * A placeholder fragment containing a simple view.
 	 */
 	@SuppressLint("NewApi")
-	public static class PlaceholderFragment extends Fragment implements
-			View.OnClickListener {
-		public PlaceholderFragment() {
-		}
+	public static class PlaceholderFragment extends Fragment implements	View.OnClickListener, WsCallbackInterface {
+		
+		WsConn ws = new WsConn(this);
+		
+		AlertDialog.Builder alertMsg;
+		UserInfoDialog mUserInfoDialog;
+		HowToDialog mHowToDialog;
+		
+		public PlaceholderFragment() {}
 
-		@SuppressLint("SetJavaScriptEnabled")
 		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_main, container,
-					false);
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,	Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 			room = (EditText) rootView.findViewById(R.id.put_num);
-			; // 방이름 입력 받음
 
-			ImageButton b_enter = (ImageButton) rootView
-					.findViewById(R.id.enter);
+			ImageButton b_enter = (ImageButton) rootView.findViewById(R.id.enter);
 			b_enter.setOnClickListener(this);
-
-			ImageButton how_to_use = (ImageButton) rootView
-					.findViewById(R.id.how);
+			
+			ImageButton how_to_use = (ImageButton) rootView.findViewById(R.id.how);
 			how_to_use.setOnClickListener(this);
+			ImageButton web = (ImageButton) rootView.findViewById(R.id.web);web.setOnClickListener(this);
+			
+			alertMsg = new AlertDialog.Builder(getActivity());
 
-			ImageButton web = (ImageButton) rootView.findViewById(R.id.web);
-			web.setOnClickListener(this);
+			
+			
+			ws.run("http://dev.hagi4u.net:3000");
+			
 			
 			return rootView;
 		}
@@ -132,42 +140,92 @@ public class MainActivity extends ActionBarActivity {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			//
-			UserInfoDialog mUserInfoDialog;
-			HowToDialog mHowToDialog;
 
 			switch (v.getId()) {
 			case R.id.enter:
 				inputRoom = room.getText().toString();
-				// inputName = name.getText().toString();
-				if (inputRoom.equals("")) {
-					Toast.makeText(
-							getActivity().getBaseContext(),
-							"방 이름을 입력하세요", Toast.LENGTH_SHORT)
-							.show();
-
-				}
-				else{
-					mUserInfoDialog = new UserInfoDialog();
-					mUserInfoDialog.show(getFragmentManager(), "USER");
-				}
+				ws.chkRoom(1, inputRoom);
+				if (inputRoom.equals("")) 
+					Toast.makeText(getActivity().getBaseContext(),"방 이름을 입력하세요", Toast.LENGTH_SHORT)	.show();
 				break;
-				
-
 			case R.id.how:
 				mHowToDialog = new HowToDialog();
 				mHowToDialog.show(getFragmentManager(), "사용방법");
 				break;
-
 			case R.id.web:
 				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://dev.hagi4u.net:3000/"));
 				startActivity(browserIntent);
-				
 				break;
 			}
 		}
+		@Override
+		public void on(String event, JSONObject obj) {
+			// TODO Auto-generated method stub
+			if(event.equals("established")){
+				try {
+					String statCode = obj.getString("statCode");
+					String statMsg = obj.getString("statMsg");
+					
+					
+					if(statCode.equals("403") || statCode.equals("600")){
+						
+						Bundle data = new Bundle();
+						Message msg = Message.obtain();
+						//Data Setting
+						data.putString("data", statMsg);
+						
+						//Message Setting
+						msg.what = 0;
+						msg.setData(data);
+						
+						alertMsgHandler.sendMessage(msg);
+					} else if(statCode.equals("200")){
+						mUserInfoDialog = new UserInfoDialog();
+						mUserInfoDialog.show(getFragmentManager(), "USER");
+						
+					}
+					
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				
+			}
+		}
+		@Override
+		public void callback(JSONArray data) throws JSONException {}
+		@Override
+		public void onMessage(String message) {}
+		@Override
+		public void onMessage(JSONObject json) {}
+		@Override
+		public void onConnect() {}
+		@Override
+		public void onDisconnect() {}
+		@Override
+		public void onConnectFailure() {}
 		
-
+		private Handler alertMsgHandler = new Handler() {
+			public void handleMessage(Message msg) {
+				String statMsg = msg.getData().getString("data");
+				switch (msg.what) {
+					case 0:
+						new AlertDialog.Builder(getActivity())
+						   .setTitle(statMsg)
+						   .setNegativeButton("확인", new DialogInterface.OnClickListener() {
+						    
+						    @Override
+						    public void onClick(DialogInterface dialog, int which) {
+						     // TODO Auto-generated method stub
+						    }
+						   }).show();;
+					break;
+					default :
+					break;
+				}
+			}
+		};
 	}
 
 	public static class HowToDialog extends DialogFragment {
@@ -175,8 +233,7 @@ public class MainActivity extends ActionBarActivity {
 		@Override
 		public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-			AlertDialog.Builder mBuilder = new AlertDialog.Builder(
-					getActivity());
+			AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
 
 			mBuilder.setTitle("사용방법");
 			mBuilder.setMessage("1. 주최자가 웹을 통해 방을 생성합니다.\n"
@@ -185,17 +242,13 @@ public class MainActivity extends ActionBarActivity {
 
 			mBuilder.setCancelable(false).setPositiveButton("OK",
 					new DialogInterface.OnClickListener() {
-
-						public void onClick(DialogInterface dialog,
-								int whichButton) {
-
+						public void onClick(DialogInterface dialog,	int whichButton) {
 							dialog.cancel();
 						}
 					});
 
 			return mBuilder.create();
 		}
-
 		public void onStop() {
 			super.onStop();
 		}
@@ -209,8 +262,7 @@ public class MainActivity extends ActionBarActivity {
 			team = null;
 			item = null;
 
-			AlertDialog.Builder mBuilder = new AlertDialog.Builder(
-					getActivity());
+			AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
 			LayoutInflater mLayoutInflater = getActivity().getLayoutInflater();
 
 			// name = (EditText) findViewById(R.id.name); // 방이름 입력 받음
@@ -222,60 +274,49 @@ public class MainActivity extends ActionBarActivity {
 			mBuilder.setView(dialogView);
 
 			name = (EditText) dialogView.findViewById(R.id.name); // 방이름 입력 받음
-			RadioGroup teamgroup = (RadioGroup) dialogView
-					.findViewById(R.id.radioGrup1);
-			RadioGroup itemgroup = (RadioGroup) dialogView
-					.findViewById(R.id.radioGrup2);
+			RadioGroup teamgroup = (RadioGroup) dialogView.findViewById(R.id.radioGrup1);
+			RadioGroup itemgroup = (RadioGroup) dialogView.findViewById(R.id.radioGrup2);
 
-			teamgroup
-					.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-						public void onCheckedChanged(RadioGroup group,
-								int checkedId) {
+			teamgroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+						public void onCheckedChanged(RadioGroup group, int checkedId) {
 							// TODO Auto-generated method stub
-
 							switch (checkedId) {
-							case R.id.b_red:
-								team = "1";
-								break;
-							case R.id.b_blue:
-								team = "0";
-								break;
-							default:
-								team = null;
-								break;
+								case R.id.b_red:
+									team = "1";
+									break;
+								case R.id.b_blue:
+									team = "0";
+									break;
+								default:
+									team = null;
+									break;
 							}
 						}
 					});
-
-			itemgroup
-					.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-						public void onCheckedChanged(RadioGroup group,
-								int checkedId) {
+			itemgroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+						public void onCheckedChanged(RadioGroup group,int checkedId) {
 							// TODO Auto-generated method stub
 							switch (checkedId) {
-							case R.id.b_scissor:
-								item = "0";
-								break;
-							case R.id.b_rock:
-								item = "1";
-								break;
-							case R.id.b_paper:
-								item = "2";
-								break;
-							default:
-								item = null;
-								break;
+								case R.id.b_scissor:
+									item = "0";
+									break;
+								case R.id.b_rock:
+									item = "1";
+									break;
+								case R.id.b_paper:
+									item = "2";
+									break;
+								default:
+									item = null;
+									break;
 							}
 						}
 					});
-			mBuilder.setCancelable(false)
-					.setPositiveButton("OK",
+			mBuilder.setCancelable(false).setPositiveButton("OK",
 							new DialogInterface.OnClickListener() {
-
-								public void onClick(DialogInterface dialog,
-										int whichButton) {
+								public void onClick(DialogInterface dialog,	int whichButton) {
 									inputName = name.getText().toString();
-
+									
 									if (inputName.equals("")) {
 										Toast.makeText(
 												getActivity().getBaseContext(),
