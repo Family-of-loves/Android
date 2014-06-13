@@ -184,7 +184,7 @@ public class Participant extends FragmentActivity {
 							String aa = "" + actual_distance;
 							Log.i("실제거리", aa);
 							if (actual_distance <= 30.0147793E-9
-									&& actual_distance >= 1.80482E-9) { // 계산된
+									&& actual_distance >= 0.80482E-9) { // 계산된
 																		// 거리 비교
 
 								if (rows[2].equals("1")) { // 같은팀이 아닌데 레드일경우

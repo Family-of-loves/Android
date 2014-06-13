@@ -259,7 +259,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 							}
 						});
 
-						Thread.sleep(500);
+						Thread.sleep(5000);
 						player.item = item;
 						player.flag=flag;
 						ws.emitMessage(player);
@@ -539,12 +539,13 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 				case 5: // 게임을 받은 입장에서 게임을 진행하겠냐에 대한 의사가 없을때 승인으로 받아 들이고 자동종료함.
 
 				if (gameoutdialog != null && gameoutdialog.isShowing()) {
-					gameoutdialog.dismiss();
+					
 					
 					ws.gameOut(uid,name);
 					android.os.Process
 							.killProcess(android.os.Process
 									.myPid());
+					gameoutdialog.dismiss();
 					
 				}
 				sendEmptyMessageDelayed(MSG_ONLY_DISMISS, 2000);
@@ -821,7 +822,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 													android.os.Process
 															.killProcess(android.os.Process
 																	.myPid());
-													 System.exit(1);
+													
 													dialog.cancel();
 												}
 											});
