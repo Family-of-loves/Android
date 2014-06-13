@@ -237,7 +237,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 								else
 									gameOver=0;
 
-								if (gameOver == 30)
+								if (gameOver == 5)
 									ghandler.sendEmptyMessage(5); // 게임을 이겻다고 알림
 
 
