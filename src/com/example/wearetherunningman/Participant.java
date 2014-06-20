@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.Vibrator;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -37,6 +38,7 @@ public class Participant extends FragmentActivity {
 	public GoogleMap gmap;
 	public static Marker m;
 	public String team;
+	Vibrator vib;// 진동효과
 
 	public Handler mHandler;
 
@@ -44,13 +46,15 @@ public class Participant extends FragmentActivity {
 	Player player;
 
 	public Participant(String team, Context c, GoogleMap gmap, Handler handler,
-			Player player) {
+			Player player, Vibrator vib ) {
 		// 생성
 		this.context = c;
 		this.gmap = gmap;
 		this.team = team;
 		this.mHandler = handler;
 		this.player = player;
+		this.vib = vib;
+		
 
 		dbHandler = new DBManagerHandler(this.context);
 
@@ -186,6 +190,7 @@ public class Participant extends FragmentActivity {
 							if (actual_distance <= 30.0147793E-9
 									&& actual_distance >= 0.80482E-9) { // 계산된
 																		// 거리 비교
+								vib.vibrate(1000);
 
 								if (rows[2].equals("1")) { // 같은팀이 아닌데 레드일경우
 									LatLng loc = new LatLng(

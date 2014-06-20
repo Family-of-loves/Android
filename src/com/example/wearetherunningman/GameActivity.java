@@ -120,7 +120,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 				getApplicationContext(), gmap);
 		// participant = new Participant(getApplicationContext(), gmap);
 		participant = new Participant(team, getApplicationContext(), gmap,
-				handler, player);
+				handler, player, vib);
 		// 슬라이딩메뉴 부분 초기화
 		myItem = (ImageView) findViewById(R.id.myItem);
 		myTeam = (ImageView) findViewById(R.id.myTeam);
@@ -252,7 +252,7 @@ public class GameActivity extends ActionBarActivity implements WsCallbackInterfa
 
 								
 
-								myTeamNum.setText(myTeamCount + "명");
+								myTeamNum.setText((myTeamCount+1) + "명");
 								otherTeamNum.setText(otherTeamCount + "명");
 								myTeamCount = 0;
 								otherTeamCount = 0;
